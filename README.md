@@ -5,3 +5,6 @@ Todo:
 1. CRUD function with database
 2. Email Accenture partners
 3. Research on read-time chat functions, email notification
+
+Running in Development Mode:
+```npm run dev```   
