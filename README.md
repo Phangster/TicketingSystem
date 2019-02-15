@@ -8,3 +8,6 @@ Todo:
 
 Running in Development Mode:
 ```npm run dev```   
+
+Set up:
+1. Go to config/keys.js and set the mongoURI
