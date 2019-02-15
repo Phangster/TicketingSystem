@@ -7,7 +7,7 @@ const users = require('./routes/api/users');
 const port = process.env.PORT || 5000;
 
 // Config DB
-const db = require('./config/keys').mongoURI;
+const db = require('./config/keys').dev.mongoURI;
 
 // Body-parser middleware
 app.use(bodyParser.urlencoded({extended:false}));
