@@ -15,13 +15,21 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    access: {
+    contact: {
         type: String,
-        default: 'user'
+        required: true
+    },
+    enquiry: {
+        type: Array,
+        required: true
     },
     date: {
         type: Date,
         default: Date.now
+    },
+    access: {
+        type: String,
+        default: 'user'
     }
 });
 

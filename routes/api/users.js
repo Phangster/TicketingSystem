@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
+const generator = require('generate-password');
 
 // Load User model:
 const User = require('../../models/User');
@@ -22,10 +23,17 @@ router.post('/register', (req, res) => {
 
         } else {
 
+            let password = generator.generate({
+                length: 10,
+                numbers: true
+            });
+
             const newUser = new User({
                 name: req.body.name,
                 email: req.body.email,
-                password: req.body.password
+                password: password,
+                contact: req.body.contact,
+                enquiry: req.body.enquiry
             });
 
             bcrypt.genSalt(10, (err, salt) => {
