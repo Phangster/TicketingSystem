@@ -12,11 +12,10 @@ Running in Development Mode:
 # Set up:
 1. Go to config/keys.js and set the mongoURI
 
-# To-do:
+# Roadmap:
+### 1. Authentication
+Add a validator to check for false input.
 
-# Authentication
-1. Add a validator to check for false input.
-
-# Email Service
-1. Integrate SendGrid to send email of password
+### 2. Email Service
+Integrate SendGrid to send email of password
 

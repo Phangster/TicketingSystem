@@ -19,6 +19,7 @@ router.get('/test', (req, res) => res.json({msg: 'Users works!'}));
 // @access  Public
 router.post('/register', (req, res) => {
     User.findOne({email:req.body.email}).then(user => {
+        console.log("Register!")
         if (user) {
             return res.status(400).json({email: "Email already exists"});
 
@@ -37,7 +38,7 @@ router.post('/register', (req, res) => {
                 email: req.body.email,
                 password: password,
                 contact: req.body.contact,
-                enquiry: req.body.enquiry
+                tickets: req.body.tickets
             });
 
             bcrypt.genSalt(10, (err, salt) => {
@@ -102,7 +103,8 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
         id: req.user.id,
         name: req.user.name,
         email: req.user.email,
-        contact: req.user.contact
+        contact: req.user.contact,
+        enquiry: req.user.enquiry
     });
 });
 
