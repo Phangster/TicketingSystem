@@ -19,10 +19,23 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    enquiry: {
-        type: Array,
-        required: true
-    },
+    tickets: [{
+        // Can have more than 1 label
+        // Status: New, Assigned, Archive
+        type: Map,
+        label: {
+            type: Array, 
+            required: true
+        },
+        content: {
+            type: String, 
+            required: true
+        },
+        status: {
+            type: String, 
+            required: true
+        }
+    }],
     date: {
         type: Date,
         default: Date.now
@@ -32,5 +45,7 @@ const UserSchema = new Schema({
         default: 'user'
     }
 });
+
+
 
 module.exports = User = mongoose.model('users', UserSchema);
