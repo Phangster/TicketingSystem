@@ -9,5 +9,14 @@ Todo:
 Running in Development Mode:
 ```npm run dev```   
 
-Set up:
+# Set up:
 1. Go to config/keys.js and set the mongoURI
+
+# To-do:
+
+# Authentication
+1. Add a validator to check for false input.
+
+# Email Service
+1. Integrate SendGrid to send email of password
+

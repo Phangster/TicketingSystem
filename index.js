@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const users = require('./routes/api/users');
+const passport = require('passport');
 
 const port = process.env.PORT || 5000;
 
@@ -12,6 +13,12 @@ const db = require('./config/keys').dev.mongoURI;
 // Body-parser middleware
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport config
+require('./config/passport')(passport);
 
 // Connect to MongoDB via Mongoose
 mongoose

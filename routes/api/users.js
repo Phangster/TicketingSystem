@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const generator = require('generate-password');
+const passport = require('passport');
 
 // Load User model:
 const User = require('../../models/User');
@@ -28,6 +29,9 @@ router.post('/register', (req, res) => {
                 numbers: true
             });
 
+            // Sent this via email
+            console.log(password);
+
             const newUser = new User({
                 name: req.body.name,
                 email: req.body.email,
@@ -49,5 +53,58 @@ router.post('/register', (req, res) => {
         }
     });
 });
+
+// @route   GET api/users/login
+// @desc    Login User / Returning JWT Token
+// @access  Public
+router.post('/login', (req,res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    // Find user
+    User.findOne({email})
+        .then(user => {
+            if (!user){
+                return res.status(404).json({email: 'User not found!'})
+            }
+            
+            bcrypt.compare(password, user.password)
+                .then(isMatch => {
+                    if (isMatch) {
+                        // User Matched
+                        const payload = {id: user.id, name: user.name} // Create JWT payload
+                        
+                        // Sign Token
+                        jwt.sign(
+                            payload, 
+                            keys.secretOrKey, 
+                            {expiresIn: 3600},
+                            (err, token) => {
+                                res.json({
+                                    success: true,
+                                    token: 'Bearer ' + token
+                                });
+                        });
+
+                    } else {
+                        return res.status(400).json({password: 'Password incorrect!'});
+                    }
+                });
+        });
+});
+
+// @route   GET api/users/current
+// @desc    Return current user
+// @access  Private
+router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
+    // res.json(req.user);
+    res.json({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        contact: req.user.contact
+    });
+});
+
 
 module.exports = router;
