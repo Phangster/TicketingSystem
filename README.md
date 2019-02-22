@@ -17,5 +17,4 @@ Running in Development Mode:
 Add a validator to check for false input.
 
 ### 2. Email Service
-Integrate SendGrid to send email of password
-
+Integrate SendGrid to send email of password. Fill up form and submit form with data.

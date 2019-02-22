@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const generator = require('generate-password');
 const passport = require('passport');
+const sendgrid = require('../../services/sendgrid');
 
 // Load User model:
 const User = require('../../models/User');
@@ -25,7 +26,7 @@ router.post('/register', (req, res) => {
 
         } else {
 
-            let password = generator.generate({
+            const password = generator.generate({
                 length: 10,
                 numbers: true
             });
@@ -41,13 +42,17 @@ router.post('/register', (req, res) => {
                 tickets: req.body.tickets
             });
 
+            sendgrid(newUser.email, password);
+
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newUser.password, salt, (err, hash)=>{
                     if (err) throw err;
                     newUser.password = hash;
                     newUser
                         .save()
-                        .then(user => res.json(user))
+                        .then(user => {
+                            res.json(user)
+                        })
                         .catch(err => console.log(err));
                 });
             });
