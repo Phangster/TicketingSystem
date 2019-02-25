@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "new": "\"npm install --save generate-password passport @sendgrid/mail bcryptjs body-parser express jsonwebtoken mongoose passport-jwt validator express-handlerbars\""
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "express-handlebars": "^3.0.2",
     "generate-password": "^1.4.1",
     "install": "^0.12.2",
     "jsonwebtoken": "^8.4.0",
