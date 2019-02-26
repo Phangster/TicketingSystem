@@ -6,15 +6,18 @@ Todo:
 2. Email Accenture partners
 3. Research on read-time chat functions, email notification
 
+# Set up:
+1. Run ```npm run install```
+2. Go to config/keys.js and set the mongoURI
+
 Running in Development Mode:
 ```npm run dev```   
 
-# Set up:
-1. Go to config/keys.js and set the mongoURI
-
 # Roadmap:
-### 1. Authentication
-Add a validator to check for false input.
+### HIGH PRIORITY
+### 1. Integrate React with Backend
+Integrate React with our backend framework, ExpressJs
 
-### 2. Email Service
-Integrate SendGrid to send email of password. Fill up form and submit form with data.
+### LOW PRIORITY
+### 1. Validation
+Add a validator to check for false input.

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -26,3 +27,8 @@ class App extends Component {
 }
 
 export default App;
+=======
+import React from 'react';
+import Routes from './routes/routes';
+export default () => <Routes />;
+>>>>>>> origin/master

@@ -7,8 +7,10 @@ const passport = require('passport');
 
 const port = process.env.PORT || 5000;
 
+
 // Config DB
 const db = require('./config/keys').dev.mongoURI;
+
 
 // Body-parser middleware
 app.use(bodyParser.urlencoded({extended:false}));
