@@ -9,7 +9,7 @@ export default () => (
         <BrowserRouter>
          <Switch>
             <Route path="/" component={Home} />
-            <Route path="/api/users/login" component={SignIn} />
+            <Route path="/api/users/login" render={props => <SignIn {...props} />}/>
             <Route path="/api/users/register" component={SignUp} />
          </Switch>
         </BrowserRouter>
