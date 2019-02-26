@@ -6,11 +6,12 @@ Todo:
 2. Email Accenture partners
 3. Research on read-time chat functions, email notification
 
+# Set up:
+1. Run ```npm run install```
+2. Go to config/keys.js and set the mongoURI
+
 Running in Development Mode:
 ```npm run dev```   
-
-# Set up:
-1. Go to config/keys.js and set the mongoURI
 
 # Roadmap:
 ### 1. Authentication
