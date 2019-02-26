@@ -14,8 +14,10 @@ Running in Development Mode:
 ```npm run dev```   
 
 # Roadmap:
-### 1. Authentication
-Add a validator to check for false input.
+### HIGH PRIORITY
+### 1. Integrate React with Backend
+Integrate React with our backend framework, ExpressJs
 
-### 2. Email Service
-Integrate SendGrid to send email of password. Fill up form and submit form with data.
+### LOW PRIORITY
+### 1. Validation
+Add a validator to check for false input.
