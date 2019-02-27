@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 // import axios from 'axios';
 class Register extends Component {
   constructor(props){
@@ -16,46 +13,25 @@ class Register extends Component {
   }
   render() {
     return (
-      <div>
-        <MuiThemeProvider>
-          <div>
-          <AppBar
-             title="Register"
-           />
-           <TextField
-             hintText="Enter your First Name"
-             floatingLabelText="First Name"
-             onChange = {(event,newValue) => this.setState({first_name:newValue})}
-             />
-           <br/>
-           <TextField
-             hintText="Enter your Last Name"
-             floatingLabelText="Last Name"
-             onChange = {(event,newValue) => this.setState({last_name:newValue})}
-             />
-           <br/>
-           <TextField
-             hintText="Enter your Email"
-             type="email"
-             floatingLabelText="Email"
-             onChange = {(event,newValue) => this.setState({email:newValue})}
-             />
-           <br/>
-           <TextField
-             type = "password"
-             hintText="Enter your Password"
-             floatingLabelText="Password"
-             onChange = {(event,newValue) => this.setState({password:newValue})}
-             />
-           <br/>
-           <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
-          </div>
-         </MuiThemeProvider>
-      </div>
-    );
-  }
+      <Container className="App">
+        <h2>Register</h2>
+      <Form>
+      <FormGroup>
+        <Label for="email">Email</Label>
+        <Input type="email" name="email" id="email" placeholder="Enter an email" />
+      </FormGroup>
+      <FormGroup>
+        <Label for="password">Password</Label>
+        <Input type="password" name="password" id="password" placeholder="Choose a password" />
+      </FormGroup>
+      <FormGroup>
+        <Label for="number">Number</Label>
+        <Input type="phoneNumber" name="phoneNumber" id="phoneNumber" placeholder="Enter phone number" />
+      </FormGroup>
+      <Button>Submit</Button>
+    </Form>
+    </Container>
+  );
 }
-const style = {
-  margin: 15,
-};
+}
 export default Register;
