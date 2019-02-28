@@ -4,17 +4,10 @@
   "description": "50.003 Project by Yi Jie, Chloe and Bryan on ticketing system problem statement by Accenture 1st Meeting (29/01) Todo: 1. CRUD function with database 2. Email Accenture partners 3. Research on read-time chat functions, email notification",
   "main": "server.js",
   "scripts": {
-<<<<<<< HEAD
     "client-install": "npm install --prefix client",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
-=======
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon index.js",
-    "client": "npm start --prefix client",
-    "dev": " concurrently \"npm run server\" \"npm run client\" "
->>>>>>> origin/master
   },
   "repository": {
     "type": "git",
