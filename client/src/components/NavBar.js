@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Collapse,
   Navbar,
@@ -7,41 +7,43 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Container
-} from 'reactstrap';
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem } from 'reactstrap';
 
-class NavBar extends Component {
-  state = {
-    isOpen: false
-  };
+export default class Example extends React.Component {
+  constructor(props) {
+    super(props);
 
-  toggle = () => {
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+  toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
-  };
-
+  }
   render() {
     return (
       <div>
-        <Navbar color="dark" dark expand="sm" className="mb-5">
-          <Container>
-            <NavbarBrand href="/">Ticketing system</NavbarBrand>
-            <NavbarToggler onClick={this.toggle} />
-            <Collapse isOpen={this.state.isOpen} navbar>
-              <Nav className="ml-auto" navbar>
-                <NavItem>
-                  <NavLink href="https://github.com/Phangster/TicketingSystem">
-                    Github TicketingSystem Repo
-                  </NavLink>
-                </NavItem>
-              </Nav>
-            </Collapse>
-          </Container>
+        <Navbar color="light" light expand="md">
+          <NavbarBrand href="/">Accenture Ticketing System</NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink href="/login">Login</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/register">Register</NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
         </Navbar>
       </div>
     );
   }
 }
-
-export default NavBar;
