@@ -42,7 +42,7 @@ class Contact extends Component {
       name:'',
       email:'',
       contact:'',
-      select:'',
+      selectedOption:'',
       message:'',
       errors: {},
       modal: true,
@@ -67,7 +67,7 @@ class Contact extends Component {
       name: this.state.name,
       email: this.state.email,
       contact: this.state.contact,
-      select: this.state.value,
+      selectedOption: this.state.selectedOption,
       message: this.state.inputMessage,
     };
 
@@ -78,7 +78,7 @@ class Contact extends Component {
 
     this.setState(prevState => ({
       modal: !prevState.modal,
-      redirectToReferrer: true
+      redirectToReferrer: true,
     }));
   };
 
@@ -89,6 +89,7 @@ class Contact extends Component {
   }
 
   render() {
+    const { selectedOption } = this.state
     const redirectToReferrer = this.state.redirectToReferrer;
         if (redirectToReferrer === true) {
             return <Redirect to="/Login" />
@@ -126,7 +127,7 @@ class Contact extends Component {
                   <Col>
                   <FormGroup>
                   <Label><span class="red-text">*</span> Select the assets or topic you are interested in</Label>
-                  <Select options={options} value={this.state.value} />
+                  <Select options={options} value={selectedOption} />
                   </FormGroup>
                   </Col>
 
