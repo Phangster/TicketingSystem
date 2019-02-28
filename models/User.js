@@ -25,15 +25,15 @@ const UserSchema = new Schema({
         type: Map,
         label: {
             type: Array, 
-            required: true
+            // required: true
         },
         content: {
             type: String, 
-            required: true
+            // required: true
         },
         status: {
             type: String, 
-            required: true
+            // required: true
         }
     }],
     date: {
