@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Col, Container, Label, Input } from 'reactstrap';
-import Select from 'react-select'
+import Select from 'react-select';
+import { Redirect } from 'react-router-dom'
 
 const options = [
   { value: 'API DevOps', label: 'API DevOps' },
@@ -44,7 +45,8 @@ class Contact extends Component {
       select:'',
       message:'',
       errors: {},
-      modal: false
+      modal: true,
+      redirectToReferrer: false
     }
     this.handleClick = this.handleClick.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -65,7 +67,8 @@ class Contact extends Component {
       .catch(err => this.setState({errors: err.response.data}));
 
     this.setState(prevState => ({
-      modal: !prevState.modal
+      modal: !prevState.modal,
+      redirectToReferrer: true
     }));
   };
 
@@ -76,12 +79,13 @@ class Contact extends Component {
   }
 
   render() {
-    const {errors} = this.state;
-
+    const redirectToReferrer = this.state.redirectToReferrer;
+        if (redirectToReferrer === true) {
+            return <Redirect to="/Login" />
+    }
     return (
       <div>
-        <Button onClick={this.toggle}>Contact Us</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={this.state.modal}>
           <Container>
           <ModalHeader toggle={this.toggle}>
               <h4>Contact Us</h4>
