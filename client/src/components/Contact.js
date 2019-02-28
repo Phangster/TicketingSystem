@@ -50,6 +50,16 @@ class Contact extends Component {
     }
     this.handleClick = this.handleClick.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange = async (event) => {
+    const { target } = event;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const { name } = target;
+    await this.setState({
+      [ name ]: value,
+    });
   }
   
   handleClick(e){
@@ -95,21 +105,21 @@ class Contact extends Component {
                   <Col>
                   <FormGroup>
                   <Label class="active"><span class="red-text">*</span> Your Name </Label>
-                    <Input placeholder="e.g. Antony Pym" name="name" id="name" type="text" value={this.state.name} />
+                    <Input placeholder="e.g. Antony Pym" name="name" id="name" type="text" value={this.state.name} onChange={ (e) => this.handleChange(e) } />
                   </FormGroup>
                   </Col>
 
                   <Col>
                   <FormGroup>
                   <Label class="active"><span class="red-text">*</span> Your Email</Label>
-                    <Input placeholder="e.g. antonypym@accenture.com" name="email" id="email" type="email" value={this.state.email}/>
+                    <Input placeholder="e.g. antonypym@accenture.com" name="email" id="email" type="email" value={this.state.email} onChange={ (e) => this.handleChange(e)} />
                   </FormGroup>
                   </Col>
 
                   <Col>
                   <FormGroup>
                   <Label><span class="red-text">*</span> Your Contact</Label>
-                    <Input placeholder="e.g. 91234567" name="contact" id="contact" type="number" value={this.state.contact} />
+                    <Input placeholder="e.g. 91234567" name="contact" id="contact" type="number" value={this.state.contact} onChange={ (e) => this.handleChange(e)} />
                   </FormGroup>
                   </Col>
 
@@ -123,7 +133,7 @@ class Contact extends Component {
                   <Col>
                   <FormGroup>
                   <div><Label><span class="red-text">*</span> Your Message</Label></div>
-                    <textarea placeholder="Please let us know which asset you are interested in trying out" name="inputMessage" id="inputMessage" value={this.state.inputMessage}/>
+                    <textarea placeholder="Please let us know which asset you are interested in trying out" name="inputMessage" id="inputMessage" value={this.state.inputMessage} onChange={ (e) => this.handleChange(e)} />
                   </FormGroup>
                   </Col>
               </form>
