@@ -1,5 +1,6 @@
 module.exports = {
     // DB for development purposes
+    //development
     dev: {
         mongoURI: 'mongodb+srv://root:qwerty123@cluster0-jgluf.mongodb.net/test?retryWrites=true'
     },
