@@ -3,16 +3,28 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import axios from 'axios';
 
 class Login extends Component {
 constructor(props){
   super(props);
   
   this.state={
-    username:'',
+    email:'',
     password:''
   }
+  this.handleClick = this.handleClick.bind(this);
 }
+
+handleClick(e){
+  const User = {
+    email: this.state.email,
+    password: this.state.password
+  };
+
+  console.log(User);
+  axios.post('/api/users/login', User).then(res => console.log(res.data)).catch(err => console.log(err.response.data));
+};
 
 render() {
     return (
@@ -23,9 +35,9 @@ render() {
              title="Login"
            />
            <TextField
-             hintText="Enter your Username"
-             floatingLabelText="Username"
-             onChange = {(event,newValue) => this.setState({username:newValue})}
+             hintText="Enter your Email"
+             floatingLabelText="Email"
+             onChange = {(event,newValue) => this.setState({email:newValue})}
              />
            <br/>
              <TextField
