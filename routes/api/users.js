@@ -7,6 +7,9 @@ const generator = require('generate-password');
 const passport = require('passport');
 const sendgrid = require('../../services/sendgrid');
 
+// Load Input Validation:
+const validateRegisterInput = require('../../validation/registration');
+
 // Load User model:
 const User = require('../../models/User');
 
@@ -19,6 +22,14 @@ router.get('/test', (req, res) => res.json({msg: 'Users works!'}));
 // @desc    Register users
 // @access  Public
 router.post('/register', (req, res) => {
+
+    const {errors, isValid} = validateRegisterInput(req.body);
+
+    // Check Validation
+    if (!isValid){
+        return res.status(400).json(errors);
+    }
+
     User.findOne({email:req.body.email}).then(user => {
         console.log("Register!")
         if (user) {
