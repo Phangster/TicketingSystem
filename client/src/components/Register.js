@@ -12,6 +12,7 @@ class Register extends Component {
       name:'',
       email:'',
       contact:'',
+      errors: {}
     }
     this.handleClick = this.handleClick.bind(this);
   }
@@ -25,11 +26,14 @@ class Register extends Component {
 
     console.log(newUser);
     axios.post('/api/users/register', newUser)
-      .then(res => console.log(res.data)
-      .catch(err => err.response.data));
+      .then(res => console.log(res.data))
+      .catch(err => this.setState({errors: err.response.data}));
+
   };
 
   render() {
+    const {errors} = this.state;
+
     return (
       <div>
         <MuiThemeProvider>
