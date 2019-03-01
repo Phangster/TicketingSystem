@@ -67,8 +67,10 @@ class Contact extends Component {
       name: this.state.name,
       email: this.state.email,
       contact: this.state.contact,
-      selectedOption: this.state.options,
-      message: this.state.inputMessage,
+      tickets:{
+        label: this.state.options,
+        content: this.state.inputMessage
+      }
     };
 
     console.log(newUser);
@@ -93,6 +95,8 @@ class Contact extends Component {
   }
 
   render() {
+    const {errors} = this.state;
+
     const redirectToReferrer = this.state.redirectToReferrer;
         if (redirectToReferrer === true) {
             return <Redirect to="/Login" />
@@ -108,7 +112,14 @@ class Contact extends Component {
               <form name="contactForm">
                   <Col>
                   <FormGroup>
-                  <Label class="active"><span class="red-text">*</span> Your Name </Label>
+                  <Label class="active" 
+                    // className={classnames('form-control form-control-lg',{
+                    //   'is-invalid':errors.name
+                    // })}
+                    ><span class="red-text">*</span> Your Name </Label>
+                    {/* {errors.name && (
+                      <div className="invalid-feedback">{errors.name}</div>
+                    )} */}
                     <Input placeholder="e.g. Antony Pym" name="name" id="name" type="text" value={this.state.name} onChange={ (e) => this.handleChange(e) } />
                   </FormGroup>
                   </Col>
