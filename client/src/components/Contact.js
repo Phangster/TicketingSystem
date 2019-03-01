@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Col, Container, Label, Input } from 'reactstrap';
-import Select from 'react-select';
+import { Dropdown } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
-import classnames from 'classnames';
 
 const options = [
   { value: 'API DevOps', label: 'API DevOps' },
@@ -43,7 +42,7 @@ class Contact extends Component {
       name:'',
       email:'',
       contact:'',
-      select:'',
+      selectedOption:'',
       message:'',
       errors: {},
       modal: true,
@@ -62,17 +61,16 @@ class Contact extends Component {
       [ name ]: value,
     });
   }
-  
+
   handleClick(e){
     const newUser = {
       name: this.state.name,
       email: this.state.email,
       contact: this.state.contact,
-      tickets: {
-        label: this.state.value,
+      tickets:{
+        label: this.state.options,
         content: this.state.inputMessage
       }
-      // errors: {}
     };
 
     console.log(newUser);
@@ -80,9 +78,13 @@ class Contact extends Component {
       .then(res => console.log(res.data))
       .catch(err => this.setState({errors: err.response.data}));
 
+    this.setState({
+      selectedOption: e.target.value
+    })
+    
     this.setState(prevState => ({
       modal: !prevState.modal,
-      redirectToReferrer: true
+      redirectToReferrer: true,
     }));
   };
 
@@ -139,7 +141,12 @@ class Contact extends Component {
                   <Col>
                   <FormGroup>
                   <Label><span class="red-text">*</span> Select the assets or topic you are interested in</Label>
-                  <Select options={options} value={this.state.value} />
+                  {/* <Dropdown placeholder='eg Smart Home' fluid selection options={options} onChange={ (e) => this.handleChange(e)}/> */}
+                  <select value={this.state.value} onChange={ (e) => this.handleChange(e)} name="options" id="options">
+                    <option value="API DevOps">API DevOps</option>
+                    <option value="Chart as a Service">Chart as a Service</option>
+                    <option value="Recruitment Platform">Recruitment Platform</option>
+                  </select>
                   </FormGroup>
                   </Col>
 
