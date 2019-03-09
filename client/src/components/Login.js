@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginUser } from '../actions/authActions';
+
 import {
   Container, Col, Form,
   FormGroup, Label, Input,
@@ -40,7 +44,18 @@ class Login extends Component {
 
   submitForm(e) {
     e.preventDefault();
+    const userData = {
+      email: this.state.email,
+      password: this.state.password
+    }
+    this.props.loginUser(userData);
     console.log(`Email: ${ this.state.email }`)
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.auth.isAuthenticated){
+      this.props.history.push('/dashboard');
+    }
   }
 
   render() {
@@ -94,4 +109,16 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { loginUser })(Login);
+// export default Login;
