@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Col, Container, Label, Input } from 'reactstrap';
-import { Dropdown } from 'semantic-ui-react';
+// import { Dropdown } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { registerUser } from '../actions/authActions';
+import { withRouter } from 'react-router-dom';
 
 const options = [
   { value: 'API DevOps', label: 'API DevOps' },
@@ -67,14 +70,14 @@ class Contact extends Component {
       name: this.state.name,
       email: this.state.email,
       contact: this.state.contact,
-      selectedOption: this.state.options,
-      message: this.state.inputMessage,
+      tickets:{
+        label: this.state.options,
+        content: this.state.inputMessage
+      }
     };
 
     console.log(newUser);
-    axios.post('/api/users/register', newUser)
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({errors: err.response.data}));
+    this.props.registerUser(newUser, this.props.history);
 
     this.setState({
       selectedOption: e.target.value
@@ -92,7 +95,17 @@ class Contact extends Component {
     }));
   }
 
+  componentWillReceiveProps(nextProps){
+    if (nextProps.errors){
+      this.setState({errors: nextProps.errors});
+    }
+  }
+
   render() {
+    const {errors} = this.state;
+
+    const { user } = this.props.auth;
+
     const redirectToReferrer = this.state.redirectToReferrer;
         if (redirectToReferrer === true) {
             return <Redirect to="/Login" />
@@ -108,7 +121,14 @@ class Contact extends Component {
               <form name="contactForm">
                   <Col>
                   <FormGroup>
-                  <Label class="active"><span class="red-text">*</span> Your Name </Label>
+                  <Label class="active" 
+                    // className={classnames('form-control form-control-lg',{
+                    //   'is-invalid':errors.name
+                    // })}
+                    ><span class="red-text">*</span> Your Name </Label>
+                    {/* {errors.name && (
+                      <div className="invalid-feedback">{errors.name}</div>
+                    )} */}
                     <Input placeholder="e.g. Antony Pym" name="name" id="name" type="text" value={this.state.name} onChange={ (e) => this.handleChange(e) } />
                   </FormGroup>
                   </Col>
@@ -156,4 +176,16 @@ class Contact extends Component {
     );
   }
 }
-export default Contact;
+
+Contact.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, {registerUser}) (withRouter(Contact));
