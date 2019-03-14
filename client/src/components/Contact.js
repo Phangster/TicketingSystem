@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerUser } from '../actions/authActions';
 import { withRouter } from 'react-router-dom';
+import classnames from 'classnames';
 
 const options = [
   { value: 'API DevOps', label: 'API DevOps' },
@@ -46,7 +47,7 @@ class Contact extends Component {
       email:'',
       contact:'',
       selectedOption:'',
-      message:'',
+      inputMessage:'',
       errors: {},
       modal: true,
       redirectToReferrer: false
@@ -76,17 +77,15 @@ class Contact extends Component {
       }
     };
 
-    console.log(newUser);
-    this.props.registerUser(newUser, this.props.history);
-
     this.setState({
       selectedOption: e.target.value
-    })
+    })  
+
+    console.log(newUser);
+
+    // Refer to client/src/actions/authActions.js to see the redirected route.
+    this.props.registerUser(newUser, this.props.history);
     
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-      redirectToReferrer: true,
-    }));
   };
 
   toggle(){
@@ -102,14 +101,11 @@ class Contact extends Component {
   }
 
   render() {
-    const {errors} = this.state;
-
-    const { user } = this.props.auth;
-
-    const redirectToReferrer = this.state.redirectToReferrer;
-        if (redirectToReferrer === true) {
-            return <Redirect to="/Login" />
-    }
+    const {errors} = this.state; // equivalent to const errors = this.state.errors;
+    // const redirectToReferrer = this.state.redirectToReferrer;
+    //     if (redirectToReferrer === true) {
+    //         return <Redirect to="/Login" />
+    // }
     return (
       <div>
         <Modal isOpen={this.state.modal}>
@@ -121,48 +117,80 @@ class Contact extends Component {
               <form name="contactForm">
                   <Col>
                   <FormGroup>
-                  <Label class="active" 
-                    // className={classnames('form-control form-control-lg',{
-                    //   'is-invalid':errors.name
-                    // })}
-                    ><span class="red-text">*</span> Your Name </Label>
-                    {/* {errors.name && (
-                      <div className="invalid-feedback">{errors.name}</div>
-                    )} */}
-                    <Input placeholder="e.g. Antony Pym" name="name" id="name" type="text" value={this.state.name} onChange={ (e) => this.handleChange(e) } />
+                  <Label className="active"><span className="red-text">*</span> Your Name </Label>
+                    <Input 
+                      placeholder="e.g. Antony Pym" 
+                      className={classnames('form-control form-control-lg',{
+                        'is-invalid':errors.name
+                      })}
+                      name="name" 
+                      id="name" 
+                      type="text"
+                      value={this.state.name} 
+                      onChange={ (e) => this.handleChange(e) }
+                      />
                   </FormGroup>
                   </Col>
 
                   <Col>
                   <FormGroup>
-                  <Label class="active"><span class="red-text">*</span> Your Email</Label>
-                    <Input placeholder="e.g. antonypym@accenture.com" name="email" id="email" type="email" value={this.state.email} onChange={ (e) => this.handleChange(e)} />
+                  <Label className="active"><span className="red-text">*</span> Your Email</Label>
+                    <Input 
+                      placeholder="e.g. antonypym@accenture.com" 
+                      className={classnames('form-control form-control-lg',{
+                        'is-invalid':errors.email
+                      })}
+                      name="email" 
+                      id="email" 
+                      type="email" 
+                      value={this.state.email} 
+                      onChange={ (e) => this.handleChange(e)} />
                   </FormGroup>
                   </Col>
 
                   <Col>
                   <FormGroup>
-                  <Label><span class="red-text">*</span> Your Contact</Label>
-                    <Input placeholder="e.g. 91234567" name="contact" id="contact" type="number" value={this.state.contact} onChange={ (e) => this.handleChange(e)} />
+                  <Label><span className="red-text">*</span> Your Contact</Label>
+                    <Input 
+                      placeholder="e.g. 91234567" 
+                      className={classnames('form-control form-control-lg',{
+                        'is-invalid':errors.contact
+                      })}
+                      name="contact" 
+                      id="contact" 
+                      type="number" 
+                      value={this.state.contact} 
+                      onChange={ (e) => this.handleChange(e)} />
                   </FormGroup>
                   </Col>
 
                   <Col>
                   <FormGroup>
-                  <Label><span class="red-text">*</span> Select the assets or topic you are interested in</Label>
+                  <Label><span className="red-text">*</span> Select the assets or topic you are interested in</Label>
                   {/* <Dropdown placeholder='eg Smart Home' fluid selection options={options} onChange={ (e) => this.handleChange(e)}/> */}
-                  <select value={this.state.value} onChange={ (e) => this.handleChange(e)} name="options" id="options">
-                    <option value="API DevOps">API DevOps</option>
-                    <option value="Chart as a Service">Chart as a Service</option>
-                    <option value="Recruitment Platform">Recruitment Platform</option>
+                  <select value={this.state.value} 
+                    onChange={ (e) => this.handleChange(e)} 
+                    name="options" 
+                    id="options">
+                      <option value="API DevOps">API DevOps</option>
+                      <option value="Chart as a Service">Chart as a Service</option>
+                    < option value="Recruitment Platform">Recruitment Platform</option>
                   </select>
                   </FormGroup>
                   </Col>
 
                   <Col>
                   <FormGroup>
-                  <div><Label><span class="red-text">*</span> Your Message</Label></div>
-                    <textarea placeholder="Please let us know which asset you are interested in trying out" name="inputMessage" id="inputMessage" value={this.state.inputMessage} onChange={ (e) => this.handleChange(e)} />
+                  <div><Label><span className="red-text">*</span> Your Message</Label></div>
+                    <textarea 
+                      placeholder="Please let us know which asset you are interested in trying out" 
+                      className={classnames('form-control form-control-lg',{
+                        'is-invalid':errors.inputMessage
+                      })}
+                      name="inputMessage" 
+                      id="inputMessage" 
+                      value={this.state.inputMessage} 
+                      onChange={ (e) => this.handleChange(e)} />
                   </FormGroup>
                   </Col>
               </form>
