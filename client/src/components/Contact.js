@@ -7,6 +7,9 @@ import { connect } from 'react-redux';
 import { registerUser } from '../actions/authActions';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
+import {
+   FormText, FormFeedback,
+} from 'reactstrap';
 
 const options = [
   { value: 'API DevOps', label: 'API DevOps' },
@@ -49,12 +52,23 @@ class Contact extends Component {
       selectedOption:'',
       inputMessage:'',
       errors: {},
+      validate: {
+        emailState:'',
+        nameState:'',
+        contactState:'',
+        messageState:''
+      },
       modal: true,
       redirectToReferrer: false
     }
     this.handleClick = this.handleClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
+    this.validateName = this.validateName.bind(this);
+    this.validateContact = this.validateContact.bind(this);
+    this.validateMessage = this.validateMessage.bind(this);
+
   }
 
   handleChange = async (event) => {
@@ -66,26 +80,81 @@ class Contact extends Component {
     });
   }
 
-  handleClick(e){
-    const newUser = {
-      name: this.state.name,
-      email: this.state.email,
-      contact: this.state.contact,
-      tickets:{
-        label: this.state.options,
-        content: this.state.inputMessage
+  validateEmail(e) {
+    const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const { validate } = this.state;
+      if (emailRex.test(e.target.value)) {
+        validate.emailState = 'has-success'
+      } else {
+        validate.emailState = 'has-danger'
       }
-    };
+      this.setState({ validate });
+    }
 
-    this.setState({
-      selectedOption: e.target.value
-    })  
+  validateName(e) {
+    const nameRegex = /^[a-zA-Z ]{2,30}$/;
+    const { validate } = this.state;
+      if (nameRegex.test(e.target.value)) {
+        validate.nameState = 'has-success'
+      } else {
+        validate.nameState = 'has-danger'
+      }
+      this.setState({ validate });
+    }
 
-    console.log(newUser);
+  validateContact(e){
+    const contactRegex = /^[689]\d{7}$/;
+    const { validate } = this.state; 
+    if (contactRegex.test(e.target.value)) {
+      validate.contactState = 'has-success'
+    } else {
+      validate.contactState = 'has-danger'
+    }
+    this.setState({ validate });
+  }
 
-    // Refer to client/src/actions/authActions.js to see the redirected route.
-    this.props.registerUser(newUser, this.props.history);
+  validateMessage(e){
+    const messageRegex = /^.{15,300}$/
+    const { validate } = this.state; 
+    if (messageRegex.test(e.target.value)) {
+      validate.messageState = 'has-success'
+    } else {
+      validate.messageState = 'has-danger'
+    }
+    this.setState({ validate });
+
+  }
+  
+
+
+  handleClick(e){
+    console.log(this.state.validate.messageState)
+
+    if (this.state.validate.emailState === 'has-success' && 
+      this.state.validate.nameState === 'has-success' && 
+      this.state.validate.contactState === 'has-success'&&
+      this.state.validate.messageState === 'has-success'){
+
+      const newUser = {
+        name: this.state.name,
+        email: this.state.email,
+        contact: this.state.contact,
+        tickets:{
+          label: this.state.options,
+          content: this.state.inputMessage
+        }
+      };
+
+      this.setState({
+        selectedOption: e.target.value
+      })  
+
+      console.log(newUser);
+
+      // Refer to client/src/actions/authActions.js to see the redirected route.
+      this.props.registerUser(newUser, this.props.history);
     
+    };
   };
 
   toggle(){
@@ -127,8 +196,20 @@ class Contact extends Component {
                       id="name" 
                       type="text"
                       value={this.state.name} 
-                      onChange={ (e) => this.handleChange(e) }
+                      valid={ this.state.validate.nameState === 'has-success' }
+                      invalid={ this.state.validate.nameState === 'has-danger' }      
+                      onChange={ (e) => {
+                                  this.validateName(e)
+                                  this.handleChange(e) }}
                       />
+                  <FormFeedback valid>
+                    Hello {this.state.name}! :)
+                  </FormFeedback>
+                  <FormFeedback>
+                    I don't know how to read your name. How do I address you?
+                  </FormFeedback>
+                  <FormText>Input your name</FormText>
+
                   </FormGroup>
                   </Col>
 
@@ -142,9 +223,22 @@ class Contact extends Component {
                       })}
                       name="email" 
                       id="email" 
-                      type="email" 
+                      type="email"       
+                      valid={ this.state.validate.emailState === 'has-success' }
+                      invalid={ this.state.validate.emailState === 'has-danger' }      
                       value={this.state.email} 
-                      onChange={ (e) => this.handleChange(e)} />
+                      onChange={ (e) => {
+                                  this.validateEmail(e)
+                                  this.handleChange(e)
+                                  }} />
+                  <FormFeedback valid>
+                    That's a tasty looking email you've got there.
+                  </FormFeedback>
+                  <FormFeedback>
+                    Uh oh! Looks like there is an issue with your email. Please input a correct email.
+                  </FormFeedback>
+                  <FormText>Your username is most likely your email.</FormText>
+
                   </FormGroup>
                   </Col>
 
@@ -156,11 +250,23 @@ class Contact extends Component {
                       className={classnames('form-control form-control-lg',{
                         'is-invalid':errors.contact
                       })}
+                      valid={ this.state.validate.contactState === 'has-success' }
+                      invalid={ this.state.validate.contactState === 'has-danger' }
                       name="contact" 
                       id="contact" 
                       type="number" 
                       value={this.state.contact} 
-                      onChange={ (e) => this.handleChange(e)} />
+                      onChange={ (e) => {
+                                  this.validateContact(e)
+                                  this.handleChange(e)
+                                  }} />
+                    <FormFeedback valid>
+                      Cool number!
+                    </FormFeedback>
+                    <FormFeedback>
+                      Please input a correct contact number.
+                    </FormFeedback>
+                    <FormText>We need your contact number to follow-up on urgent requests</FormText>
                   </FormGroup>
                   </Col>
 
@@ -182,15 +288,28 @@ class Contact extends Component {
                   <Col>
                   <FormGroup>
                   <div><Label><span className="red-text">*</span> Your Message</Label></div>
-                    <textarea 
+                    <textarea className="form-control"
                       placeholder="Please let us know which asset you are interested in trying out" 
-                      className={classnames('form-control form-control-lg',{
-                        'is-invalid':errors.inputMessage
-                      })}
+                      // className={classnames('form-control form-control-lg',{
+                      //   'is-invalid':errors.inputMessage
+                      // })}
+                      valid={ this.state.validate.messageState === 'has-success' }
+                      invalid={ this.state.validate.messageState === 'has-danger' }
                       name="inputMessage" 
                       id="inputMessage" 
                       value={this.state.inputMessage} 
-                      onChange={ (e) => this.handleChange(e)} />
+                      onChange={ (e) => {
+                                    this.validateMessage(e)
+                                    this.handleChange(e)
+                                    }} />
+                    <FormFeedback valid>
+                      We will get back to you as soon as possible, {this.state.name}.
+                    </FormFeedback>
+                    <FormFeedback>
+                      Please describe your problem with minimum 10 characters to 300 characters.
+                    </FormFeedback>
+                    <FormText>Please elaborate so we could better serve you quickly</FormText>
+
                   </FormGroup>
                   </Col>
               </form>

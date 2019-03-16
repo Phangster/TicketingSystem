@@ -4,7 +4,7 @@ const isEmpty = require('./is-empty');
 module.exports = validateRegisterInput=(data)=>{
     let errors = {};
 
-    console.log(data.ticket.content);
+    // console.log(data.ticket.content);
 
     // if data.name is not empty, it is just data.name. Otherwise, it will be an empty string.
     data.name = !isEmpty(data.name) ? data.name : '';
