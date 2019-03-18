@@ -6,6 +6,10 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerUser } from '../actions/authActions';
 import { withRouter } from 'react-router-dom';
+import classnames from 'classnames';
+import {
+   FormText, FormFeedback,
+} from 'reactstrap';
 
 const options = [
   { value: 'API DevOps', label: 'API DevOps' },
@@ -45,14 +49,25 @@ class Contact extends Component {
       email:'',
       contact:'',
       selectedOption:'',
-      message:'',
+      inputMessage:'',
       errors: {},
+      validate: {
+        emailState:'',
+        nameState:'',
+        contactState:'',
+        messageState:''
+      },
       modal: true,
       redirectToReferrer: false
     }
     this.handleClick = this.handleClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
+    this.validateName = this.validateName.bind(this);
+    this.validateContact = this.validateContact.bind(this);
+    this.validateMessage = this.validateMessage.bind(this);
+
   }
 
   handleChange = async (event) => {
@@ -64,28 +79,81 @@ class Contact extends Component {
     });
   }
 
-  handleClick(e){
-    const newUser = {
-      name: this.state.name,
-      email: this.state.email,
-      contact: this.state.contact,
-      tickets:{
-        label: this.state.options,
-        content: this.state.inputMessage
+  validateEmail(e) {
+    const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const { validate } = this.state;
+      if (emailRex.test(e.target.value)) {
+        validate.emailState = 'has-success'
+      } else {
+        validate.emailState = 'has-danger'
       }
-    };
+      this.setState({ validate });
+    }
 
-    console.log(newUser);
-    this.props.registerUser(newUser, this.props.history);
+  validateName(e) {
+    const nameRegex = /^[a-zA-Z ]{2,30}$/;
+    const { validate } = this.state;
+      if (nameRegex.test(e.target.value)) {
+        validate.nameState = 'has-success'
+      } else {
+        validate.nameState = 'has-danger'
+      }
+      this.setState({ validate });
+    }
 
-    this.setState({
-      selectedOption: e.target.value
-    })
+  validateContact(e){
+    const contactRegex = /^[689]\d{7}$/;
+    const { validate } = this.state; 
+    if (contactRegex.test(e.target.value)) {
+      validate.contactState = 'has-success'
+    } else {
+      validate.contactState = 'has-danger'
+    }
+    this.setState({ validate });
+  }
+
+  validateMessage(e){
+    const messageRegex = /^.{15,300}$/
+    const { validate } = this.state; 
+    if (messageRegex.test(e.target.value)) {
+      validate.messageState = 'has-success'
+    } else {
+      validate.messageState = 'has-danger'
+    }
+    this.setState({ validate });
+
+  }
+  
+
+
+  handleClick(e){
+    console.log(this.state.validate.messageState)
+
+    if (this.state.validate.emailState === 'has-success' && 
+      this.state.validate.nameState === 'has-success' && 
+      this.state.validate.contactState === 'has-success'&&
+      this.state.validate.messageState === 'has-success'){
+
+      const newUser = {
+        name: this.state.name,
+        email: this.state.email,
+        contact: this.state.contact,
+        tickets:{
+          label: this.state.options,
+          content: this.state.inputMessage
+        }
+      };
+
+      this.setState({
+        selectedOption: e.target.value
+      })  
+
+      console.log(newUser);
+
+      // Refer to client/src/actions/authActions.js to see the redirected route.
+      this.props.registerUser(newUser, this.props.history);
     
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-      redirectToReferrer: true,
-    }));
+    };
   };
 
   toggle(){
@@ -101,14 +169,11 @@ class Contact extends Component {
   }
 
   render() {
-    const {errors} = this.state;
-
-    const { user } = this.props.auth;
-
-    const redirectToReferrer = this.state.redirectToReferrer;
-        if (redirectToReferrer === true) {
-            return <Redirect to="/Login" />
-    }
+    const {errors} = this.state; // equivalent to const errors = this.state.errors;
+    // const redirectToReferrer = this.state.redirectToReferrer;
+    //     if (redirectToReferrer === true) {
+    //         return <Redirect to="/Login" />
+    // }
     return (
       <div>
         <Modal isOpen={this.state.modal}>
@@ -120,33 +185,92 @@ class Contact extends Component {
               <form name="contactForm">
                   <Col>
                   <FormGroup>
-                  <Label class="active" 
-                    // className={classnames('form-control form-control-lg',{
-                    //   'is-invalid':errors.name
-                    // })}
-                    ><span class="red-text">*</span> Your Name </Label>
-                    {/* {errors.name && (
-                      <div className="invalid-feedback">{errors.name}</div>
-                    )} */}
-                    <Input placeholder="e.g. Antony Pym" name="name" id="name" type="text" value={this.state.name} onChange={ (e) => this.handleChange(e) } />
+                  <Label className="active"><span className="red-text">*</span> Your Name </Label>
+                    <Input 
+                      placeholder="e.g. Antony Pym" 
+                      className={classnames('form-control form-control-lg',{
+                        'is-invalid':errors.name
+                      })}
+                      name="name" 
+                      id="name" 
+                      type="text"
+                      value={this.state.name} 
+                      valid={ this.state.validate.nameState === 'has-success' }
+                      invalid={ this.state.validate.nameState === 'has-danger' }      
+                      onChange={ (e) => {
+                                  this.validateName(e)
+                                  this.handleChange(e) }}
+                      />
+                  <FormFeedback valid>
+                    Hello {this.state.name}! :)
+                  </FormFeedback>
+                  <FormFeedback>
+                    I don't know how to read your name. How do I address you?
+                  </FormFeedback>
+                  <FormText>Input your name</FormText>
+
                   </FormGroup>
                   </Col>
 
                   <Col>
                   <FormGroup>
-                  <Label class="active"><span class="red-text">*</span> Your Email</Label>
-                    <Input placeholder="e.g. antonypym@accenture.com" name="email" id="email" type="email" value={this.state.email} onChange={ (e) => this.handleChange(e)} />
+                  <Label className="active"><span className="red-text">*</span> Your Email</Label>
+                    <Input 
+                      placeholder="e.g. antonypym@accenture.com" 
+                      className={classnames('form-control form-control-lg',{
+                        'is-invalid':errors.email
+                      })}
+                      name="email" 
+                      id="email" 
+                      type="email"       
+                      valid={ this.state.validate.emailState === 'has-success' }
+                      invalid={ this.state.validate.emailState === 'has-danger' }      
+                      value={this.state.email} 
+                      onChange={ (e) => {
+                                  this.validateEmail(e)
+                                  this.handleChange(e)
+                                  }} />
+                  <FormFeedback valid>
+                    That's a tasty looking email you've got there.
+                  </FormFeedback>
+                  <FormFeedback>
+                    Uh oh! Looks like there is an issue with your email. Please input a correct email.
+                  </FormFeedback>
+                  <FormText>Your username is most likely your email.</FormText>
+
                   </FormGroup>
                   </Col>
 
                   <Col>
                   <FormGroup>
-                  <Label><span class="red-text">*</span> Your Contact</Label>
-                    <Input placeholder="e.g. 91234567" name="contact" id="contact" type="number" value={this.state.contact} onChange={ (e) => this.handleChange(e)} />
+                  <Label><span className="red-text">*</span> Your Contact</Label>
+                    <Input 
+                      placeholder="e.g. 91234567" 
+                      className={classnames('form-control form-control-lg',{
+                        'is-invalid':errors.contact
+                      })}
+                      valid={ this.state.validate.contactState === 'has-success' }
+                      invalid={ this.state.validate.contactState === 'has-danger' }
+                      name="contact" 
+                      id="contact" 
+                      type="number" 
+                      value={this.state.contact} 
+                      onChange={ (e) => {
+                                  this.validateContact(e)
+                                  this.handleChange(e)
+                                  }} />
+                    <FormFeedback valid>
+                      Cool number!
+                    </FormFeedback>
+                    <FormFeedback>
+                      Please input a correct contact number.
+                    </FormFeedback>
+                    <FormText>We need your contact number to follow-up on urgent requests</FormText>
                   </FormGroup>
                   </Col>
 
                   <Col>
+<<<<<<< HEAD
                     <FormGroup>
                       <Label>
                         <span class="red-text">*</span> Select the assets or topic you are interested in
@@ -166,6 +290,48 @@ class Contact extends Component {
                       </div>
                       <textarea placeholder="Please let us know which asset you are interested in trying out" name="inputMessage" id="inputMessage" value={this.state.inputMessage} onChange={ (e) => this.handleChange(e)} />
                     </FormGroup>
+=======
+                  <FormGroup>
+                  <Label><span className="red-text">*</span> Select the assets or topic you are interested in</Label>
+                  {/* <Dropdown placeholder='eg Smart Home' fluid selection options={options} onChange={ (e) => this.handleChange(e)}/> */}
+                  <select value={this.state.value} 
+                    onChange={ (e) => this.handleChange(e)} 
+                    name="options" 
+                    id="options">
+                      <option value="API DevOps">API DevOps</option>
+                      <option value="Chart as a Service">Chart as a Service</option>
+                    < option value="Recruitment Platform">Recruitment Platform</option>
+                  </select>
+                  </FormGroup>
+                  </Col>
+
+                  <Col>
+                  <FormGroup>
+                  <div><Label><span className="red-text">*</span> Your Message</Label></div>
+                    <textarea className="form-control"
+                      placeholder="Please let us know which asset you are interested in trying out" 
+                      // className={classnames('form-control form-control-lg',{
+                      //   'is-invalid':errors.inputMessage
+                      // })}
+                      valid={ this.state.validate.messageState === 'has-success' }
+                      invalid={ this.state.validate.messageState === 'has-danger' }
+                      name="inputMessage" 
+                      id="inputMessage" 
+                      value={this.state.inputMessage} 
+                      onChange={ (e) => {
+                                    this.validateMessage(e)
+                                    this.handleChange(e)
+                                    }} />
+                    <FormFeedback valid>
+                      We will get back to you as soon as possible, {this.state.name}.
+                    </FormFeedback>
+                    <FormFeedback>
+                      Please describe your problem with minimum 10 characters to 300 characters.
+                    </FormFeedback>
+                    <FormText>Please elaborate so we could better serve you quickly</FormText>
+
+                  </FormGroup>
+>>>>>>> 93e68109a96cc5b3b513cb527fc2ce7e659d23f0
                   </Col>
               </form>
             </ModalBody>

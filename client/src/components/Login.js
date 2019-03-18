@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../actions/authActions';
+import classnames from 'classnames';
 
 import {
   Container, Col, Form,
@@ -54,11 +55,13 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps){
     if (nextProps.auth.isAuthenticated){
+      // Redirected to localhost:3000/dashboard
       this.props.history.push('/dashboard');
     }
   }
 
   render() {
+    const {errors} = this.state;
     const { email, password } = this.state;
     return (
       <Container className="App">
@@ -73,6 +76,9 @@ class Login extends Component {
                 id="exampleEmail"
                 placeholder="myemail@email.com"
                 value={ email }
+                // className={classnames('form-control form-control-lg',{
+                //   'is-invalid':errors.email
+                // })}
                 valid={ this.state.validate.emailState === 'has-success' }
                 invalid={ this.state.validate.emailState === 'has-danger' }
                 onChange={ (e) => {
@@ -93,6 +99,9 @@ class Login extends Component {
             <FormGroup>
               <Label for="examplePassword">Password</Label>
               <Input
+                // className={classnames('form-control form-control-lg',{
+                //   'is-invalid':errors.password
+                // })}              
                 type="password"
                 name="password"
                 id="examplePassword"

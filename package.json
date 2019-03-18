@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/Phangster/TicketingSystem#readme",
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "prettier": "^1.16.4"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
