@@ -62,7 +62,7 @@ class Login extends Component {
     const { email, password } = this.state;
     return (
       <Container className="App">
-        <h2>Sign In</h2>
+        <h2>Login</h2>
         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
           <Col>
             <FormGroup>
@@ -103,7 +103,6 @@ class Login extends Component {
             </FormGroup>
           </Col>
           <Button>Submit</Button>
-          <button>hello</button>
       </Form>
       </Container>
     );

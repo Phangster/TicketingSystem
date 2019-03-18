@@ -124,5 +124,13 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
     });
 });
 
+// @route   GET api/users/home
+// @desc    Home page of user
+// @access  Successfully login users
+
+router.get('/home', (req,res) => {
+    res.render()
+})
+
 
 module.exports = router;

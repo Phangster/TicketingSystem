@@ -33,6 +33,7 @@
     "generate-password": "^1.4.1",
     "install": "^0.12.2",
     "jsonwebtoken": "^8.4.0",
+    "jwt-decode": "^2.2.0",
     "mongoose": "^5.4.12",
     "npm": "^6.8.0",
     "passport": "^0.4.0",

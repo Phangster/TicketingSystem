@@ -34,7 +34,6 @@ const options = [
   { value: 'Queuing System', label: 'Queuing System' },
   { value: 'IoT Led Wall', label: 'IoT Led Wall' },
   { value: 'Other', label: 'Vanilla' }
-  
 
 ]
 
@@ -148,22 +147,25 @@ class Contact extends Component {
                   </Col>
 
                   <Col>
-                  <FormGroup>
-                  <Label><span class="red-text">*</span> Select the assets or topic you are interested in</Label>
-                  {/* <Dropdown placeholder='eg Smart Home' fluid selection options={options} onChange={ (e) => this.handleChange(e)}/> */}
-                  <select value={this.state.value} onChange={ (e) => this.handleChange(e)} name="options" id="options">
-                    <option value="API DevOps">API DevOps</option>
-                    <option value="Chart as a Service">Chart as a Service</option>
-                    <option value="Recruitment Platform">Recruitment Platform</option>
-                  </select>
-                  </FormGroup>
+                    <FormGroup>
+                      <Label>
+                        <span class="red-text">*</span> Select the assets or topic you are interested in
+                      </Label>
+                      <select value={this.state.value} onChange={ (e) => this.handleChange(e)} name="options" id="options">
+                        <option value="API DevOps">API DevOps</option>
+                        <option value="Chart as a Service">Chart as a Service</option>
+                        <option value="Recruitment Platform">Recruitment Platform</option>
+                      </select>
+                    </FormGroup>
                   </Col>
 
                   <Col>
-                  <FormGroup>
-                  <div><Label><span class="red-text">*</span> Your Message</Label></div>
-                    <textarea placeholder="Please let us know which asset you are interested in trying out" name="inputMessage" id="inputMessage" value={this.state.inputMessage} onChange={ (e) => this.handleChange(e)} />
-                  </FormGroup>
+                    <FormGroup>
+                      <div>
+                        <Label><span class="red-text">*</span> Your Message</Label>
+                      </div>
+                      <textarea placeholder="Please let us know which asset you are interested in trying out" name="inputMessage" id="inputMessage" value={this.state.inputMessage} onChange={ (e) => this.handleChange(e)} />
+                    </FormGroup>
                   </Col>
               </form>
             </ModalBody>
