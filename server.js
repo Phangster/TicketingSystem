@@ -34,3 +34,5 @@ app.get('/', (req, res) => res.send('Hello World!'));
 app.use('/api/users', users);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+module.exports = app;
