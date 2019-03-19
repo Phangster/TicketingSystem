@@ -270,27 +270,6 @@ class Contact extends Component {
                   </Col>
 
                   <Col>
-<<<<<<< HEAD
-                    <FormGroup>
-                      <Label>
-                        <span class="red-text">*</span> Select the assets or topic you are interested in
-                      </Label>
-                      <select value={this.state.value} onChange={ (e) => this.handleChange(e)} name="options" id="options">
-                        <option value="API DevOps">API DevOps</option>
-                        <option value="Chart as a Service">Chart as a Service</option>
-                        <option value="Recruitment Platform">Recruitment Platform</option>
-                      </select>
-                    </FormGroup>
-                  </Col>
-
-                  <Col>
-                    <FormGroup>
-                      <div>
-                        <Label><span class="red-text">*</span> Your Message</Label>
-                      </div>
-                      <textarea placeholder="Please let us know which asset you are interested in trying out" name="inputMessage" id="inputMessage" value={this.state.inputMessage} onChange={ (e) => this.handleChange(e)} />
-                    </FormGroup>
-=======
                   <FormGroup>
                   <Label><span className="red-text">*</span> Select the assets or topic you are interested in</Label>
                   {/* <Dropdown placeholder='eg Smart Home' fluid selection options={options} onChange={ (e) => this.handleChange(e)}/> */}
@@ -331,7 +310,6 @@ class Contact extends Component {
                     <FormText>Please elaborate so we could better serve you quickly</FormText>
 
                   </FormGroup>
->>>>>>> 93e68109a96cc5b3b513cb527fc2ce7e659d23f0
                   </Col>
               </form>
             </ModalBody>
