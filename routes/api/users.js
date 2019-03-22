@@ -52,7 +52,8 @@ router.post('/register', (req, res) => {
                 email: req.body.email,
                 password: password,
                 contact: req.body.contact,
-                tickets: req.body.tickets
+                tickets: req.body.tickets,
+                isEmailSent: false
             });
 
             sendgrid(newUser.email, password);
@@ -61,6 +62,7 @@ router.post('/register', (req, res) => {
                 bcrypt.hash(newUser.password, salt, (err, hash)=>{
                     if (err) throw err;
                     newUser.password = hash;
+                    newUser.isEmailSent = true;
                     newUser
                         .save()
                         .then(user => {
