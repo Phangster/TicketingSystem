@@ -45,6 +45,10 @@ const UserSchema = new Schema({
   access: {
     type: String,
     default: "user"
+  },
+  isEmailSent:{
+    type: Boolean,
+    default: false
   }
 });
 
