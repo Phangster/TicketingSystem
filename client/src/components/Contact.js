@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Col, Container, Label, Input } from 'reactstrap';
 // import { Dropdown } from 'semantic-ui-react';
+<<<<<<< HEAD
 // import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerUser } from '../actions/authActions';
 import { withRouter } from 'react-router-dom';
+=======
+>>>>>>> 004381e3a9476212333d326dec0711bf77418c88
 import classnames from 'classnames';
 import {
    FormText, FormFeedback,
 } from 'reactstrap';
+import axios from 'axios';
 
 // const options = [
 //   { value: 'API DevOps', label: 'API DevOps' },
@@ -42,8 +45,8 @@ import {
 // ]
 
 class Contact extends Component {
-  constructor(props){
-    super(props);
+  constructor(){
+    super();
     this.state={
       name:'',
       email:'',
@@ -57,9 +60,16 @@ class Contact extends Component {
         contactState:'',
         messageState:''
       },
+      formFeedback: {
+        message: "",
+        success: "That's a tasty looking email you've got there",
+        invalidEmail: "Uh oh! Looks like there is an issue with your email. Please input a correct email",
+        duplicateEmail: "You have submitted a ticket and have an account with us. Check your email for the password and sign in to submit another ticket"
+      },
       modal: true,
       redirectToReferrer: false
     }
+
     this.handleClick = this.handleClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -81,11 +91,15 @@ class Contact extends Component {
 
   validateEmail(e) {
     const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const { validate } = this.state;
+    const { validate, formFeedback } = this.state;
       if (emailRex.test(e.target.value)) {
-        validate.emailState = 'has-success'
+        validate.emailState = 'has-success';
+        formFeedback.message = formFeedback.success;
+        
       } else {
-        validate.emailState = 'has-danger'
+        validate.emailState = 'has-danger';
+        formFeedback.message = formFeedback.invalidEmail;
+
       }
       this.setState({ validate });
     }
@@ -125,14 +139,26 @@ class Contact extends Component {
   }
   
 
-
   handleClick(e){
-    console.log(this.state.validate.messageState)
+    const { validate, formFeedback, errors } = this.state;
+    
+    // const displayDuplicate = () =>{
+    //   errors = "duplicate"
+    //   validate.emailState = 'has-danger'
+    //   formFeedback.message = formFeedback.duplicateEmail  
+    // }
 
-    if (this.state.validate.emailState === 'has-success' && 
-      this.state.validate.nameState === 'has-success' && 
-      this.state.validate.contactState === 'has-success'&&
-      this.state.validate.messageState === 'has-success'){
+    console.log(validate.emailState)
+
+    if (validate.emailState === 'has-success' && 
+      validate.nameState === 'has-success' && 
+      validate.contactState === 'has-success'&&
+      validate.messageState === 'has-success'){
+
+
+      this.setState({
+        selectedOption: e.target.value
+      })  
 
       const newUser = {
         name: this.state.name,
@@ -143,16 +169,15 @@ class Contact extends Component {
           content: this.state.inputMessage
         }
       };
-
-      this.setState({
-        selectedOption: e.target.value
-      })  
-
       console.log(newUser);
-
-      // Refer to client/src/actions/authActions.js to see the redirected route.
-      this.props.registerUser(newUser, this.props.history);
     
+      axios
+        .post('/api/users/register', newUser)
+        .then(res => console.log(res.data))
+        .catch(err => {
+          // displayDuplicate()
+          console.log(err.response.data)
+        });
     };
   };
 
@@ -162,14 +187,8 @@ class Contact extends Component {
     }));
   }
 
-  componentWillReceiveProps(nextProps){
-    if (nextProps.errors){
-      this.setState({errors: nextProps.errors});
-    }
-  }
-
   render() {
-    const {errors} = this.state; // equivalent to const errors = this.state.errors;
+    const {errors, formFeedback} = this.state; // equivalent to const errors = this.state.errors;
     // const redirectToReferrer = this.state.redirectToReferrer;
     //     if (redirectToReferrer === true) {
     //         return <Redirect to="/Login" />
@@ -231,10 +250,12 @@ class Contact extends Component {
                                   this.handleChange(e)
                                   }} />
                   <FormFeedback valid>
-                    That's a tasty looking email you've got there.
+                    {formFeedback.message}
+                    {/* That's a tasty looking email you've got there. */}
                   </FormFeedback>
                   <FormFeedback>
-                    Uh oh! Looks like there is an issue with your email. Please input a correct email.
+                    {formFeedback.message}
+                    {/* Uh oh! Looks like there is an issue with your email. Please input a correct email. */}
                   </FormFeedback>
                   <FormText>Your username is most likely your email.</FormText>
 
@@ -323,15 +344,4 @@ class Contact extends Component {
   }
 }
 
-Contact.propTypes = {
-  registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors
-});
-
-export default connect(mapStateToProps, {registerUser}) (withRouter(Contact));
+export default Contact;

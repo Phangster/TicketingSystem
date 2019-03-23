@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { AppContainer, Navigation, Body, Title } from "./components/containers";
 
 import { Provider } from 'react-redux';
-import store from './store';
 
 // import route Components here
 import {
@@ -18,6 +17,7 @@ import { AppNavigation } from "./components/AppNavigation";
 class App extends Component {
   render() {
     return (
+<<<<<<< HEAD
       <AppContainer>
         <AppNavigation />
         <Provider store={store}>
@@ -31,6 +31,20 @@ class App extends Component {
           </Router>
         </Provider>
       </AppContainer>
+=======
+      <Router>
+        <div className="App">
+        <NavBar />
+          <div className="container">
+            <Switch>
+              <Route path="/" exact={true} component={Home} />
+              <Route path="/login" component={Login} />
+              <Route path="/contact" component={Contact} />
+            </Switch>
+          </div>
+        </div>
+      </Router>
+>>>>>>> 004381e3a9476212333d326dec0711bf77418c88
     );
   }
 }

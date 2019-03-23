@@ -19,3 +19,6 @@ Add a validator to check for false input.
 
 ### 2. Email Service
 Integrate SendGrid to send email of password. Fill up form and submit form with data.
+
+### 3. Testing 
+To integrate test cases for system testing.
