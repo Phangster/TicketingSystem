@@ -4,7 +4,6 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 // import NavBar from "./components/NavBar";
 import { Provider } from 'react-redux';
-import store from './store';
 
 // import route Components here
 import {
@@ -16,19 +15,18 @@ import {
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <Router>
-          <div className="App">
-            <div className="container">
-              <Switch>
-                <Route path="/home" exact={true} component={Home} />
-                <Route path="/login" component={Login} />
-                <Route path="/contact" component={Contact} />
-              </Switch>
-            </div>
+      <Router>
+        <div className="App">
+        <NavBar />
+          <div className="container">
+            <Switch>
+              <Route path="/" exact={true} component={Home} />
+              <Route path="/login" component={Login} />
+              <Route path="/contact" component={Contact} />
+            </Switch>
           </div>
-        </Router>
-      </Provider>
+        </div>
+      </Router>
     );
   }
 }

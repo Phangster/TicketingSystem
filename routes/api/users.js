@@ -36,7 +36,6 @@ router.post('/register', (req, res) => {
         console.log("Register!")
         if (user) {
             return res.status(400).json({email: "Email already exists"});
-
         } else {
 
             const password = generator.generate({
