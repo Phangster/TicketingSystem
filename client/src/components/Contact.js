@@ -34,7 +34,6 @@ const options = [
   { value: 'Queuing System', label: 'Queuing System' },
   { value: 'IoT Led Wall', label: 'IoT Led Wall' },
   { value: 'Other', label: 'Vanilla' }
-  
 
 ]
 
