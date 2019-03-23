@@ -12,39 +12,36 @@ import {
 
 import Contact from "./components/Contact";
 import Login from "./components/Login";
+import Home from "./components/Home";
+
 import { AppNavigation } from "./components/AppNavigation";
 
 class App extends Component {
   render() {
     return (
-<<<<<<< HEAD
       <AppContainer>
-        <AppNavigation />
-        <Provider store={store}>
           <Router>
             <div className="App">
                 <Switch>
+                  <Route path="/" component={Home} />
                   <Route path="/login" component={Login} />
                   <Route path="/contact" component={Contact} />
                 </Switch>
               </div>
           </Router>
-        </Provider>
       </AppContainer>
-=======
-      <Router>
-        <div className="App">
-        <NavBar />
-          <div className="container">
-            <Switch>
-              <Route path="/" exact={true} component={Home} />
-              <Route path="/login" component={Login} />
-              <Route path="/contact" component={Contact} />
-            </Switch>
-          </div>
-        </div>
-      </Router>
->>>>>>> 004381e3a9476212333d326dec0711bf77418c88
+      // <Router>
+      //   <div className="App">
+      //   <NavBar />
+      //     <div className="container">
+      //       <Switch>
+      //         <Route path="/" exact={true} component={Home} />
+      //         <Route path="/login" component={Login} />
+      //         <Route path="/contact" component={Contact} />
+      //       </Switch>
+      //     </div>
+      //   </div>
+      // </Router>
     );
   }
 }

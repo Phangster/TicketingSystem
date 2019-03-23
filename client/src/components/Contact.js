@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Col, Container, Label, Input } from 'reactstrap';
 // import { Dropdown } from 'semantic-ui-react';
-<<<<<<< HEAD
 // import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { registerUser } from '../actions/authActions';
-import { withRouter } from 'react-router-dom';
-=======
->>>>>>> 004381e3a9476212333d326dec0711bf77418c88
 import classnames from 'classnames';
 import {
    FormText, FormFeedback,

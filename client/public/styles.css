@@ -10,3 +10,7 @@ body {
   height: 100%;
   color: #333;
 }
+
+.pointing_secondary menu {
+  padding: 20px;
+}

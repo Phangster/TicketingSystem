@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { loginUser } from '../actions/authActions';
-// import classnames from 'classnames';
-=======
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
->>>>>>> 004381e3a9476212333d326dec0711bf77418c88
 
 import {
   Container, Col, Form,
