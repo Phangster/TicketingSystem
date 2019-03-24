@@ -74,7 +74,7 @@ router.post('/register', (req, res) => {
     });
 });
 
-// @route   GET api/users/login
+// @route   POST api/users/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
 router.post('/login', (req,res) => {
@@ -100,7 +100,7 @@ router.post('/login', (req,res) => {
                 .then(isMatch => {
                     if (isMatch) {
                         // User Matched
-                        const payload = {id: user.id, name: user.name} // Create JWT payload
+                        const payload = {id: user.id, name: user.name, tickets: user.tickets} // Create JWT payload
                         
                         // Sign Token
                         jwt.sign(
@@ -132,8 +132,13 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
         name: req.user.name,
         email: req.user.email,
         contact: req.user.contact,
-        enquiry: req.user.enquiry
+        tickets: req.user.tickets
     });
+
+    User.findOne({email: req.user.email})
+        .then(user => console.log(user))
+
+    res.send(req.user.name)
 });
 
 

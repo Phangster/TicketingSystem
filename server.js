@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const users = require('./routes/api/users');
+const auth = require('./routes/api/auth');
 const passport = require('passport');
 
 const port = process.env.PORT || 8080;
@@ -30,7 +30,7 @@ mongoose
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
-app.use('/api/users', users);
+app.use('/api/users', auth);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
 

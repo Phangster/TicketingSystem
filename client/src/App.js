@@ -3,7 +3,6 @@ import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
-import { Provider } from 'react-redux';
 
 // import route Components here
 import {
