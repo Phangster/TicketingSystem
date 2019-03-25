@@ -56,7 +56,7 @@ router.post('/register', (req, res) => {
     User.findOne({email:req.body.email}).then(user => {
         console.log("Register!")
         if (user) {
-            return res.status(400).json({email: "Email already exists"});
+            return res.status(601).send({ success: false, msg: "Email already exist" });
         } else {
 
             const password = generator.generate({

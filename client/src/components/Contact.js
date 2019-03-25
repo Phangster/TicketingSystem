@@ -1,41 +1,42 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Col, Container, Label, Input } from 'reactstrap';
 // import { Dropdown } from 'semantic-ui-react';
+// import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 import {
    FormText, FormFeedback,
 } from 'reactstrap';
 import axios from 'axios';
 
-const options = [
-  { value: 'API DevOps', label: 'API DevOps' },
-  { value: 'Chart as a Service', label: 'Chart as a Service' },
-  { value: 'Recruitment Platform', label: 'Recruitment Platform' },
-  { value: 'Aesop', label: 'Aesop' },
-  { value: 'Travel Marketplace', label: 'Travel Marketplace' },
-  { value: 'Banking Lifestyle App', label: 'Banking Lifestyle App' },
-  { value: 'AR Car Visualizer', label: 'AR Car Visualizer' },
-  { value: 'AR Car Manual', label: 'AR Car Manual' },
-  { value: 'AR Gamification', label: 'AR Gamification' },
-  { value: 'AR Theatre', label: 'AR Theatre' },
-  { value: 'AR Menu', label: 'AR Menu' },
-  { value: 'AI Wealth Manager', label: 'AI Wealth Manager' },
-  { value: 'Multilingual Chatbot', label: 'Multilingual Chatbot' },
-  { value: 'AI Translator', label: 'AI Translator' },
-  { value: 'Digital Butler', label: 'Digital Butler' },
-  { value: 'Video Analytics', label: 'Video Analytics' },
-  { value: 'Sentiments Analysis', label: 'Sentiments Analysis' },
-  { value: 'ACNAPI MFA Login', label: 'ACNAPI MFA Login' },
-  { value: 'Ticketing Platform', label: 'VTicketing Platform' },
-  { value: 'Smart Lock', label: 'VSmart Lock' },
-  { value: 'Smart Home', label: 'Smart Home' },
-  { value: 'Smart Parking', label: 'Smart Parking' },
-  { value: 'Smart Restaurant', label: 'Smart Restaurant' },
-  { value: 'Queuing System', label: 'Queuing System' },
-  { value: 'IoT Led Wall', label: 'IoT Led Wall' },
-  { value: 'Other', label: 'Vanilla' }
+// const options = [
+//   { value: 'API DevOps', label: 'API DevOps' },
+//   { value: 'Chart as a Service', label: 'Chart as a Service' },
+//   { value: 'Recruitment Platform', label: 'Recruitment Platform' },
+//   { value: 'Aesop', label: 'Aesop' },
+//   { value: 'Travel Marketplace', label: 'Travel Marketplace' },
+//   { value: 'Banking Lifestyle App', label: 'Banking Lifestyle App' },
+//   { value: 'AR Car Visualizer', label: 'AR Car Visualizer' },
+//   { value: 'AR Car Manual', label: 'AR Car Manual' },
+//   { value: 'AR Gamification', label: 'AR Gamification' },
+//   { value: 'AR Theatre', label: 'AR Theatre' },
+//   { value: 'AR Menu', label: 'AR Menu' },
+//   { value: 'AI Wealth Manager', label: 'AI Wealth Manager' },
+//   { value: 'Multilingual Chatbot', label: 'Multilingual Chatbot' },
+//   { value: 'AI Translator', label: 'AI Translator' },
+//   { value: 'Digital Butler', label: 'Digital Butler' },
+//   { value: 'Video Analytics', label: 'Video Analytics' },
+//   { value: 'Sentiments Analysis', label: 'Sentiments Analysis' },
+//   { value: 'ACNAPI MFA Login', label: 'ACNAPI MFA Login' },
+//   { value: 'Ticketing Platform', label: 'VTicketing Platform' },
+//   { value: 'Smart Lock', label: 'VSmart Lock' },
+//   { value: 'Smart Home', label: 'Smart Home' },
+//   { value: 'Smart Parking', label: 'Smart Parking' },
+//   { value: 'Smart Restaurant', label: 'Smart Restaurant' },
+//   { value: 'Queuing System', label: 'Queuing System' },
+//   { value: 'IoT Led Wall', label: 'IoT Led Wall' },
+//   { value: 'Other', label: 'Vanilla' }
 
-]
+// ]
 
 class Contact extends Component {
   constructor(){

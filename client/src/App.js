@@ -11,6 +11,12 @@ import {
   Switch
 } from 'react-router-dom';
 
+import Contact from "./components/Contact";
+import Login from "./components/Login";
+import Home from "./components/Home";
+
+import { AppNavigation } from "./components/AppNavigation";
+
 class App extends Component {
   render() {
     return (
