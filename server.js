@@ -27,10 +27,12 @@ mongoose
     .connect(db, {useNewUrlParser: true})
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
+mongoose.set('useCreateIndex', true);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
-app.use('/api/users', auth);
+app.use('/api/auth', auth);
+// app.use('/api/tickets', tickets)
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
 

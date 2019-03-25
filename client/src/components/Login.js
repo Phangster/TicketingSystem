@@ -61,10 +61,8 @@ class Login extends Component {
     }
 
     console.log(userData);
-    
-    // this.props.loginUser(userData);
-    // this.props.
-    axios.post('/api/users/login', userData)
+
+    axios.post('/api/auth/login', userData)
     .then(res=>{
         // Save to localStorage
         const {token} = res.data;
@@ -79,14 +77,26 @@ class Login extends Component {
         const payload = jwt_decode(token);
 
         console.log(payload)
-
-        isAuthenticated = true
-        // Set current user
-        // dispatch(setCurrentUser(decoded));
-
+        // console.log("Token: " + token)
+        // return token
+    }).then(()=> {
+      const token = localStorage.getItem('jwtToken')
+      if (!isEmpty(token)){
+        console.log("Hi!")
+        this.state.isAuthenticated = true;
+        this.props.history.push('/dashboard')
+        console.log(this.state.isAuthenticated)
+      }
     })
-
     console.log(`Email: ${ this.state.email }`)
+  }
+
+  componentDidMount(){
+    const token = localStorage.getItem('jwtToken')
+    if (!isEmpty(token)){
+      console.log("Redirect to dashboard")
+      this.props.history.push('/dashboard');
+    }
   }
 
   // componentWillReceiveProps(nextProps){
@@ -101,7 +111,7 @@ class Login extends Component {
     const { email, password, formFeedback } = this.state;
     return (
       <Container className="App">
-        <h2>Sign In</h2>
+        <h2>Login</h2>
         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
           <Col>
             <FormGroup>
@@ -148,7 +158,6 @@ class Login extends Component {
             </FormGroup>
           </Col>
           <Button>Submit</Button>
-          <button>hello</button>
       </Form>
       </Container>
     );

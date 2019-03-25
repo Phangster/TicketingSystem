@@ -34,7 +34,6 @@ const options = [
   { value: 'Queuing System', label: 'Queuing System' },
   { value: 'IoT Led Wall', label: 'IoT Led Wall' },
   { value: 'Other', label: 'Vanilla' }
-  
 
 ]
 
@@ -166,7 +165,7 @@ class Contact extends Component {
       console.log(newUser);
     
       axios
-        .post('/api/users/register', newUser)
+        .post('/api/auth/register', newUser)
         .then(res => {
           console.log(res.data)
         })

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Home from "./components/Home";
-import NavBar from "./components/NavBar";
+// import NavBar from "./components/NavBar";
 
 // import route Components here
 import {
@@ -16,7 +16,6 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-        <NavBar />
           <div className="container">
             <Switch>
               <Route path="/" exact={true} component={Home} />
