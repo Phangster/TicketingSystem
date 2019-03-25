@@ -166,8 +166,10 @@ class Contact extends Component {
       console.log(newUser);
     
       axios
-        .post('/api/users/register', newUser)
-        .then(res => console.log(res.data))
+        .post('/api/auth/register', newUser)
+        .then(res => {
+          console.log(res.data)
+        })
         .catch(err => {
           // displayDuplicate()
           console.log(err.response.data)

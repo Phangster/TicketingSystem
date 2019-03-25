@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
+import isEmpty from '../validation/is-empty'
 
 import {
   Container, Col, Form,
@@ -22,7 +23,8 @@ class Login extends Component {
         message: "",
         success: "That's a tasty looking email you've got there",
         invalidEmail: "Uh oh! Looks like there is an issue with your email. Please input a correct email"
-      }
+      },
+      isAuthenticated: false
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -51,7 +53,7 @@ class Login extends Component {
 
   submitForm(e) {
     e.preventDefault();
-    const { validate, formFeedback } = this.state
+    const { validate, formFeedback, isAuthenticated } = this.state
 
     const userData = {
       email: this.state.email,
@@ -59,9 +61,8 @@ class Login extends Component {
     }
 
     console.log(userData);
-    
-    // this.props.loginUser(userData);
-    axios.post('/api/users/login', userData)
+
+    axios.post('/api/auth/login', userData)
     .then(res=>{
         // Save to localStorage
         const {token} = res.data;
@@ -73,15 +74,29 @@ class Login extends Component {
         setAuthToken(token);
 
         // Decode token to get user data
-        const decoded = jwt_decode(token);
+        const payload = jwt_decode(token);
 
-        console.log(decoded)
-        // Set current user
-        // dispatch(setCurrentUser(decoded));
-
+        console.log(payload)
+        // console.log("Token: " + token)
+        // return token
+    }).then(()=> {
+      const token = localStorage.getItem('jwtToken')
+      if (!isEmpty(token)){
+        console.log("Hi!")
+        this.state.isAuthenticated = true;
+        this.props.history.push('/dashboard')
+        console.log(this.state.isAuthenticated)
+      }
     })
-
     console.log(`Email: ${ this.state.email }`)
+  }
+
+  componentDidMount(){
+    const token = localStorage.getItem('jwtToken')
+    if (!isEmpty(token)){
+      console.log("Redirect to dashboard")
+      this.props.history.push('/dashboard');
+    }
   }
 
   // componentWillReceiveProps(nextProps){
@@ -150,3 +165,16 @@ class Login extends Component {
 }
 
 export default Login;
+
+// Login.propTypes = {
+//   loginUser: PropTypes.func.isRequired,
+//   password: PropTypes.object.isRequired,
+//   errors: PropTypes.object.isRequired
+// };
+
+// const mapStateToProps = state => ({
+//   auth: state.auth,
+//   errors: state.errors
+// });
+
+// export default connect(mapStateToProps, { loginUser })(Login);

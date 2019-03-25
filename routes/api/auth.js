@@ -15,13 +15,34 @@ const validateLoginInput = require('../../validation/login');
 // Load User model:
 const User = require('../../models/User');
 
-// @route   GET api/users/test
-// @desc    Tests users route
-// @access  Public
-router.get('/test', (req, res) => res.json({msg: 'Users works!'}));
+// @route   GET api/auth/test
+// @desc    Tests auth route
+// @access  Protected
 
-// @route   POST api/users/register
-// @desc    Register users
+router.get('/test2', (req, res) => {
+    jwt.verify(req.token, 'privatekey', (err, authorizedData) => {
+        if(err){
+            //If error send Forbidden (403)
+            console.log('ERROR: Could not connect to the protected route');
+            res.sendStatus(403);
+        } else {
+            //If token is successfully verified, we can send the autorized data 
+            res.json({
+                message: 'Successful log in',
+                authorizedData
+            });
+            console.log('SUCCESS: Connected to protected route');
+        }
+    });
+})
+
+
+router.get('/test', passport.authenticate('jwt', {session: false}), (req, res) => {
+    res.json({msg: 'this works!'});
+})
+
+// @route   POST api/auth/register
+// @desc    Register auth
 // @access  Public
 router.post('/register', (req, res) => {
 
@@ -74,7 +95,7 @@ router.post('/register', (req, res) => {
     });
 });
 
-// @route   GET api/users/login
+// @route   POST api/auth/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
 router.post('/login', (req,res) => {
@@ -100,7 +121,7 @@ router.post('/login', (req,res) => {
                 .then(isMatch => {
                     if (isMatch) {
                         // User Matched
-                        const payload = {id: user.id, name: user.name} // Create JWT payload
+                        const payload = {id: user.id, name: user.name, tickets: user.tickets} // Create JWT payload
                         
                         // Sign Token
                         jwt.sign(
@@ -112,7 +133,11 @@ router.post('/login', (req,res) => {
                                     success: true,
                                     token: 'Bearer ' + token
                                 });
+
+                                res.header('x-auth-token', 'Bearer ' + token).send(payload);
+
                         });
+
 
                     } else {
                         errors.password = "Password incorrect!"
@@ -122,7 +147,7 @@ router.post('/login', (req,res) => {
         });
 });
 
-// @route   GET api/users/current
+// @route   GET api/auth/current
 // @desc    Return current user
 // @access  Private
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -132,13 +157,18 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
         name: req.user.name,
         email: req.user.email,
         contact: req.user.contact,
-        enquiry: req.user.enquiry
+        tickets: req.user.tickets
     });
+
+    User.findOne({email: req.user.email})
+        .then(user => console.log(user))
+
+    res.send(req.user.name)
 });
 
-// @route   GET api/users/home
+// @route   GET api/auth/home
 // @desc    Home page of user
-// @access  Successfully login users
+// @access  Successfully login
 
 router.get('/home', (req,res) => {
     res.render()

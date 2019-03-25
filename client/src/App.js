@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { AppContainer, Navigation, Body, Title } from "./components/containers";
-
-import { Provider } from 'react-redux';
+import Contact from "./components/Contact";
+import Login from "./components/Login";
+import Home from "./components/Home";
+// import NavBar from "./components/NavBar";
 
 // import route Components here
 import {
@@ -19,29 +20,17 @@ import { AppNavigation } from "./components/AppNavigation";
 class App extends Component {
   render() {
     return (
-      <AppContainer>
-          <Router>
-            <div className="App">
-                <Switch>
-                  <Route path="/" component={Home} />
-                  <Route path="/login" component={Login} />
-                  <Route path="/contact" component={Contact} />
-                </Switch>
-              </div>
-          </Router>
-      </AppContainer>
-      // <Router>
-      //   <div className="App">
-      //   <NavBar />
-      //     <div className="container">
-      //       <Switch>
-      //         <Route path="/" exact={true} component={Home} />
-      //         <Route path="/login" component={Login} />
-      //         <Route path="/contact" component={Contact} />
-      //       </Switch>
-      //     </div>
-      //   </div>
-      // </Router>
+      <Router>
+        <div className="App">
+          <div className="container">
+            <Switch>
+              <Route path="/" exact={true} component={Home} />
+              <Route path="/login" component={Login} />
+              <Route path="/contact" component={Contact} />
+            </Switch>
+          </div>
+        </div>
+      </Router>
     );
   }
 }
