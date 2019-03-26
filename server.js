@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const auth = require('./routes/api/auth');
+const tickets = require('./routes/api/tickets')
 const passport = require('passport');
 
 const port = process.env.PORT || 8080;
@@ -32,7 +33,7 @@ mongoose.set('useCreateIndex', true);
 app.get('/', (req, res) => res.send('Hello World!'));
 
 app.use('/api/auth', auth);
-// app.use('/api/tickets', tickets)
+app.use('/api/tickets', tickets);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
 

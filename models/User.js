@@ -41,9 +41,9 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  access: {
-    type: String,
-    default: "user"
+  isAdmin: {
+    type: Boolean,
+    default: false
   },
   isEmailSent:{
     type: Boolean,

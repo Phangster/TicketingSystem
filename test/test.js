@@ -19,7 +19,7 @@ before(done=>{
     name: "Tom Lee",
     email: "tomlee.abc@gmail.com",
     contact: "91234567",
-    access: "user",
+    isAdmin: false,
     tickets: [
       {
         status: "new",
@@ -68,7 +68,7 @@ describe('userA: POST /register', ()=> {
         }
   };
       request(app)
-        .post('/api/users/register')
+        .post('/api/auth/register')
         .send(userA)
         .set('Accept', 'application/json')
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -94,7 +94,7 @@ describe('userA: POST /register', ()=> {
         password: "MEWMEWMEW"
   };
       request(app)
-        .post('/api/users/login')
+        .post('/api/auth/login')
         .send(userB)
         .set('Accept', 'application/json')
         .expect('Content-Type', 'application/json; charset=utf-8')

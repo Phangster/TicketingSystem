@@ -14,8 +14,8 @@ class Login extends Component {
   constructor() {
     super();
       this.state = {
-      'email': '',
-      'password': '',
+      email: '',
+      password: '',
       validate: {
         emailState: '',
       },
@@ -26,6 +26,7 @@ class Login extends Component {
       },
       isAuthenticated: false
     }
+
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -68,43 +69,43 @@ class Login extends Component {
         const {token} = res.data;
 
         // Set token to local storage
-        localStorage.setItem('jwtToken', token)
+        localStorage.setItem('jwt', token)
 
         // Set token to Auth header
         setAuthToken(token);
 
         // Decode token to get user data
-        const payload = jwt_decode(token);
+        const decoded = jwt_decode(token);
 
-        console.log(payload)
-        // console.log("Token: " + token)
-        // return token
-    }).then(()=> {
-      const token = localStorage.getItem('jwtToken')
-      if (!isEmpty(token)){
-        console.log("Hi!")
-        this.state.isAuthenticated = true;
-        this.props.history.push('/dashboard')
-        console.log(this.state.isAuthenticated)
-      }
+        console.log(decoded)
     })
-    console.log(`Email: ${ this.state.email }`)
   }
 
   componentDidMount(){
-    const token = localStorage.getItem('jwtToken')
+    const token = localStorage.getItem('jwt')
+
     if (!isEmpty(token)){
+      // Bug? Doesn't seem to set it.
+      this.setState({
+        isAuthenticated: true
+      })
+      
       console.log("Redirect to dashboard")
+      console.log("Authentication: " + this.state.isAuthenticated)
       this.props.history.push('/dashboard');
+      // console.log("isAuthenticate: " + this.state.isAuthenticated)
+      
+      axios.get('/api/auth/current', {headers: {Authorization: `${token}`}})
+        .then((res) => {
+          console.log(res)
+          return(res.data)
+        })
     }
+    
+    console.log(this.state.isAuthenticated)
+      // axios.get('/api/auth/current', token).then((err, res)=>console.log(res))
   }
 
-  // componentWillReceiveProps(nextProps){
-  //   if (nextProps.auth.isAuthenticated){
-  //     // Redirected to localhost:3000/dashboard
-  //     this.props.history.push('/dashboard');
-  //   }
-  // }
 
   render() {
     const {errors} = this.state;
@@ -135,7 +136,7 @@ class Login extends Component {
               <FormFeedback valid>
                 {formFeedback.message}
               </FormFeedback>
-              <FormFeedback invalid>
+              <FormFeedback>
                 {formFeedback.message}
               </FormFeedback>
               <FormText>Your username is most likely your email.</FormText>
