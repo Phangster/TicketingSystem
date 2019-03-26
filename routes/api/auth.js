@@ -121,7 +121,7 @@ router.post('/login', (req,res) => {
                 .then(isMatch => {
                     if (isMatch) {
                         // User Matched
-                        const payload = {id: user.id, email: user.email, tickets: user.tickets} // Create JWT payload
+                        const payload = {id: user.id, email: user.email, tickets: user.tickets, isAdmin: user.isAdmin} // Create JWT payload
                         
                         // Sign Token
                         jwt.sign(
