@@ -1,8 +1,40 @@
 import styled from "styled-components";
 
 export const AppContainer = styled.div`
-  height: 100%;
+  height: 100vh;
+  width: 100%
+  position: absolute;
+`;
+
+export const DashboardContainer = styled.div`
   width: 100%;
+  margin: 2em;
+  padding: 2em;
+  margin-top: 2em;
+`;
+
+export const Container = styled.div`
+  width: 30%;
+  margin: 0 auto;
+  padding: 2em;
+  margin-top: 5em;
+  box-shadow: 4px 4px 8px 2px rgba(0,0,0,0.3);
+`;
+
+export const LeftContainer = styled.div`
+  margin-left: 220px;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+
+
+`;
+export const RightContainer = styled.div`
+  position: absolute;
+`;
+
+export const InnerContainer = styled.div`
+padding: 20px;
 `;
 
 export const Navigation = styled.div`
@@ -10,7 +42,8 @@ export const Navigation = styled.div`
   flex-shrink: 0;
   background: #fff;
   height: 100vh;
-  border-right: 1px solid rgba(0, 0, 0, 0.125);
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  position: absolute
 `;
 export const Body = styled.div`
   padding: 12px;
