@@ -19,11 +19,11 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  tickets: [
+  tickets: 
     {
       // Can have more than 1 label
       // Status: New, Assigned, Archive
-      type: Map,
+      type: Array,
       label: {
         type: Array
         // required: true
@@ -36,15 +36,14 @@ const UserSchema = new Schema({
         type: String
         // required: true
       }
-    }
-  ],
+    },
   date: {
     type: Date,
     default: Date.now
   },
-  access: {
-    type: String,
-    default: "user"
+  isAdmin: {
+    type: Boolean,
+    default: false
   },
   isEmailSent:{
     type: Boolean,

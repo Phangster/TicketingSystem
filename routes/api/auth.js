@@ -6,6 +6,7 @@ const keys = require('../../config/keys');
 const generator = require('generate-password');
 const passport = require('passport');
 const sendgrid = require('../../services/sendgrid');
+const jwt_decode = require('jwt-decode');
 
 // Load Input Validation:
 const validateRegisterInput = require('../../validation/registration');
@@ -15,13 +16,32 @@ const validateLoginInput = require('../../validation/login');
 // Load User model:
 const User = require('../../models/User');
 
-// @route   GET api/users/test
-// @desc    Tests users route
-// @access  Public
-router.get('/test', (req, res) => res.json({msg: 'Users works!'}));
+// @route   GET api/auth/test
+// @desc    Tests auth route
+// @access  Protected
 
-// @route   POST api/users/register
-// @desc    Register users
+router.get('/test2', (req, res) => {
+    const decoded = jwt_decode(req.headers.authorization)
+    // console.log(decoded)
+    console.log("Admin Status: " + decoded.isAdmin)
+    if (decoded.isAdmin === false){
+        // console.log("Decoding... isAdmin = " + decoded.isAdmin)
+        // res.status(404).json({error: "Protected route"})    
+        res.sendStatus(401);
+        console.log(decoded.isAdmin)
+    }
+    else{
+        res.json({"msg": "Welcome Mr Admin"})
+    }
+})
+
+
+router.get('/test', passport.authenticate('jwt', {session: false}), (req, res) => {
+    res.json({msg: 'this works!'});
+})
+
+// @route   POST api/auth/register
+// @desc    Register auth
 // @access  Public
 router.post('/register', (req, res) => {
 
@@ -74,7 +94,7 @@ router.post('/register', (req, res) => {
     });
 });
 
-// @route   GET api/users/login
+// @route   POST api/auth/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
 router.post('/login', (req,res) => {
@@ -101,20 +121,21 @@ router.post('/login', (req,res) => {
                 .then(isMatch => {
                     if (isMatch) {
                         // User Matched
-                        const payload = {id: user.id, name: user.name} // Create JWT payload
+                        const payload = {id: user.id, email: user.email, tickets: user.tickets, isAdmin: user.isAdmin} // Create JWT payload
                         
                         // Sign Token
                         jwt.sign(
                             payload, 
                             keys.secretOrKey, 
-                            // {expiresIn: 3600},
+                            {expiresIn: 300},
                             (err, token) => {
                                 res.json({
                                     success: true,
                                     token: 'Bearer ' + token
                                 });
-                        });
 
+                                res.header('Authorization', 'Bearer ' + token).send(token);
+                        });
                     } else {
                         errors.password = "Password incorrect!"
                         return res.status(400).json(errors);
@@ -123,7 +144,7 @@ router.post('/login', (req,res) => {
         });
 });
 
-// @route   GET api/users/current
+// @route   GET api/auth/current
 // @desc    Return current user
 // @access  Private
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -133,13 +154,18 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
         name: req.user.name,
         email: req.user.email,
         contact: req.user.contact,
-        enquiry: req.user.enquiry
+        tickets: req.user.tickets
     });
+
+    User.findOne({email: req.user.email})
+        .then(user => console.log(user))
+
+    res.send(req.user.name)
 });
 
-// @route   GET api/users/home
+// @route   GET api/auth/home
 // @desc    Home page of user
-// @access  Successfully login users
+// @access  Successfully login
 
 router.get('/home', (req,res) => {
     res.render()
