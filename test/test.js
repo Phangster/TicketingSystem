@@ -2,111 +2,121 @@ const request = require("supertest");
 const chai = require("chai");
 const app = require('../server');
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
+const {createUserAccount, createAdminAccount} = require('./testHelper');
+const isEmpty = require('../validation/is-empty');
 
-const assert = chai.assert;
+// const assert = chai.assert;
+// const bcrypt = require('bcryptjs');
 const expect = chai.expect;
 
-before(done=>{
-
+before(function(){
   // Delete all documents
   User.deleteMany({}, (err,res)=> {
     console.log(`Collection cleared! ${res.deletedCount} documents are deleted.`);
   })
-
-  // Creating a fake user
-  userB = {
-    name: "Tom Lee",
-    email: "tomlee.abc@gmail.com",
-    contact: "91234567",
-    isAdmin: false,
-    tickets: [
-      {
-        status: "new",
-        content: "I want to have access to the API demo!",
-        label:"API Demo Services"
-      }
-    ],
-    password: "MEWMEWMEW"
-  }
-
-  // Encrypting the password and editing it
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(userB.password, salt, (err, hash)=>{
-        if (err) throw err;
-        userB.password = hash;
-        console.log(hash)
-        User.create(userB).then(res => console.log(res)).catch(err => console.log(err))
-
-    });
-});
-
-
-  done();
+  // For: 'userB: POST /login'
+  createUserAccount();
+  createAdminAccount();
 })
 
-  
-describe('GET /', ()=> {
+describe('GET /', function(){
     it('successfully get main page', (done)=> {
-        request(app)
-            .get('/')
-            .expect(200, done);
+      request(app)
+        .get('/')
+        .expect(200, done);
     });
 });
 
 // Test if email is sent
-describe('userA: POST /register', ()=> {
-    it('submitting of contact form', (done)=> {
-      userA = {
-        name: "Yi Jie",
-        email: "cyberform.jys@gmail.com",
-        contact: "91312374",
-        tickets: {
-            label: "API Demo Services",
-            content: "Hi I would like to request a demo for this API",
-            status: "new"
+describe('userA: POST /register', function() {
+  it('submitting of contact form', function(done) {
+    userA = {
+      name: "Yi Jie",
+      email: "cyberform.jys@gmail.com",
+      contact: "91312374",
+      tickets: {
+          label: "API Demo Services",
+          content: "Hi I would like to request a demo for this API",
+          status: "new"
         }
-  };
-      request(app)
-        .post('/api/auth/register')
-        .send(userA)
-        .set('Accept', 'application/json')
-        .expect('Content-Type', 'application/json; charset=utf-8')
-        .expect(200)
-        .end((err, res)=> {
-          if (err) return done(err);
-          
-          // Client side should handle the validation
-          expect(res.body["contact"]).to.have.lengthOf(8);
-          expect(res.body["tickets"][0]["content"]).to.have.lengthOf.above(14);
-          expect(res.body["tickets"][0]["content"]).to.have.lengthOf.at.most(300);
-          expect(res.body["name"]).to.equal(userA.name);
-          expect(res.body["isEmailSent"]).to.be.true;
-          done();
-        });
+      };
+    request(app)
+      .post('/api/auth/register')
+      .send(userA)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200)
+      .end((err, res)=> {
+        if (err) return done(err);
+        
+        // Client side should handle the validation
+        expect(res.body["contact"]).to.have.lengthOf(8);
+        expect(res.body["tickets"][0]["content"]).to.have.lengthOf.above(14);
+        expect(res.body["tickets"][0]["content"]).to.have.lengthOf.at.most(300);
+        expect(res.body["name"]).to.equal(userA.name);
+        expect(res.body["isEmailSent"]).to.be.true;
+        done();
+      });
+  });
+});
+
+
+describe('userB: POST /login', function(){
+  it('submitting of contact form', function(done) {
+    userB = {
+      email: "tomlee.abc@gmail.com",
+      password: "MEWMEWMEW"
+};
+  request(app)
+    .post('/api/auth/login')
+    .send(userB)
+    .set('Accept', 'application/json')
+    .expect('Content-Type', 'application/json; charset=utf-8')
+    .expect(200)
+    .end((err, res)=> {
+      // console.log("\n\nHeader is: ")
+      // console.log(res)
+      if (err) return done(err);
+      done();
     });
   });
+});
 
-  describe('userA: POST /login', ()=> {
-    it('submitting of contact form', (done)=> {
-      userB = {
-        email: "tomlee.abc@gmail.com",
-        password: "MEWMEWMEW"
-  };
-      request(app)
-        .post('/api/auth/login')
-        .send(userB)
-        .set('Accept', 'application/json')
-        .expect('Content-Type', 'application/json; charset=utf-8')
-        .expect(200)
-        .end((err, res)=> {
-          if (err) return done(err);
-          done();
-        });
+let token = ""
+
+describe('Admin Test Suite', function(){
+  it('Test login',function(done){
+    adminAccount = {
+      email: "seeyijie.74@gmail.com",
+      password: "MEWMEWMEW"
+    };
+    request(app)
+      .post('/api/auth/login')
+      .send(adminAccount)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200)
+      .end((err, res)=> {
+        // console.log(res.body);
+        expect(res.body.token).to.be.a('string')
+        // assertTrue(res.body.token, !isEmpty)
+        token = res.body.token
+        if (err) return done(err);
+        done();
+      });
+    })
+
+  it('Test accesing protected route',(done)=>{
+    request(app)
+    .get('/api/auth/test2')
+    .set('Authorization', token)
+    .expect('Content-Type', 'application/json; charset=utf-8')
+    .expect(200)
+    .end((err, res)=> {
+      console.log(res.body)
+      if (err) return done(err);
+      done();
     });
-  });
+  })
 
-  /*
-    Test all the validators.
-    Test display of errors.
-  */
+});
