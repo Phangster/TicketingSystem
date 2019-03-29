@@ -6,6 +6,7 @@ const keys = require('../../config/keys');
 const generator = require('generate-password');
 const passport = require('passport');
 const sendgrid = require('../../services/sendgrid');
+const jwt_decode = require('jwt-decode');
 
 // Load Input Validation:
 const validateRegisterInput = require('../../validation/registration');
@@ -20,20 +21,18 @@ const User = require('../../models/User');
 // @access  Protected
 
 router.get('/test2', (req, res) => {
-    jwt.verify(req.token, 'privatekey', (err, authorizedData) => {
-        if(err){
-            //If error send Forbidden (403)
-            console.log('ERROR: Could not connect to the protected route');
-            res.sendStatus(403);
-        } else {
-            //If token is successfully verified, we can send the autorized data 
-            res.json({
-                message: 'Successful log in',
-                authorizedData
-            });
-            console.log('SUCCESS: Connected to protected route');
-        }
-    });
+    const decoded = jwt_decode(req.headers.authorization)
+    // console.log(decoded)
+    console.log("Admin Status: " + decoded.isAdmin)
+    if (decoded.isAdmin === false){
+        // console.log("Decoding... isAdmin = " + decoded.isAdmin)
+        // res.status(404).json({error: "Protected route"})    
+        res.sendStatus(401);
+        console.log(decoded.isAdmin)
+    }
+    else{
+        res.json({"msg": "Welcome Mr Admin"})
+    }
 })
 
 
@@ -127,7 +126,7 @@ router.post('/login', (req,res) => {
                         jwt.sign(
                             payload, 
                             keys.secretOrKey, 
-                            // {expiresIn: 3600},
+                            {expiresIn: 300},
                             (err, token) => {
                                 res.json({
                                     success: true,
@@ -135,10 +134,7 @@ router.post('/login', (req,res) => {
                                 });
 
                                 res.header('Authorization', 'Bearer ' + token).send(token);
-
                         });
-
-
                     } else {
                         errors.password = "Password incorrect!"
                         return res.status(400).json(errors);

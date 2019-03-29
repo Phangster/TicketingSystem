@@ -342,6 +342,6 @@ module.exports = sendgrid = (email, password)=> {
   </html>
   `
 
-  console.log(msg);
+  console.log("Email sent!");
   sgMail.send(msg);
 }
