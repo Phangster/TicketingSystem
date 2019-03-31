@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Col, Container, Label, Input } from 'reactstrap';
 // import { Dropdown } from 'semantic-ui-react';
-// import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 import {
    FormText, FormFeedback,
@@ -135,6 +135,7 @@ class Contact extends Component {
 
   handleClick(e){
     const { validate, formFeedback, errors } = this.state;
+    this.setState({ redirectToReferrer: true });
     
     // const displayDuplicate = () =>{
     //   errors = "duplicate"
@@ -149,10 +150,10 @@ class Contact extends Component {
       validate.contactState === 'has-success'&&
       validate.messageState === 'has-success'){
 
-
       this.setState({
         selectedOption: e.target.value
       })  
+
 
       const newUser = {
         name: this.state.name,
@@ -185,10 +186,10 @@ class Contact extends Component {
 
   render() {
     const {errors, formFeedback} = this.state; // equivalent to const errors = this.state.errors;
-    // const redirectToReferrer = this.state.redirectToReferrer;
-    //     if (redirectToReferrer === true) {
-    //         return <Redirect to="/Login" />
-    // }
+    const redirectToReferrer = this.state.redirectToReferrer;
+        if (redirectToReferrer === true) {
+            return <Redirect to="/login" />
+    }
     return (
       <div>
         <Modal isOpen={this.state.modal}>

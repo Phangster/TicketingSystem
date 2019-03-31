@@ -33,6 +33,11 @@ export const RightContainer = styled.div`
   position: absolute;
 `;
 
+export const StatusDist = styled.div`
+  text-align: center;
+  margin-bottom: 1em;
+`;
+
 export const InnerContainer = styled.div`
 padding: 20px;
 `;

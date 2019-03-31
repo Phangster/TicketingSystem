@@ -30,7 +30,7 @@ class App extends Component {
 
             {/* if(!user) show NavBar, if(user) show AppNavigation */}
             <NavBar />
-            {/* <AppNavigation /> */}
+            <AppNavigation />
               <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/contact" component={Contact} />
