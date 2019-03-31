@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const auth = require('./routes/api/auth');
 const tickets = require('./routes/api/tickets')
+const admin = require('./routes/api/admin')
 const passport = require('passport');
 
 const port = process.env.PORT || 8080;
@@ -34,6 +35,7 @@ app.get('/', (req, res) => res.send('Hello World!'));
 
 app.use('/api/auth', auth);
 app.use('/api/tickets', tickets);
+app.use('/api/admin', admin)
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
 

@@ -18,7 +18,7 @@ const UserSchema = new Schema({
   contact: {
     type: String,
     required: true
-  },
+  },  
   tickets: 
     {
       // Can have more than 1 label
