@@ -54,7 +54,7 @@ export default class AuthHelperMethods {
 
     getToken = () => {
         // Retrieves the user token from localStorage
-        return localStorage.getItem('id_token')
+        return localStorage.getItem('jwt')
     }
 
     logout = () => {

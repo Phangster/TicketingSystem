@@ -6,6 +6,7 @@ const auth = require('./routes/api/auth');
 const tickets = require('./routes/api/tickets')
 const admin = require('./routes/api/admin')
 const passport = require('passport');
+const cors = require('cors');
 
 const port = process.env.PORT || 8080;
 
@@ -17,9 +18,16 @@ const db = require('./config/keys').dev.mongoURI;
 // Body-parser middleware
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use(cors());
 
 // Passport middleware
 app.use(passport.initialize());
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 // Passport config
 require('./config/passport')(passport);

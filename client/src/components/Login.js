@@ -108,7 +108,7 @@ class Login extends Component {
         const decoded = jwt_decode(token);
 
         console.log(decoded)
-        this.props.history.push('/dashboard');
+        this.props.history.push('/user/dashboard');
 
     })
   }
@@ -124,7 +124,7 @@ class Login extends Component {
       
       console.log("Redirect to dashboard")
       console.log("Authentication: " + this.state.isAuthenticated)
-      this.props.history.push('/dashboard');
+      this.props.history.push('/user/dashboard');
       // console.log("isAuthenticate: " + this.state.isAuthenticated)
       
       axios.get('/api/auth/current', {headers: {Authorization: `${token}`}})
