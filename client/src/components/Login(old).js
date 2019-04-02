@@ -1,38 +1,7 @@
 import React, { Component } from 'react';
-// import { Container, InnerContainer } from "./containers";
-
-// import { Button, Form } from 'semantic-ui-react'
-
-// export default class Login extends Component{
-//     render(){
-//         return(
-//             <Container>
-//                 <InnerContainer>
-//                     <h1>Login</h1>
-//                     <Form>
-//                     <Form.Field>
-//                     <label>Email</label>
-//                         <input placeholder='Email' />
-//                     </Form.Field>
-//                     <Form.Field>
-//                     <label>Password</label>
-//                     <input placeholder='Password' />
-//                     </Form.Field>
-//                     <Button type='submit'>Submit</Button>
-//                     </Form>
-//                     <br></br>
-//                     <div>
-//                         <h4 style="text-align: center">No account? <a href="/register">Register here</a> </h4>
-//                     </div>
-//                 </InnerContainer>
-//             </Container>
-//         )
-//     }
-// }
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
-import isEmpty from '../validation/is-empty'
 
 import {
   Container, Col, Form,
@@ -44,8 +13,8 @@ class Login extends Component {
   constructor() {
     super();
       this.state = {
-      email: '',
-      password: '',
+      'email': '',
+      'password': '',
       validate: {
         emailState: '',
       },
@@ -53,10 +22,8 @@ class Login extends Component {
         message: "",
         success: "That's a tasty looking email you've got there",
         invalidEmail: "Uh oh! Looks like there is an issue with your email. Please input a correct email"
-      },
-      isAuthenticated: false
+      }
     }
-
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -84,7 +51,7 @@ class Login extends Component {
 
   submitForm(e) {
     e.preventDefault();
-    const { validate, formFeedback, isAuthenticated } = this.state
+    const { validate, formFeedback } = this.state
 
     const userData = {
       email: this.state.email,
@@ -92,14 +59,15 @@ class Login extends Component {
     }
 
     console.log(userData);
-
-    axios.post('/api/auth/login', userData)
+    
+    // this.props.loginUser(userData);
+    axios.post('/api/users/login', userData)
     .then(res=>{
         // Save to localStorage
         const {token} = res.data;
 
         // Set token to local storage
-        localStorage.setItem('jwt', token)
+        localStorage.setItem('jwtToken', token)
 
         // Set token to Auth header
         setAuthToken(token);
@@ -108,36 +76,20 @@ class Login extends Component {
         const decoded = jwt_decode(token);
 
         console.log(decoded)
-        this.props.history.push('/user/dashboard');
+        // Set current user
+        // dispatch(setCurrentUser(decoded));
 
     })
+
+    console.log(`Email: ${ this.state.email }`)
   }
 
-  componentDidMount(){
-    const token = localStorage.getItem('jwt')
-
-    if (!isEmpty(token)){
-      // Bug? Doesn't seem to set it.
-      this.setState({
-        isAuthenticated: true
-      })
-      
-      console.log("Redirect to dashboard")
-      console.log("Authentication: " + this.state.isAuthenticated)
-      this.props.history.push('/user/dashboard');
-      // console.log("isAuthenticate: " + this.state.isAuthenticated)
-      
-      axios.get('/api/auth/current', {headers: {Authorization: `${token}`}})
-        .then((res) => {
-          console.log(res)
-          return(res.data)
-        })
-    }
-    
-    console.log(this.state.isAuthenticated)
-      // axios.get('/api/auth/current', token).then((err, res)=>console.log(res))
-  }
-
+  // componentWillReceiveProps(nextProps){
+  //   if (nextProps.auth.isAuthenticated){
+  //     // Redirected to localhost:3000/dashboard
+  //     this.props.history.push('/dashboard');
+  //   }
+  // }
 
   render() {
     const {errors} = this.state;
@@ -168,7 +120,7 @@ class Login extends Component {
               <FormFeedback valid>
                 {formFeedback.message}
               </FormFeedback>
-              <FormFeedback>
+              <FormFeedback invalid>
                 {formFeedback.message}
               </FormFeedback>
               <FormText>Your username is most likely your email.</FormText>
@@ -199,15 +151,43 @@ class Login extends Component {
 
 export default Login;
 
-// Login.propTypes = {
-//   loginUser: PropTypes.func.isRequired,
-//   password: PropTypes.object.isRequired,
-//   errors: PropTypes.object.isRequired
-// };
-
-// const mapStateToProps = state => ({
-//   auth: state.auth,
-//   errors: state.errors
-// });
-
-// export default connect(mapStateToProps, { loginUser })(Login);
+<AppContainer>
+        <Navigation>
+          <SideNav
+            defaultSelectedPath="1"
+            theme={theme}
+            onItemSelection={this.onItemSelection}
+          >
+            <Nav id="1">
+              <IconCnt>
+                <Icon icon={dashboard} />
+              </IconCnt>
+              <Text><a href="/user/dashboard">Dashboard</a></Text>
+            </Nav>
+            <Nav id="2">
+              <IconCnt>
+                <Icon icon={users} />
+              </IconCnt>
+              <Text><a href="/user/tickets">Tickets</a></Text>
+            </Nav>
+            <Nav id="3">
+              <IconCnt>
+                <Icon icon={shoppingCart} />
+              </IconCnt>
+              <Text><a href="/user/history">History</a></Text>
+            </Nav>
+            <Nav id="4">
+              <IconCnt>
+                <Icon icon={circleO} />
+              </IconCnt>
+              <Text><a href="/user/profile">Profile</a></Text>
+            </Nav>
+            <Nav id="5">
+              <IconCnt>
+                <Icon icon={cubes} />
+              </IconCnt>
+              <Text><a href="/user/logout">Logout</a></Text>
+            </Nav>
+          </SideNav>
+        </Navigation>
+      </AppContainer>
