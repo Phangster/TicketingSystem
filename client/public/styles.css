@@ -14,3 +14,7 @@ body {
 .pointing_secondary menu {
   padding: 20px;
 }
+
+div#side-menu.ui.vertical.menu {
+  height: 100%;
+}

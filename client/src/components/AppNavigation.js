@@ -1,30 +1,17 @@
 import React from "react";
 import { SideNav, Nav } from "react-sidenav";
 import styled from "styled-components";
-import {
-  AppContainer as BaseAppContainer,
-  ExampleNavigation as BaseNavigation,
-  ExampleBody as Body
-} from "./containers";
+
+import { LeftContainer, AppContainer, Navigation } from "./containers";
+// import logout from "./utils/authHelper"
+
+
 import { Icon } from "react-icons-kit";
 import { dashboard } from "react-icons-kit/fa/dashboard";
 import { users } from "react-icons-kit/fa/users";
 import { shoppingCart } from "react-icons-kit/fa/shoppingCart";
 import { cubes } from "react-icons-kit/fa/cubes";
 import { circleO } from "react-icons-kit/fa/circleO";
-
-const AppContainer = styled(BaseAppContainer)`
-  height: 100vh
-`;
-
-const Navigation = styled(BaseNavigation)`
-  background: #303641;
-  color: #8d97ad;
-  font-size: 1em;
-  letter-spacing: 2px;
-  width: 240px;
-  line-height: 22px;
-`;
 
 const IconCnt = styled.div`
   color: #6a56a5;
@@ -42,22 +29,34 @@ const Text = styled.div`
   padding-left: 8px;
 `;
 
-export class AppNavigation extends React.Component {
-  state = { selectedPath: "1" };
+export default class AppNavigation extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+      active: null,
+    }
+    this.onItemSelection = this.onItemSelection.bind(this);
+    this.onLogout = this.onLogout.bind(this);
+  }
 
   onItemSelection = arg => {
-    this.setState({ selectedPath: arg.path });
+    this.setState({ active: arg.path });
   };
 
+  onLogout = () => {
+    localStorage.clear();
+  }
+
   render() {
-      console.log( this.state.selectedPath)
+      console.log(this.state.active)
     return (
+      <div>
       <AppContainer>
         <Navigation>
           <SideNav
             defaultSelectedPath="1"
             theme={theme}
-            onItemSelection={this.onItemSelection}
+            onSelect ={this.onItemSelection}
           >
             <Nav id="1">
               <IconCnt>
@@ -79,19 +78,26 @@ export class AppNavigation extends React.Component {
             </Nav>
             <Nav id="4">
               <IconCnt>
+                <Icon icon={users} />
+              </IconCnt>
+              <Text><a href="/user/newticket">New Ticket</a></Text>
+            </Nav>
+            <Nav id="5">
+              <IconCnt>
                 <Icon icon={circleO} />
               </IconCnt>
               <Text><a href="/user/profile">Profile</a></Text>
             </Nav>
-            <Nav id="5">
+            <Nav id="6">
               <IconCnt>
                 <Icon icon={cubes} />
               </IconCnt>
-              <Text><a href="/user/logout">Logout</a></Text>
+              <Text><a onClick = {this.onLogout()} >Logout</a></Text>
             </Nav>
           </SideNav>
         </Navigation>
       </AppContainer>
+      </div>
     );
   }
 }
