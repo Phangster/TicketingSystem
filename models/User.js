@@ -22,7 +22,7 @@ const UserSchema = new Schema({
   tickets: 
     {
       // Can have more than 1 label
-      // Status: New, Assigned, Archive
+      // Status: New, Review, Resolved
       type: Array,
       label: {
         type: Array

@@ -92,7 +92,7 @@ export default class AppNavigation extends React.Component {
               <IconCnt>
                 <Icon icon={cubes} />
               </IconCnt>
-              <Text><a onClick = {this.onLogout()} >Logout</a></Text>
+              <Text><a onClick = {this.onLogout} >Logout</a></Text>
             </Nav>
           </SideNav>
         </Navigation>

@@ -75,6 +75,7 @@ router.post('/register', (req, res) => {
                 isEmailSent: false
             });
 
+            
             sendgrid(newUser.email, password);
 
             bcrypt.genSalt(10, (err, salt) => {
@@ -127,7 +128,7 @@ router.post('/login', (req,res) => {
                         jwt.sign(
                             payload, 
                             keys.secretOrKey, 
-                            {expiresIn: 300},
+                            // {expiresIn: 300},
                             (err, token) => {
                                 res.json({
                                     success: true,

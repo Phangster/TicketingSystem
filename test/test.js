@@ -28,7 +28,7 @@ describe('GET /', function(){
 });
 
 // Test if email is sent
-describe('userA: POST /register', function() {
+describe.skip('userA: POST /register', function() {
   it('submitting of contact form', function(done) {
     userA = {
       name: "Yi Jie",
@@ -82,9 +82,9 @@ describe('userB: POST /login', function(){
   });
 });
 
-let token = ""
 
 describe('Admin Test Suite', function(){
+  let token = "";
   it('Test login',function(done){
     adminAccount = {
       email: "seeyijie.74@gmail.com",
@@ -106,17 +106,29 @@ describe('Admin Test Suite', function(){
       });
     })
 
-  it('Test accesing protected route',(done)=>{
+  it('Test accesing protected route', function(done){
     request(app)
     .get('/api/auth/test2')
     .set('Authorization', token)
     .expect('Content-Type', 'application/json; charset=utf-8')
     .expect(200)
     .end((err, res)=> {
-      console.log(res.body)
+      // console.log(res.body)
       if (err) return done(err);
       done();
     });
   })
 
+  it('Test for GET /api/admin/tickets to search for all tickets', function(done){
+    request(app)
+    .get('/api/admin/tickets')
+    .set('Authorization', token)
+    .expect('Content-Type', 'application/json; charset=utf-8')
+    .expect(200)
+    .end((err, res)=> {
+      // console.log(res);
+      if (err) return done(err);
+      done();
+    });
+  })
 });
