@@ -113,22 +113,22 @@ describe('Admin Test Suite', function(){
     .expect('Content-Type', 'application/json; charset=utf-8')
     .expect(200)
     .end((err, res)=> {
-      console.log(res.body)
+      // console.log(res.body)
       if (err) return done(err);
       done();
     });
   })
 
-  it('Test for GET /api/admin/tickets to search for all tickets'), function(done){
+  it('Test for GET /api/admin/tickets to search for all tickets', function(done){
     request(app)
     .get('/api/admin/tickets')
     .set('Authorization', token)
-    // .expect('Content-Type', 'application/json; charset=utf-8')
+    .expect('Content-Type', 'application/json; charset=utf-8')
     .expect(200)
     .end((err, res)=> {
-      console.log(res);
+      // console.log(res);
       if (err) return done(err);
       done();
     });
-  }
+  })
 });

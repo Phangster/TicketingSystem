@@ -19,6 +19,7 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
     const decoded = jwt_decode(req.headers.authorization)
     console.log("Admin Status: " + decoded.isAdmin)
 
+
     if (decoded.isAdmin === false){
         res.sendStatus(401);
         console.log(decoded.isAdmin)
@@ -45,6 +46,33 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
         res.json(data);
     })
     .catch(err => console.log(err));
+})
+    
+router.put('/tickets', passport.authenticate('jwt', {session: false}), (req, res) => {
+    const decoded = jwt_decode(req.headers.authorization)
+    console.log("Admin Status: " + decoded.isAdmin)
+
+    if (decoded.isAdmin === false){
+        res.sendStatus(401);
+        console.log(decoded.isAdmin)
+    }
+
+    let query = {
+        _id: decoded.id,
+        "tickets.content": req.body.content,
+        "tickets.label" : req.body.label
+    }
+
+
+    let updated = {
+        "tickets.$.status": (!!req.query.status ? req.query.status : req.body.status),
+        "tickets.$.label" : (!!req.query.label  ? req.query.label  : req.body.label )
+    }
+    User.findOneAndUpdate(query, updated).then(posts=> {
+        console.log("Updated the following document!")
+        console.log(posts)
+        res.send(posts)
+    }).catch(err => console.log(err))
 })
 
 module.exports = router
