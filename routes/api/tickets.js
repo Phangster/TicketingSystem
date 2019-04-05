@@ -11,7 +11,7 @@ const router = express.Router();
 const User = require('../../models/User');
 
 
-// @route   GET api/tickets/read
+// @route   GET api/tickets/
 // @desc    Read all tickets
 // @access  private
 
@@ -23,7 +23,7 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 
 })
 
-// @route   POST api/tickets/post
+// @route   POST api/tickets/
 // @desc    Post a tickets
 // @access  private
 
