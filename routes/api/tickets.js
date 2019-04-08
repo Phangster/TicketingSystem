@@ -35,11 +35,9 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
     User.findOneAndUpdate({_id: decoded.id}, {$push: {tickets:[{content: req.body.content, label: req.body.label, status: "new"}]}}, {new: true})
         .then(posts => {
             res.send(posts)
-            console.log(posts)
+            // console.log(posts)
         })
         .catch(err => console.log(err))
-
-    // User.find(req.)
 })
 
 /*
