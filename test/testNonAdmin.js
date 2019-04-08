@@ -1,12 +1,8 @@
 const request = require("supertest");
 const app = require('../server');
 const chai = require('chai');
-const sinon = require('sinon');
-const {createUserAccount} = require('./testHelper');
 
 const expect = chai.expect;
-const should = chai.should;
-
 
 describe('GET /', function(){
     it('successfully get main page', (done)=> {
@@ -19,14 +15,6 @@ describe('GET /', function(){
 
 
 describe('Non-Admin Suite', function() {
-
-    before(function(done){
-        User.deleteMany({}, (err,res)=> console.log(`Collection cleared! ${res.deletedCount} documents are deleted.`))
-            .then(res => createUserAccount())
-            .then(res => done())
-            .catch(err => done(err));
-    });
-
     /* 
         Test Case 1:
         First time user submitting a ticket
@@ -38,7 +26,14 @@ describe('Non-Admin Suite', function() {
         Post-condition:
         1) Records found in database
     */
+
+
     it.skip('Submitting of contact form', function(done) {
+
+        afterEach("Submitting of contact form", function(){
+            User.findOneAndDelete({email: "seeyijie.94@gmail.com"}, (err, res)=> console.log(`${res} documents are deleted.`))
+        });    
+
         nonAdmin = {
             name: "Yi Jie",
             email: "seeyijie.94@gmail.com",
@@ -59,14 +54,14 @@ describe('Non-Admin Suite', function() {
             .end((err, res)=> {
             if (err) return done(err);
             
-            // Client side should handle the validation
-            expect(res.body["contact"]).to.have.lengthOf(8);
-            expect(res.body["tickets"][0]["content"]).to.have.lengthOf.above(14);
-            expect(res.body["tickets"][0]["content"]).to.have.lengthOf.at.most(300);
-            expect(res.body["name"]).to.equal(nonAdmin.name);
-            expect(res.body["isEmailSent"]).to.be.true;
-            done();
-        });
+                // Client side should handle the validation
+                expect(res.body["contact"]).to.have.lengthOf(8);
+                expect(res.body["tickets"][0]["content"]).to.have.lengthOf.above(14);
+                expect(res.body["tickets"][0]["content"]).to.have.lengthOf.at.most(300);
+                expect(res.body["name"]).to.equal(nonAdmin.name);
+                expect(res.body["isEmailSent"]).to.be.true;
+                done();
+            });
     });
 
 
@@ -82,7 +77,7 @@ describe('Non-Admin Suite', function() {
         Post-condition: 
         1) Successfully logged in
     */
-    it('Login with POST /api/auth/login', function(done){
+    it('Login with User, POST /api/auth/login', function(done){
 
         nonAdmin2 = {
             email: "seeyijie.74@gmail.com",
@@ -95,8 +90,7 @@ describe('Non-Admin Suite', function() {
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(200)
         .end((err, res)=> {
-            console.log(res.body)
-
+            // console.log(res.body)
             expect(res.body.token).is.a('string');
             token = res.body.token;
             

@@ -42,8 +42,12 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
     // If set, show the tickets from the email
     User.findOne({email:email}, "tickets")
     .then(data => {
-        console.log(data);
-        res.json(data);
+        // console.log(data);
+        // res.json(data)
+        res.json({
+            email   : email,
+            tickets : data.tickets,
+            _id     : data._id});
     })
     .catch(err => console.log(err));
 })
