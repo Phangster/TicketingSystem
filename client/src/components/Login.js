@@ -1,38 +1,9 @@
 import React, { Component } from 'react';
-// import { Container, InnerContainer } from "./containers";
-
-// import { Button, Form } from 'semantic-ui-react'
-
-// export default class Login extends Component{
-//     render(){
-//         return(
-//             <Container>
-//                 <InnerContainer>
-//                     <h1>Login</h1>
-//                     <Form>
-//                     <Form.Field>
-//                     <label>Email</label>
-//                         <input placeholder='Email' />
-//                     </Form.Field>
-//                     <Form.Field>
-//                     <label>Password</label>
-//                     <input placeholder='Password' />
-//                     </Form.Field>
-//                     <Button type='submit'>Submit</Button>
-//                     </Form>
-//                     <br></br>
-//                     <div>
-//                         <h4 style="text-align: center">No account? <a href="/register">Register here</a> </h4>
-//                     </div>
-//                 </InnerContainer>
-//             </Container>
-//         )
-//     }
-// }
+import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
-import isEmpty from '../validation/is-empty'
+import isEmpty from '../validation/is-empty';
 
 import {
   Container, Col, Form,
@@ -54,7 +25,8 @@ class Login extends Component {
         success: "That's a tasty looking email you've got there",
         invalidEmail: "Uh oh! Looks like there is an issue with your email. Please input a correct email"
       },
-      isAuthenticated: false
+      isAuthenticated: false,
+      redirect: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -108,8 +80,11 @@ class Login extends Component {
         const decoded = jwt_decode(token);
 
         console.log(decoded)
-        this.props.history.push('/user/dashboard');
+        // this.props.history.push('/user/dashboard');
 
+    })
+    this.setState({
+      redirect: true
     })
   }
 
@@ -119,12 +94,13 @@ class Login extends Component {
     if (!isEmpty(token)){
       // Bug? Doesn't seem to set it.
       this.setState({
-        isAuthenticated: true
+        isAuthenticated: true,
+        redirect: true
       })
       
       console.log("Redirect to dashboard")
       console.log("Authentication: " + this.state.isAuthenticated)
-      this.props.history.push('/user/dashboard');
+      // this.props.history.push('/user/dashboard');
       // console.log("isAuthenticate: " + this.state.isAuthenticated)
       
       axios.get('/api/auth/current', {headers: {Authorization: `${token}`}})
@@ -140,60 +116,65 @@ class Login extends Component {
 
 
   render() {
-    const {errors} = this.state;
-    const { email, password, formFeedback } = this.state;
-    return (
-      <Container className="App">
-        <h2>Login</h2>
-        <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
-          <Col>
-            <FormGroup>
-              <Label>Username</Label>
-              <Input
-                type="email"
-                name="email"
-                id="exampleEmail"
-                placeholder="myemail@email.com"
-                value={ email }
-                // className={classnames('form-control form-control-lg',{
-                //   'is-invalid':errors.email
-                // })}
-                valid={ this.state.validate.emailState === 'has-success' }
-                invalid={ this.state.validate.emailState === 'has-danger' }
-                onChange={ (e) => {
-                            this.validateEmail(e)
-                            this.handleChange(e)
-                          } }
+    if (this.state.redirect === true){
+      return <Redirect to="/user/dashboard"/>
+    }
+    else {
+      const {errors} = this.state;
+      const { email, password, formFeedback } = this.state;
+      return (
+        <Container className="App">
+          <h2>Login</h2>
+          <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+            <Col>
+              <FormGroup>
+                <Label>Username</Label>
+                <Input
+                  type="email"
+                  name="email"
+                  id="exampleEmail"
+                  placeholder="myemail@email.com"
+                  value={ email }
+                  // className={classnames('form-control form-control-lg',{
+                  //   'is-invalid':errors.email
+                  // })}
+                  valid={ this.state.validate.emailState === 'has-success' }
+                  invalid={ this.state.validate.emailState === 'has-danger' }
+                  onChange={ (e) => {
+                              this.validateEmail(e)
+                              this.handleChange(e)
+                            } }
+                />
+                <FormFeedback valid>
+                  {formFeedback.message}
+                </FormFeedback>
+                <FormFeedback>
+                  {formFeedback.message}
+                </FormFeedback>
+                <FormText>Your username is most likely your email.</FormText>
+              </FormGroup>
+            </Col>
+            <Col>
+              <FormGroup>
+                <Label for="examplePassword">Password</Label>
+                <Input
+                  // className={classnames('form-control form-control-lg',{
+                  //   'is-invalid':errors.password
+                  // })}              
+                  type="password"
+                  name="password"
+                  id="examplePassword"
+                  placeholder="********"
+                  value={ password }
+                  onChange={ (e) => this.handleChange(e) }
               />
-              <FormFeedback valid>
-                {formFeedback.message}
-              </FormFeedback>
-              <FormFeedback>
-                {formFeedback.message}
-              </FormFeedback>
-              <FormText>Your username is most likely your email.</FormText>
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for="examplePassword">Password</Label>
-              <Input
-                // className={classnames('form-control form-control-lg',{
-                //   'is-invalid':errors.password
-                // })}              
-                type="password"
-                name="password"
-                id="examplePassword"
-                placeholder="********"
-                value={ password }
-                onChange={ (e) => this.handleChange(e) }
-            />
-            </FormGroup>
-          </Col>
-          <Button>Submit</Button>
-      </Form>
-      </Container>
-    );
+              </FormGroup>
+            </Col>
+            <Button>Submit</Button>
+        </Form>
+        </Container>
+      );
+    }
   }
 }
 

@@ -17,7 +17,7 @@ import Profile from "./components/Link/Profile";
 import History from "./components/Link/History";
 import Ticket from "./components/Link/Ticket";
 import NewTicket from "./components/Link/NewTicket";
-
+import setAuthToken from "./utils/setAuthToken"
 import isEmpty from "./validation/is-empty"
 
 
@@ -34,15 +34,22 @@ class App extends Component {
   componentDidMount(){
     const token = localStorage.getItem('jwt')
 
-    if (!isEmpty(token)){
+    if (!!token){
       this.setState({
         loggedIn: true
       })
+      console.log("Login status: " + this.state.loggedIn)
+      console.log("Hi Bryan")
+      setAuthToken(token);
+
     }else{
       this.setState({
         loggedIn: false
       })
+      console.log("Hi Chloe")
     }
+
+    console.log("JWT in localstorage(?): " + localStorage.getItem('jwt'))
 
   }
 

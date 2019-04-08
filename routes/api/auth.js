@@ -23,12 +23,10 @@ const User = require('../../models/User');
 router.get('/test2', (req, res) => {
     const decoded = jwt_decode(req.headers.authorization)
     // console.log(decoded)
-    console.log("Admin Status: " + decoded.isAdmin)
+    // console.log("Admin Status: " + decoded.isAdmin)
     if (decoded.isAdmin === false){
-        // console.log("Decoding... isAdmin = " + decoded.isAdmin)
-        // res.status(404).json({error: "Protected route"})    
         res.sendStatus(401);
-        console.log(decoded.isAdmin)
+        // console.log(decoded.isAdmin)
     }
     else{
         res.json({"msg": "Welcome Mr Admin"})
@@ -53,7 +51,7 @@ router.post('/register', (req, res) => {
     }
 
     User.findOne({email:req.body.email}).then(user => {
-        console.log("Register!")
+        // console.log("Register!")
         if (user) {
             return res.status(601).send({ success: false, msg: "Email already exist" });
         } else {
@@ -64,7 +62,7 @@ router.post('/register', (req, res) => {
             });
 
             // Sent this via email
-            console.log(password);
+            // console.log(password);
 
             const newUser = new User({
                 name: req.body.name,
@@ -75,6 +73,7 @@ router.post('/register', (req, res) => {
                 isEmailSent: false
             });
 
+            
             sendgrid(newUser.email, password);
 
             bcrypt.genSalt(10, (err, salt) => {
@@ -158,7 +157,7 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
     });
 
     User.findOne({email: req.user.email})
-        .then(user => console.log(user))
+        .then(user => (user))
 
     res.send(req.user.name)
 });

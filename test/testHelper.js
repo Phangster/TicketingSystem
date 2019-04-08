@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
-const createUserAccount = ()=>{
+const createUserAccount = async()=>{
     // Creating a fake user
     userB = {
       name: "Tom Lee",
-      email: "tomlee.abc@gmail.com",
+      email: "seeyijie.74@gmail.com",
       contact: "91234567",
       isAdmin: false,
       tickets: [
@@ -23,18 +23,22 @@ const createUserAccount = ()=>{
       bcrypt.hash(userB.password, salt, (err, hash)=>{
           if (err) throw err;
           userB.password = hash;
-          console.log(hash)
-          User.create(userB).then(res => console.log(res)).catch(err => console.log(err))
-  
-      });
+          // console.log(hash)
+          User.create(userB)
+            .then(res => {
+              console.log("Non-admin account created: seeyijie.74@gmail.com")
+              return res
+            })
+            .catch(err => console.log(err))
+        });
   });  
 }
 
-const createAdminAccount = ()=>{
+const createAdminAccount = async ()=>{
     // Creating a fake user
     userC = {
-      name: "Jason Yi Jie",
-      email: "seeyijie.74@gmail.com",
+      name: "Yi Jie",
+      email: "cyberform.jys@gmail.com",
       contact: "91234567",
       isAdmin: true,
       tickets: [
@@ -52,9 +56,13 @@ const createAdminAccount = ()=>{
       bcrypt.hash(userB.password, salt, (err, hash)=>{
           if (err) throw err;
           userC.password = hash;
-          console.log(hash)
+          // console.log(hash)
           User.create(userC)
-            .then(res => console.log(res))
+            .then(res => {
+              // console.log(res.body)
+              console.log("Admin account created: cyberform.jys@gmail.com")
+              return res
+            })
             .catch(err => console.log(err))
   
       });
