@@ -21,7 +21,7 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
 
 
     if (decoded.isAdmin === false){
-        res.sendStatus(401);
+        res.sendStatus(403);
         console.log(decoded.isAdmin)
     }
 
@@ -53,7 +53,7 @@ router.put('/tickets', passport.authenticate('jwt', {session: false}), (req, res
     console.log("Admin Status: " + decoded.isAdmin)
 
     if (decoded.isAdmin === false){
-        res.sendStatus(401);
+        res.sendStatus(403);
         console.log(decoded.isAdmin)
     }
 
@@ -69,8 +69,8 @@ router.put('/tickets', passport.authenticate('jwt', {session: false}), (req, res
         "tickets.$.label" : (!!req.query.label  ? req.query.label  : req.body.label )
     }
     User.findOneAndUpdate(query, updated).then(posts=> {
-        console.log("Updated the following document!")
-        console.log(posts)
+        // console.log("Document updated!")
+        // console.log(posts)
         res.send(posts)
     }).catch(err => console.log(err))
 })
