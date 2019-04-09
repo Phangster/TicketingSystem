@@ -11,6 +11,7 @@ const port = process.env.PORT || 8080;
 
 
 // Config DB
+// test.mongoURI or dev.mongoURI
 const db = require('./config/keys').dev.mongoURI;
 
 const app = express();
@@ -38,7 +39,7 @@ mongoose
     .catch(err => console.log(err));
 mongoose.set('useCreateIndex', true);
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => console.log('Hello World!'));
 
 app.use('/api/auth', auth);
 app.use('/api/tickets', tickets);

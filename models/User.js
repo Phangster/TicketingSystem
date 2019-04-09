@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+  _id: {
+    type: mongoose.Types.ObjectId
+  },
   name: {
     type: String,
     required: true
@@ -18,25 +21,11 @@ const UserSchema = new Schema({
   contact: {
     type: String,
     required: true
-  },  
-  tickets: 
-    {
-      // Can have more than 1 label
-      // Status: New, Review, Resolved
-      type: Array,
-      label: {
-        type: Array
-        // required: true
-      },
-      content: {
-        type: String
-        // required: true
-      },
-      status: {
-        type: String
-        // required: true
-      }
-    },
+  },
+  ticketId: {
+    type: Schema.Types.ObjectId, 
+    ref:  "tickets"
+  },
   date: {
     type: Date,
     default: Date.now
