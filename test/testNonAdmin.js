@@ -27,7 +27,7 @@ describe('Non-Admin Suite', function() {
     */
 
 
-    it('Submitting of contact form', function(done) {
+    it.skip('Submitting of contact form', function(done) {
 
         // afterEach("Submitting of contact form", function(){
         //     User.findOneAndDelete({email: "seeyijie.94@gmail.com"}, (err, res)=> console.log(`${res} documents are deleted.`))
