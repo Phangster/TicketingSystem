@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import { LeftContainer } from './containers'
+import { LeftContainer } from './containers';
+import { Ticket } from './Link/Ticket';
 
 export default class Dashboard extends Component{
 
@@ -17,7 +18,7 @@ export default class Dashboard extends Component{
         return(
             <div>
                 <LeftContainer>
-                    <h1>Dashboard</h1>
+                    <Ticket />
                 </LeftContainer>
             </div>
         )

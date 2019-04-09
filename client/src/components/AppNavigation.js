@@ -6,11 +6,12 @@ import { AppContainer, Navigation } from "./containers";
 import { Redirect } from "react-router-dom";
 
 import { Icon } from "react-icons-kit";
-import { dashboard } from "react-icons-kit/fa/dashboard";
-import { users } from "react-icons-kit/fa/users";
-import { shoppingCart } from "react-icons-kit/fa/shoppingCart";
-import { cubes } from "react-icons-kit/fa/cubes";
-import { circleO } from "react-icons-kit/fa/circleO";
+import { home } from 'react-icons-kit/icomoon/home';
+import { history } from 'react-icons-kit/icomoon/history';
+import { ticket } from 'react-icons-kit/icomoon/ticket';
+import { profile } from 'react-icons-kit/icomoon/profile';
+import { exit } from 'react-icons-kit/icomoon/exit';
+import { users } from 'react-icons-kit/icomoon/users'
 
 const IconCnt = styled.div`
   color: #6a56a5;
@@ -28,12 +29,14 @@ const Text = styled.div`
   padding-left: 8px;
 `;
 
+// TODO - axios call and update the status to check if admin is true
 export default class AppNavigation extends React.Component {
   constructor(props){
     super(props);
     this.state={
       active: null,
-      redirect: false
+      redirect: false,
+      admin: false
     }
     this.onItemSelection = this.onItemSelection.bind(this);
     this.onLogout = this.onLogout.bind(this);
@@ -54,57 +57,97 @@ export default class AppNavigation extends React.Component {
   render() {
       console.log(this.state.active)
       if (this.state.redirect == true) {
-        return <Redirect to='/login'/>;
+        return <Redirect to='/'/>;
       }else{
-        return (
-          <div>
-          <AppContainer>
-            <Navigation>
-              <SideNav
-                defaultSelectedPath="1"
-                theme={theme}
-                onSelect ={this.onItemSelection}>
-                <Nav id="1">
-                  <IconCnt>
-                    <Icon icon={dashboard} />
-                  </IconCnt>
-                  <Text><a href="/user/dashboard">Dashboard</a></Text>
-                </Nav>
-                <Nav id="2">
-                  <IconCnt>
-                    <Icon icon={users} />
-                  </IconCnt>
-                  <Text><a href="/user/tickets">Tickets</a></Text>
-                </Nav>
-                <Nav id="3">
-                  <IconCnt>
-                    <Icon icon={shoppingCart} />
-                  </IconCnt>
-                  <Text><a href="/user/history">History</a></Text>
-                </Nav>
-                <Nav id="4">
-                  <IconCnt>
-                    <Icon icon={users} />
-                  </IconCnt>
-                  <Text><a href="/user/newticket">New Ticket</a></Text>
-                </Nav>
-                <Nav id="5">
-                  <IconCnt>
-                    <Icon icon={circleO} />
-                  </IconCnt>
-                  <Text><a href="/user/profile">Profile</a></Text>
-                </Nav>
-                <Nav id="6">
-                  <IconCnt>
-                    <Icon icon={cubes} />
-                  </IconCnt>
-                  <Text><a onClick = {this.onLogout} >Logout</a></Text>
-                </Nav>
-              </SideNav>
-            </Navigation>
-          </AppContainer>
-          </div>
-        );
+        if ( this.state.admin == false ){
+          return (
+            <div>
+            <AppContainer>
+              <Navigation>
+                <SideNav
+                  defaultSelectedPath="1"
+                  theme={theme}
+                  onSelect ={this.onItemSelection}>
+                  <Nav id="1">
+                    <IconCnt>
+                      <Icon icon={home} />
+                    </IconCnt>
+                    <Text><a href="/user/home">Home</a></Text>
+                  </Nav>
+                  <Nav id="2">
+                    <IconCnt>
+                      <Icon icon={history} />
+                    </IconCnt>
+                    <Text><a href="/user/history">History</a></Text>
+                  </Nav>
+                  <Nav id="3">
+                    <IconCnt>
+                      <Icon icon={ticket} />
+                    </IconCnt>
+                    <Text><a href="/user/newticket">New Ticket</a></Text>
+                  </Nav>
+                  <Nav id="4">
+                    <IconCnt>
+                      <Icon icon={profile} />
+                    </IconCnt>
+                    <Text><a href="/user/profile">Profile</a></Text>
+                  </Nav>
+                  <Nav id="5">
+                    <IconCnt>
+                      <Icon icon={exit} />
+                    </IconCnt>
+                    <Text><a onClick = {this.onLogout} >Logout</a></Text>
+                  </Nav>
+                </SideNav>
+              </Navigation>
+            </AppContainer>
+            </div>
+          );
+        }else{
+          return (
+            <div>
+            <AppContainer>
+              <Navigation>
+                <SideNav
+                  defaultSelectedPath="1"
+                  theme={theme}
+                  onSelect ={this.onItemSelection}>
+                  <Nav id="1">
+                    <IconCnt>
+                      <Icon icon={home} />
+                    </IconCnt>
+                    <Text><a href="/user/home">Home</a></Text>
+                  </Nav>
+                  <Nav id="2">
+                    <IconCnt>
+                      <Icon icon={history} />
+                    </IconCnt>
+                    <Text><a href="/user/history">History</a></Text>
+                  </Nav>
+                  <Nav id="3">
+                    <IconCnt>
+                      <Icon icon={ticket} />
+                    </IconCnt>
+                    <Text><a href="/user/newticket">Ticket</a></Text>
+                  </Nav>
+                  <Nav id="4">
+                    <IconCnt>
+                      <Icon icon={users} />
+                    </IconCnt>
+                    <Text><a href="/user/profile">Users</a></Text>
+                  </Nav>
+                  <Nav id="5">
+                    <IconCnt>
+                      <Icon icon={exit} />
+                    </IconCnt>
+                    <Text><a onClick = {this.onLogout} >Logout</a></Text>
+                  </Nav>
+                </SideNav>
+              </Navigation>
+            </AppContainer>
+            </div>
+          );
+        }
       }
   }
 }

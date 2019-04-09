@@ -11,7 +11,6 @@ import {
 import Contact from "./components/Contact";
 import Login from "./components/Login";
 import NavBar from "./components/NavBar";
-import Dashboard from "./components/Dashboard";
 import AppNavigation from "./components/AppNavigation";
 import Profile from "./components/Link/Profile";
 import History from "./components/Link/History";
@@ -34,7 +33,7 @@ class App extends Component {
   componentDidMount(){
     const token = localStorage.getItem('jwt')
 
-    if (!!token){
+    if (token){
       this.setState({
         loggedIn: true
       })
@@ -63,11 +62,6 @@ class App extends Component {
                 <Switch>
                   <Route path="/login" component={Login} />
                   <Route path="/contact" component={Contact} />
-                  <Route path="/user/dashboard" component={Dashboard} />
-                  <Route path="/user/profile" component={Profile} />
-                  <Route path="/user/tickets" component={Ticket} />
-                  <Route path="/user/history" component={History} />
-                  <Route path="/user/newticket" component={NewTicket} />
                 </Switch>
               </div>
             </Router>
@@ -82,9 +76,8 @@ class App extends Component {
                 <Switch>
                   <Route path="/login" component={Login} />
                   <Route path="/contact" component={Contact} />
-                  <Route path="/user/dashboard" component={Dashboard} />
+                  <Route path="/user/home" component={Ticket} />
                   <Route path="/user/profile" component={Profile} />
-                  <Route path="/user/tickets" component={Ticket} />
                   <Route path="/user/history" component={History} />
                   <Route path="/user/newticket" component={NewTicket} />
                 </Switch>
