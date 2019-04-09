@@ -2,9 +2,8 @@ import React from "react";
 import { SideNav, Nav } from "react-sidenav";
 import styled from "styled-components";
 
-import { LeftContainer, AppContainer, Navigation } from "./containers";
-// import logout from "./utils/authHelper"
-
+import { AppContainer, Navigation } from "./containers";
+import { Redirect } from "react-router-dom";
 
 import { Icon } from "react-icons-kit";
 import { dashboard } from "react-icons-kit/fa/dashboard";
@@ -34,6 +33,7 @@ export default class AppNavigation extends React.Component {
     super(props);
     this.state={
       active: null,
+      redirect: false
     }
     this.onItemSelection = this.onItemSelection.bind(this);
     this.onLogout = this.onLogout.bind(this);
@@ -45,59 +45,66 @@ export default class AppNavigation extends React.Component {
 
   onLogout = () => {
     localStorage.clear();
+    console.log('logout')
+    this.setState({
+      redirect: true
+    })
   }
 
   render() {
       console.log(this.state.active)
-    return (
-      <div>
-      <AppContainer>
-        <Navigation>
-          <SideNav
-            defaultSelectedPath="1"
-            theme={theme}
-            onSelect ={this.onItemSelection}
-          >
-            <Nav id="1">
-              <IconCnt>
-                <Icon icon={dashboard} />
-              </IconCnt>
-              <Text><a href="/user/dashboard">Dashboard</a></Text>
-            </Nav>
-            <Nav id="2">
-              <IconCnt>
-                <Icon icon={users} />
-              </IconCnt>
-              <Text><a href="/user/tickets">Tickets</a></Text>
-            </Nav>
-            <Nav id="3">
-              <IconCnt>
-                <Icon icon={shoppingCart} />
-              </IconCnt>
-              <Text><a href="/user/history">History</a></Text>
-            </Nav>
-            <Nav id="4">
-              <IconCnt>
-                <Icon icon={users} />
-              </IconCnt>
-              <Text><a href="/user/newticket">New Ticket</a></Text>
-            </Nav>
-            <Nav id="5">
-              <IconCnt>
-                <Icon icon={circleO} />
-              </IconCnt>
-              <Text><a href="/user/profile">Profile</a></Text>
-            </Nav>
-            <Nav id="6">
-              <IconCnt>
-                <Icon icon={cubes} />
-              </IconCnt>
-              <Text><a onClick = {this.onLogout} >Logout</a></Text>
-            </Nav>
-          </SideNav>
-        </Navigation>
-      </AppContainer>
-      </div>
-    );
+      if (this.state.redirect == true) {
+        return <Redirect to='/login'/>;
+      }else{
+        return (
+          <div>
+          <AppContainer>
+            <Navigation>
+              <SideNav
+                defaultSelectedPath="1"
+                theme={theme}
+                onSelect ={this.onItemSelection}>
+                <Nav id="1">
+                  <IconCnt>
+                    <Icon icon={dashboard} />
+                  </IconCnt>
+                  <Text><a href="/user/dashboard">Dashboard</a></Text>
+                </Nav>
+                <Nav id="2">
+                  <IconCnt>
+                    <Icon icon={users} />
+                  </IconCnt>
+                  <Text><a href="/user/tickets">Tickets</a></Text>
+                </Nav>
+                <Nav id="3">
+                  <IconCnt>
+                    <Icon icon={shoppingCart} />
+                  </IconCnt>
+                  <Text><a href="/user/history">History</a></Text>
+                </Nav>
+                <Nav id="4">
+                  <IconCnt>
+                    <Icon icon={users} />
+                  </IconCnt>
+                  <Text><a href="/user/newticket">New Ticket</a></Text>
+                </Nav>
+                <Nav id="5">
+                  <IconCnt>
+                    <Icon icon={circleO} />
+                  </IconCnt>
+                  <Text><a href="/user/profile">Profile</a></Text>
+                </Nav>
+                <Nav id="6">
+                  <IconCnt>
+                    <Icon icon={cubes} />
+                  </IconCnt>
+                  <Text><a onClick = {this.onLogout} >Logout</a></Text>
+                </Nav>
+              </SideNav>
+            </Navigation>
+          </AppContainer>
+          </div>
+        );
+      }
   }
 }
