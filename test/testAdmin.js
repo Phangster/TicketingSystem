@@ -8,12 +8,9 @@ describe('Admin Suite', function() {
     /*  
         Test Case 1:
         Admin login
-
         POST /api/auth/login
-
         Pre-condition: 
         1) Have an account with ACNAPI
-
         Post-condition: 
         1) Successfully logged in
     */
@@ -43,11 +40,9 @@ describe('Admin Suite', function() {
     /*
         Test Case 2:
         View all tickets
-
         Pre-condition:
         1) Admin account
         2) To show that admin can view all ticket. Need more than 1 account
-
         Post-condition:
         1) Return all tickets
         2) Check that there are 2 accounts.
@@ -56,13 +51,14 @@ describe('Admin Suite', function() {
    it('View everyone\'s tickets, GET /api/admin/tickets', function(done){
         request(app)
         .get('/api/admin/tickets')
-        .set('Accept', 'application/json')
+        // .set('Accept', 'application/json')
         .set('Authorization', token)
-        .expect('Content-Type', 'application/json; charset=utf-8')
+        // .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(200)
         .end((err, res)=> {
-            console.log(res.body)
-            expect(res.body).to.have.lengthOf(2);
+            // console.log("/api/admin/tickets")
+            // console.log(res.body)
+            expect(res.body).to.have.lengthOf.within(2,4);
             if (err) return done(err);
             done();
         });
@@ -71,12 +67,10 @@ describe('Admin Suite', function() {
     /*
         Test Case 3:
         Filter tickets by email
-
         Pre-condition:
         1) Admin account
         2) To show that admin can filter tickets by email. Need more than 1 account
         3) Filtered account has 1 ticket
-
         Post-condition:
         1) Return 1 ticket
         2) Check if returned json has the same email address of the filter.
@@ -91,52 +85,34 @@ describe('Admin Suite', function() {
         .expect(200)
         .end((err, res)=> {
             // console.log(res.body)
-            expect(res.body.email).to.equal('seeyijie.74@gmail.com');
-            expect(res.body.tickets).to.have.lengthOf(1);
+            expect(res.body[0].email).to.equal('seeyijie.74@gmail.com');
+            expect(res.body).to.have.lengthOf(1);
             if (err) return done(err);
             done();
         });
     });
 
-    /*
-        Test Case 4:
-        Update ticket
+    it('Update ticket status, PUT /api/admin/tickets?status=reviewing&email=seeyijie.74@gmail.com', function(done){
 
-        Pre-condition:
-        1) Admin account
-        2) To show that admin can update label and status.
-        3) Requires email of the ticket
-
-        Post-condition:
-        1) Return updated label and status
-        2) Check if returned json has the same email address of the filter.
-    */
-   // Not working; broken
-   it.skip('Update ticket status, PUT /api/admin/tickets?status=resolved&email=seeyijie.74@gmail.com', function(done){
-        ticketThatNeedsToUpdate = {
-            email: "seeyijie.74@gmail.com",
-            // "tickets.status": "new",
-            "tickets.content": "I want to have access to the API demo!",
-            "tickets.label":"API Demo Services"
+        update = {
+            content: "Hello,I would like to find out more about the API for chat bots and databases for a new project.Regards,Tom Lee",
+            status: "new",
+            label: "API Demo Services"
         }
-        console.log(ticketThatNeedsToUpdate)
         request(app)
-        .put('/api/admin/tickets?status=resolved&email=seeyijie.74@gmail.com')
-        .send(ticketThatNeedsToUpdate)
-        .query({
-            email: 'seeyijie.74@gmail.com',
-            status: 'resolve'
-        })
+        .put('/api/admin/tickets?status=reviewing&email=seeyijie.74@gmail.com')
+        .set('Accept', 'application/json')
         .set('Authorization', token)
+        .send(update)
+        // .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(200)
         .end((err, res)=> {
-            console.log(res.body)
-            // expect(res.body.email).to.equal('seeyijie.74@gmail.com');
-            // expect(res.body.tickets).to.have.lengthOf(1);
+            // console.log(res.body)
+            expect([res.body]).to.have.lengthOf(1); // returns the document before changed on success
             if (err) return done(err);
             done();
         });
+    });
 
-   });
 
 });
