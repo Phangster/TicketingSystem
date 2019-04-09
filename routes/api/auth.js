@@ -13,7 +13,7 @@ const validateRegisterInput = require('../../validation/registration');
 const validateLoginInput = require('../../validation/login');
 
 
-// Load User model:
+// Load model:
 const User = require('../../models/User');
 const Ticket = require('../../models/Ticket');
 

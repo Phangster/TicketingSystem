@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const auth = require('./routes/api/auth');
 const tickets = require('./routes/api/tickets')
 const admin = require('./routes/api/admin')
+const comments = require('./routes/api/comments')
+
 const passport = require('passport');
 const cors = require('cors');
 
@@ -43,7 +45,8 @@ app.get('/', (req, res) => console.log('Hello World!'));
 
 app.use('/api/auth', auth);
 app.use('/api/tickets', tickets);
-app.use('/api/admin', admin)
+app.use('/api/admin', admin);
+app.use('/api/comments', comments);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
 

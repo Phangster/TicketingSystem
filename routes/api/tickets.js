@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-const keys = require('../../config/keys');
 const passport = require('passport');
 const express = require('express');
 const jwt_decode = require('jwt-decode');
@@ -7,8 +5,7 @@ const jwt_decode = require('jwt-decode');
 
 const router = express.Router();
 
-// Load User model:
-const User = require('../../models/User');
+// Load Ticket model:
 const Ticket = require('../../models/Ticket');
 
 
