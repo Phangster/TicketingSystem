@@ -194,7 +194,7 @@ class Contact extends Component {
       <div>
         <Modal isOpen={this.state.modal}>
           <Container>
-          <ModalHeader toggle={this.toggle}>
+          <ModalHeader data-test='contact' toggle={this.toggle}>
               <h4>Contact Us</h4>
             </ModalHeader>
             <ModalBody>

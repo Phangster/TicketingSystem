@@ -110,7 +110,7 @@ class Login extends Component {
         })
     }
     
-    console.log(this.state.isAuthenticated)
+    // console.log(this.state.isAuthenticated)
       // axios.get('/api/auth/current', token).then((err, res)=>console.log(res))
   }
 
