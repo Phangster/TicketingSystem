@@ -90,7 +90,7 @@ describe('Admin Suite', function() {
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(200)
         .end((err, res)=> {
-            console.log(res.body)
+            // console.log(res.body)
             expect(res.body.email).to.equal('seeyijie.74@gmail.com');
             expect(res.body.tickets).to.have.lengthOf(1);
             if (err) return done(err);
@@ -98,5 +98,45 @@ describe('Admin Suite', function() {
         });
     });
 
+    /*
+        Test Case 4:
+        Update ticket
+
+        Pre-condition:
+        1) Admin account
+        2) To show that admin can update label and status.
+        3) Requires email of the ticket
+
+        Post-condition:
+        1) Return updated label and status
+        2) Check if returned json has the same email address of the filter.
+    */
+   it('Update ticket status, PUT /api/admin/tickets?status=resolved&email=seeyijie.74@gmail.com', function(done){
+
+        ticketThatNeedsToUpdate = {
+            email: "seeyijie.74@gmail.com",
+            // "tickets.status": "new",
+            "tickets.content": "I want to have access to the API demo!",
+            "tickets.label":"API Demo Services"
+        }
+        console.log(ticketThatNeedsToUpdate)
+        request(app)
+        .put('/api/admin/tickets?status=resolved&email=seeyijie.74@gmail.com')
+        .send(ticketThatNeedsToUpdate)
+        .query({
+            email: 'seeyijie.74@gmail.com',
+            status: 'resolve'
+        })
+        .set('Authorization', token)
+        .expect(200)
+        .end((err, res)=> {
+            console.log(res.body)
+            // expect(res.body.email).to.equal('seeyijie.74@gmail.com');
+            // expect(res.body.tickets).to.have.lengthOf(1);
+            if (err) return done(err);
+            done();
+        });
+
+   });
 
 });

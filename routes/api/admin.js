@@ -62,11 +62,13 @@ router.put('/tickets', passport.authenticate('jwt', {session: false}), (req, res
     }
 
     let query = {
-        _id: decoded.id,
+        // Own id
+        // _id: decoded.id, 
+        email: req.query.email,
         "tickets.content": req.body.content,
-        "tickets.label" : req.body.label
+        "tickets.label" : req.body.label,
+        "tickets.status" : req.body.status
     }
-
 
     let updated = {
         "tickets.$.status": (!!req.query.status ? req.query.status : req.body.status),

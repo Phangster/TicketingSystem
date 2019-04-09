@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
-const createUserAccount = async()=>{
+const createUserAccount =()=>{
     // Creating a fake user
     userB = {
       name: "Tom Lee",
@@ -34,7 +34,7 @@ const createUserAccount = async()=>{
   });  
 }
 
-const createAdminAccount = async ()=>{
+const createAdminAccount = ()=>{
     // Creating a fake user
     userC = {
       name: "Yi Jie",
