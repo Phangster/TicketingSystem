@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { LeftContainer, DashboardContainer, StatusDist } from "../containers";
 
-import { LeftContainer, DashboardContainer } from "../containers";
-
-export default class Ticket extends Component{
+//TODO - change ticket status and update database from processing to done, automatically it will be push to history
+export default class Tickets extends Component{
     constructor(props){
         super(props);
         this.state={
-            tickets: []
+            tickets:[]
         };
     }
-// TODO - filter tickets by status done in tickets
     componentDidMount(){
         const token = localStorage.getItem('jwt')
-        axios.get('http://localhost:8080/api/tickets', {headers: {Authorization: `${token}`}})
-            .then(res=> {
-                this.setState({ tickets:res.data });
-                console.log(this.state.tickets)
-                return res.data
-            })
-
+        axios.get('http://localhost:8080/api/admin/tickets', {headers: {Authorization: `${token}`}})
+        .then(res=> {
+            this.setState({ tickets:res.data });
+            console.log(this.state.tickets)
+            return res.data
+        })
     }
 
     render(){
@@ -27,9 +25,9 @@ export default class Ticket extends Component{
             <div>
                 <LeftContainer>
                     <DashboardContainer>
-                        <h1>Ticket</h1>
+                        <h1>Admin view All Tickets</h1>
                         <div class="ui cards">
-                        {this.state.tickets.done.map((p,i) => {
+                        {this.state.tickets.map((p,i) => {
                             return(
                                 <div class="card">
                                     <div class="content">
@@ -37,7 +35,9 @@ export default class Ticket extends Component{
                                         <div class="meta">{i}</div>
                                         <div class="description">{p.content}</div>
                                     </div>
-                                    <a class="ui red label">Done</a>
+                                    <StatusDist>
+                                    {button}
+                                    </StatusDist>
                                 </div>
                             )   
                         })}

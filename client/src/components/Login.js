@@ -117,7 +117,7 @@ class Login extends Component {
 
   render() {
     if (this.state.redirect === true){
-      return <Redirect to="/user/dashboard"/>
+      return <Redirect to="/user/home"/>
     }
     else {
       const {errors} = this.state;

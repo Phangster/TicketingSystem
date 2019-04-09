@@ -13,14 +13,31 @@ export default class Ticket extends Component{
 
     componentDidMount(){
         const token = localStorage.getItem('jwt')
-        axios.get('http://localhost:8080/api/tickets/read', {headers: {Authorization: `${token}`}})
+        axios.get('http://localhost:8080/api/tickets', {headers: {Authorization: `${token}`}})
             .then(res=> {
                 this.setState({ tickets:res.data });
                 console.log(this.state.tickets)
                 return res.data
             })
     }
-    
+
+    //Delete function for deleting the ticket on the user side
+    handleDelete(){
+        // const token = localStorage.getItem('jwt')
+        // axios.get('http://localhost:8080/api/delete', {headers: {Authorization: `${token}`}})
+        //     .then(res=> {
+        //         this.setState({ tickets:res.data });
+        //         console.log(this.state.tickets)
+        //         return res.data
+        //     })
+        console.log("delete successful")
+
+    }
+
+    handleEdit(){
+        console.log("editing")
+        //redirect to an edit page form for submission
+    }
     render(){
         let button;
         if (this.state.status == "new"){
@@ -38,6 +55,11 @@ export default class Ticket extends Component{
                             return(
                                 <div class="card">
                                     <div class="content">
+                                    <div>
+                                        <i class="x icon" onClick={this.handleDelete}></i>
+                                        <button class="ui blue button" onClick={this.handleEdit}>Edit</button>
+                                    </div>
+                                    <p></p>
                                         <div class="header">{p.label}</div>
                                         <div class="meta">{i}</div>
                                         <div class="description">{p.content}</div>
