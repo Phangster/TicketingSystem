@@ -81,10 +81,11 @@ class Login extends Component {
 
         console.log(decoded)
         // this.props.history.push('/user/dashboard');
+        // this.setState({
+        //   redirect: true
+        // })
+        window.location = "/user/dashboard"
 
-    })
-    this.setState({
-      redirect: true
     })
   }
 

@@ -28,7 +28,7 @@ describe('Admin Suite', function() {
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(200)
         .end((err, res)=> {
-            // console.log(res.body)
+            console.log(res.body)
             expect(res.body.token).is.a('string');
             token = res.body.token;
             
