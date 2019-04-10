@@ -1,14 +1,22 @@
 const sinon = require('sinon');
 const User = require('../models/User');
 const Ticket = require('../models/Ticket');
+const Comment = require('../models/Comment');
 const {createAdminAccount, createUserAccount} = require('./testHelper');
 
 let sandbox;
 
 before(function(done){
-    User.deleteMany({}, (err,res)=> console.log(`Collection cleared! ${res.deletedCount} documents are deleted.`))
+    User.deleteMany({}, (err,res)=> console.log(`User collection cleared! ${res.deletedCount} documents are deleted.`))
         .then(res=> {
-            Ticket.deleteMany({}).then((err,res)=>console.log(res)).catch(err=>console.log(err))
+            Ticket.deleteMany({})
+                .then(res=>res)
+                .catch(err=>console.log(err))
+        })
+        .then(res=>{
+            Comment.deleteMany({})
+                .then(res=>res)
+                .catch(err=>console.log(err))
         })
         .then(res => createUserAccount())
         .then(res => createAdminAccount())

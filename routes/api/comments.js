@@ -25,22 +25,22 @@ router.get('/test', passport.authenticate('jwt', {session: false}), (req, res) =
 
 router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
     const decoded = jwt_decode(req.headers.authorization)
-    // find ticketId
-    // getTicketId
     newComment = new Comment({
         userId: decoded.id,
         name: decoded.name,
         message: req.body.message
     });
 
-
+    // Ticket takes the ticket AUTHOR name as a parameter
+    // Have to split between admin and non-admin api for this case to narrow down the search.
+    // This works provided that I dont know another client's content.
     comment = Ticket.findOne({content: req.body.content})
             .then(ticket=>{
                 // console.log(newComment)
                 // console.log(ticket)
                 newComment.ticketId = ticket.id
                 newComment.message = req.body.message
-                newComment.save().then(comment=>console.log(comment)).catch(err=>console.log(err))
+                newComment.save().then(comment=>comment).catch(err=>console.log(err))
             })
 
     res.send(newComment);
@@ -52,14 +52,14 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 
 router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
     let ticketId;
-    
+    const content = req.query.content;
     Ticket.aggregate([
         {$match:{
-            content: req.body.content
+            content: content
         }}
     ], function(err, result){
             // console.log("Ticket ID: " + result[0]._id)
-            ticketId = result[0]._id
+            const ticketId = result[0]._id
             // console.log(ticketId);
 
             Comment.aggregate([
