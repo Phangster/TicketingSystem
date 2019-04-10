@@ -181,4 +181,53 @@ describe('Non-Admin Suite', function() {
 
     })
 
+    it('Add new comments to ticket', function(done){
+        
+        comment = {
+            message: "I would also be interested in enterprise solution and follow up support",
+            content: "Hi I would like to try the sandbox chatbot API for PwC Singapore"
+        }
+        request(app)
+        .post('/api/comments')
+        .set('Accept', 'application/json')
+        .set('Authorization', token)
+        .send(comment)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect(200)
+        .end((err, res)=>{
+            console.log(res.body)
+            // assert ticketId if possible
+            expect(res.body.name).to.eql("Tom Lee");
+            expect(res.body.message).to.eql("I would also be interested in enterprise solution and follow up support");
+            if (err) return done(err);
+            done();
+            
+        })
+
+    })
+
+    it('View all comments of a ticket with that content name' , function(done){
+        // ticket = {
+        //     content: "Hi I would like to try the sandbox chatbot API for PwC Singapore"
+        // }
+        // where content is used as a query string
+        // /api/comments?content=Hi I would like to try the sandbox chatbot API for PwC Singapore
+        // Fill up the space with %20 automatically
+        request(app)
+        .get('/api/comments?content=Hi%20I%20would%20like%20to%20try%20the%20sandbox%20chatbot%20API%20for%20PwC%20Singapore')
+        .set('Accept', 'application/json')
+        .set('Authorization', token)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect(200)
+        .end((err, res)=>{
+            expect(res.body).to.have.lengthOf(1);
+            expect(res.body).to.be.an('array');
+            // assert ticketId if possible
+            if (err) return done(err);
+            done();
+            
+        })
+
+    })
+
 });
