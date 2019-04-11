@@ -34,6 +34,12 @@ export default class Ticket extends Component{
 
     }
 
+    handleDone(){
+        const token = localStorage.getItem('jwt')
+        axios.post('http://localhost:8080/api/tickets', {headers: {Authorization: `${token}`}}, {status: "done"})
+        
+    }
+
     handleEdit(){
         console.log("editing")
         //redirect to an edit page form for submission
@@ -58,6 +64,7 @@ export default class Ticket extends Component{
                                     <div>
                                         <i class="x icon" onClick={this.handleDelete}></i>
                                         <button class="ui blue button" onClick={this.handleEdit}>Edit</button>
+                                        <button class="ui blue orange" onClick={this.handleDone}>Done</button>
                                     </div>
                                     <p></p>
                                         <div class="header">{p.label}</div>
