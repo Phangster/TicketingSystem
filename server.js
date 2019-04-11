@@ -13,8 +13,8 @@ const port = process.env.PORT || 8080;
 
 
 // Config DB
-// test.mongoURI or dev.mongoURI
-const db = require('./config/keys').dev.mongoURI;
+// configure this to test for dev by changing .test.mongoURI or .dev.mongoURI
+const db = require('./config/keys').test.mongoURI;
 
 const app = express();
 // Body-parser middleware

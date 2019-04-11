@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const sendgrid = require('../../services/sendgrid');
+const sendgridStatus = require('../../services/sendgrid');
 const mongoose = require('mongoose');
 const jwt_decode = require('jwt-decode');
 const passport = require('passport');
@@ -34,6 +34,8 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
     // Ticket takes the ticket AUTHOR name as a parameter
     // Have to split between admin and non-admin api for this case to narrow down the search.
     // This works provided that I dont know another client's content.
+    
+    // Implement it such that only admin can reply to another user's ticket
     comment = Ticket.findOne({content: req.body.content})
             .then(ticket=>{
                 // console.log(newComment)

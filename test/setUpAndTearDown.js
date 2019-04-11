@@ -1,10 +1,7 @@
-const sinon = require('sinon');
 const User = require('../models/User');
 const Ticket = require('../models/Ticket');
 const Comment = require('../models/Comment');
 const {createAdminAccount, createUserAccount} = require('./testHelper');
-
-let sandbox;
 
 before(function(done){
     User.deleteMany({}, (err,res)=> console.log(`User collection cleared! ${res.deletedCount} documents are deleted.`))

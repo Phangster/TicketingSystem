@@ -49,9 +49,7 @@ export default class AppNavigation extends React.Component {
   onLogout = () => {
     localStorage.clear();
     console.log('logout')
-    this.setState({
-      redirect: true
-    })
+    window.location = "/";
   }
 
   render() {
