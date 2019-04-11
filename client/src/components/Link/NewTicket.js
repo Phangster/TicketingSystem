@@ -11,24 +11,32 @@ export default class NewTicket extends Component{
             content:"",
             label:""
         };
-        this.handleChange = this.handleChange.bind(this);
+        this.handleContent = this.handleContent.bind(this);
+        this.handleLabel = this.handleLabel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(evt) {
-        this.setState({ [evt.target.name]: evt.target.value });
+    handleContent (e) {
+        this.setState({
+            content: e.target.value
+        })
     }
-    
+    handleLabel (e){
+        this.setState({
+            label: e.target.value
+        })
+    }
+
     handleSubmit() {
-        const ticketData = {
-            content:this.state.content,
-            label:this.state.label
-        }
         axios
-        .post('/api/tickets', {ticketData})
+        .post('/api/tickets', {
+            content: this.state.content,
+            label: this.state.label
+        })
         .then(res => {
           console.log(res.data)
-        })
+          window.location = "/user/home"
+        }).then 
         .catch(err => {
           console.log(err.response.data)
         });
@@ -41,14 +49,43 @@ export default class NewTicket extends Component{
             <div>
             <LeftContainer>
                 <DashboardContainer>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                    Content:
-                    <textarea type="text" name="content" onChange={this.handleChange} />
-                    Label:
-                    <input type="text" name="label" onChange={this.handleChange} />
-                    </label>
-                    <input type="submit" value="Submit" />
+                <h1>Create a New Ticket</h1>
+                <form class="ui form" onSubmit={this.handleSubmit}>
+                <div class="field">
+                    <label>Content:</label>
+                    <textarea type="text" name="content" onChange={this.handleContent} />
+                </div>
+                <div class="field">
+                    <label>Label:</label>
+                    <select name="label" onChange={this.handleLabel} class="ui fluid dropdown">
+                        <option value="API DevOps">API DevOps</option>
+                        <option value="Chart as a Service">Chart as a Service</option>
+                        <option value="Aesop">Aesop</option>
+                        <option value="Travel Marketplace">Travel Marketplace</option>
+                        <option value="Banking Lifestyle App">Banking Lifestyle App</option>
+                        <option value="AR Car Visualizer">AR Car Visualizer</option>
+                        <option value="AR Car Manual">AR Car Manual</option>
+                        <option value="AR Gamification">AR Gamification</option>
+                        <option value="AR Theatre">AR Theatre</option>
+                        <option value="AR Menu">AR Menu</option>
+                        <option value="AI Wealth Manager">AI Wealth Manager</option>
+                        <option value="Multilingual Chatbot">Multilingual Chatbot</option>
+                        <option value="AI Translator">AI Translator</option>
+                        <option value="Digital Butler">Digital Butler</option>
+                        <option value="Video Analytics">Video Analytics</option>
+                        <option value="Sentiments Analysis">Sentiments Analysis</option>
+                        <option value="ACNAPI MFA Login">ACNAPI MFA Login</option>
+                        <option value="Ticketing Platform">Ticketing Platform</option>
+                        <option value="Smart Lock">Smart Lock</option>
+                        <option value="Smart Home">Smart Home</option>
+                        <option value="Smart Parking">Smart Parking</option>
+                        <option value="Smart Restaurant">Smart Restaurant</option>
+                        <option value="Queuing System">Queuing System</option>
+                        <option value="IoT Led Wall">IoT Led Wall</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <button class="ui teal button">Submit</button>
                 </form>
                 </DashboardContainer>
             </LeftContainer>

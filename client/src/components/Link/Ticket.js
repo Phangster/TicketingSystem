@@ -7,18 +7,27 @@ export default class Ticket extends Component{
     constructor(props){
         super(props);
         this.state={
-            tickets: []
+            tickets: [],
+            comments: []
         };
     }
 
     componentDidMount(){
         const token = localStorage.getItem('jwt')
+        
         axios.get('http://localhost:8080/api/tickets', {headers: {Authorization: `${token}`}})
             .then(res=> {
                 this.setState({ tickets:res.data });
                 console.log(this.state.tickets)
                 return res.data
             })
+
+        axios.get('http://localhost:8080/api/comments', {headers: {Authorization: `${token}`}})
+        .then(res=> {
+            this.setState({ comments:res.data });
+            console.log(this.state.comments)
+            return res.data
+        })
     }
 
     //Delete function for deleting the ticket on the user side
@@ -37,7 +46,7 @@ export default class Ticket extends Component{
     handleDone(){
         const token = localStorage.getItem('jwt')
         axios.post('http://localhost:8080/api/tickets', {headers: {Authorization: `${token}`}}, {status: "done"})
-        
+
     }
 
     handleEdit(){
@@ -63,8 +72,6 @@ export default class Ticket extends Component{
                                     <div class="content">
                                     <div>
                                         <i class="x icon" onClick={this.handleDelete}></i>
-                                        <button class="ui blue button" onClick={this.handleEdit}>Edit</button>
-                                        <button class="ui blue orange" onClick={this.handleDone}>Done</button>
                                     </div>
                                     <p></p>
                                         <div class="header">{p.label}</div>
@@ -74,6 +81,17 @@ export default class Ticket extends Component{
                                     <StatusDist>
                                     {button}
                                     </StatusDist>
+                                    <div>
+                                        <button class="ui yellow button" onClick={this.handleEdit}>Edit</button>
+                                        <button class="ui olive button" onClick={this.handleDone}>Done</button>
+                                        <select class="ui dropdown">
+                                            <option value="">Comment</option>
+                                            {this.state.comments.map((p,i) => {
+                                                return(<option value={i}>{}</option>)
+                                            })}
+                                        </select>
+                                        {/* <button class="ui blue button" onClick={this.handleComment}>Comment</button> */}
+                                    </div>
                                 </div>
                             )   
                         })}

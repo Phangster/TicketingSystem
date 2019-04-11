@@ -54,10 +54,10 @@ export default class AppNavigation extends React.Component {
 
   render() {
       console.log(this.state.active)
-      if (this.state.redirect == true) {
+      if (this.state.redirect === true) {
         return <Redirect to='/'/>;
       }else{
-        if ( this.state.admin == false ){
+        if ( this.state.admin === false ){
           return (
             <div>
             <AppContainer>

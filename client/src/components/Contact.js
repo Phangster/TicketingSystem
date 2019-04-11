@@ -297,8 +297,30 @@ class Contact extends Component {
                     name="options" 
                     id="options">
                       <option value="API DevOps">API DevOps</option>
-                      <option value="Chart as a Service">Chart as a Service</option>
-                    < option value="Recruitment Platform">Recruitment Platform</option>
+                        <option value="Chart as a Service">Chart as a Service</option>
+                        <option value="Aesop">Aesop</option>
+                        <option value="Travel Marketplace">Travel Marketplace</option>
+                        <option value="Banking Lifestyle App">Banking Lifestyle App</option>
+                        <option value="AR Car Visualizer">AR Car Visualizer</option>
+                        <option value="AR Car Manual">AR Car Manual</option>
+                        <option value="AR Gamification">AR Gamification</option>
+                        <option value="AR Theatre">AR Theatre</option>
+                        <option value="AR Menu">AR Menu</option>
+                        <option value="AI Wealth Manager">AI Wealth Manager</option>
+                        <option value="Multilingual Chatbot">Multilingual Chatbot</option>
+                        <option value="AI Translator">AI Translator</option>
+                        <option value="Digital Butler">Digital Butler</option>
+                        <option value="Video Analytics">Video Analytics</option>
+                        <option value="Sentiments Analysis">Sentiments Analysis</option>
+                        <option value="ACNAPI MFA Login">ACNAPI MFA Login</option>
+                        <option value="Ticketing Platform">Ticketing Platform</option>
+                        <option value="Smart Lock">Smart Lock</option>
+                        <option value="Smart Home">Smart Home</option>
+                        <option value="Smart Parking">Smart Parking</option>
+                        <option value="Smart Restaurant">Smart Restaurant</option>
+                        <option value="Queuing System">Queuing System</option>
+                        <option value="IoT Led Wall">IoT Led Wall</option>
+                        <option value="Other">Other</option>
                   </select>
                   </FormGroup>
                   </Col>
