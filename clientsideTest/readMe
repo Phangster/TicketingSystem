@@ -1,0 +1,4 @@
+In order to run test cases:
+1) npm run dev in terminal of VS code with ticketingSystem folder - server needs to be up before testing can occur 
+2) localhost:3000 will be launched 
+3) proceed to Eclipse, go to Selenium to write/run test cases
