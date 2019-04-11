@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const generator = require('generate-password');
 const passport = require('passport');
-const sendgrid = require('../../services/sendgrid');
+const sendgridWelcome = require('../../services/sendgrid');
 const jwt_decode = require('jwt-decode');
 const mongoose = require('mongoose');
 // Load Input Validation:
@@ -87,7 +87,7 @@ router.post('/register', (req, res) => {
 
                 // console.log(newTicket)
 
-                sendgrid(newUser.email, password);
+                sendgridWelcome(newUser.email, password);
 
                 bcrypt.genSalt(10, (err, salt) => {
                     bcrypt.hash(newUser.password, salt, (err, hash)=>{

@@ -45,6 +45,7 @@ class App extends Component {
       this.setState({
         loggedIn: false
       })
+      // window.location = "/"
       console.log("Hi Chloe")
     }
 

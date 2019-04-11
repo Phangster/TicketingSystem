@@ -27,7 +27,7 @@ describe('Non-Admin Suite', function() {
     */
 
 
-    it.skip('Submitting of contact form', function(done) {
+    it('Submitting of contact form', function(done) {
 
         // afterEach("Submitting of contact form", function(){
         //     User.findOneAndDelete({email: "seeyijie.94@gmail.com"}, (err, res)=> console.log(`${res} documents are deleted.`))
@@ -93,6 +93,8 @@ describe('Non-Admin Suite', function() {
         .end((err, res)=> {
             // console.log(res.body)
             expect(res.body.token).is.a('string');
+
+            // JWT token saved to be used for the subsequent test cases
             token = res.body.token;
             
             if (err) return done(err);
@@ -108,8 +110,10 @@ describe('Non-Admin Suite', function() {
         1) Got the JWT token
         Post condition:
         1) See all tickets belonging to the user
+
+        Never view comments in that particular ticket?
     */
-    it('View his/her own ticket with GET /api/auth/current', function(done){
+    it('View his/her own ticket with GET /api/tickets', function(done){
 
         nonAdmin2 = {
             email: "seeyijie.74@gmail.com",
@@ -132,7 +136,7 @@ describe('Non-Admin Suite', function() {
     /*  
         Test Case 4
         Attempts to access protected route meant for admin
-        GET /api/admin tickets
+        GET /api/admin/tickets
         Pre-condition:
         1) Have their JWT token
         Post-condition:

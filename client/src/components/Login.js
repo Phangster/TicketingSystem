@@ -84,7 +84,7 @@ class Login extends Component {
         // this.setState({
         //   redirect: true
         // })
-        window.location = "/user/dashboard"
+        window.location = "/user/home"
 
     })
   }
@@ -117,65 +117,60 @@ class Login extends Component {
 
 
   render() {
-    if (this.state.redirect === true){
-      return <Redirect to="/user/home"/>
-    }
-    else {
-      const {errors} = this.state;
-      const { email, password, formFeedback } = this.state;
-      return (
-        <Container className="App">
-          <h2>Login</h2>
-          <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
-            <Col>
-              <FormGroup>
-                <Label>Username</Label>
-                <Input
-                  type="email"
-                  name="email"
-                  id="exampleEmail"
-                  placeholder="myemail@email.com"
-                  value={ email }
-                  // className={classnames('form-control form-control-lg',{
-                  //   'is-invalid':errors.email
-                  // })}
-                  valid={ this.state.validate.emailState === 'has-success' }
-                  invalid={ this.state.validate.emailState === 'has-danger' }
-                  onChange={ (e) => {
-                              this.validateEmail(e)
-                              this.handleChange(e)
-                            } }
-                />
-                <FormFeedback valid>
-                  {formFeedback.message}
-                </FormFeedback>
-                <FormFeedback>
-                  {formFeedback.message}
-                </FormFeedback>
-                <FormText>Your username is most likely your email.</FormText>
-              </FormGroup>
-            </Col>
-            <Col>
-              <FormGroup>
-                <Label for="examplePassword">Password</Label>
-                <Input
-                  // className={classnames('form-control form-control-lg',{
-                  //   'is-invalid':errors.password
-                  // })}              
-                  type="password"
-                  name="password"
-                  id="examplePassword"
-                  placeholder="********"
-                  value={ password }
-                  onChange={ (e) => this.handleChange(e) }
+    const {errors} = this.state;
+    const { email, password, formFeedback } = this.state;
+    return (
+      <Container className="App">
+        <h2>Login</h2>
+        <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+          <Col>
+            <FormGroup>
+              <Label>Username</Label>
+              <Input
+                type="email"
+                name="email"
+                id="exampleEmail"
+                placeholder="myemail@email.com"
+                value={ email }
+                // className={classnames('form-control form-control-lg',{
+                //   'is-invalid':errors.email
+                // })}
+                valid={ this.state.validate.emailState === 'has-success' }
+                invalid={ this.state.validate.emailState === 'has-danger' }
+                onChange={ (e) => {
+                            this.validateEmail(e)
+                            this.handleChange(e)
+                          } }
               />
-              </FormGroup>
-            </Col>
-            <Button>Submit</Button>
-        </Form>
-        </Container>
-      );
-    }
+              <FormFeedback valid>
+                {formFeedback.message}
+              </FormFeedback>
+              <FormFeedback>
+                {formFeedback.message}
+              </FormFeedback>
+              <FormText>Your username is most likely your email.</FormText>
+            </FormGroup>
+          </Col>
+          <Col>
+            <FormGroup>
+              <Label for="examplePassword">Password</Label>
+              <Input
+                // className={classnames('form-control form-control-lg',{
+                //   'is-invalid':errors.password
+                // })}              
+                type="password"
+                name="password"
+                id="examplePassword"
+                placeholder="********"
+                value={ password }
+                onChange={ (e) => this.handleChange(e) }
+            />
+            </FormGroup>
+          </Col>
+          <Button>Submit</Button>
+      </Form>
+      </Container>
+    );
   }
 }
 
