@@ -14,6 +14,12 @@ describe('Testing cases for new ticket created', () => {
 
     let wrapper;
 
+    it('Name check',()=>{
+        wrapper = shallow(<Contact/>);
+        wrapper.find('Input[type="text"]').simulate('change', {target: {name: 'name', value: 'bryan phang'}});
+        expect(wrapper.state('name')).toEqual('bryan phang');
+    })
+
     it('Email check',()=>{
         wrapper = shallow(<Contact/>);
         wrapper.find('Input[type="email"]').simulate('change', {target: {name: 'email', value: 'mynamebryanphang@gmail.com'}});
@@ -30,6 +36,20 @@ describe('Testing cases for new ticket created', () => {
         const component = shallow(<Contact/>)
         const wrapper = component.find('textarea');
         expect(wrapper.length).toBe(1);
+    })
+
+    it('registering check with right data',()=>{
+        wrapper = shallow(<Contact/>);
+        wrapper.find('Input[type="text"]').simulate('change', {target: {name: 'name', value: 'bryan phang'}});
+        expect(wrapper.length).toBe(1);
+        wrapper.find('Input[type="email"]').simulate('change', {target: {name: 'email', value: 'mynamebryanphang@gmail.com'}});
+        expect(wrapper.length).toBe(1);
+        wrapper.find('Input[type="number"]').simulate('change', {target: {name: 'contact', value: '91023945'}});
+        expect(wrapper.length).toBe(1);
+        wrapper.find('textarea').simulate('change', {target: {name: 'inputMessage', value: 'hello world how do you do my friend'}});
+        expect(wrapper.state('inputMessage')).toBe('hello world how do you do my friend');;
+        wrapper.find('Button').simulate('click');
+        
     })
 
 })

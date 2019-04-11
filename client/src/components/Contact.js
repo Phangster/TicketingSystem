@@ -150,9 +150,9 @@ class Contact extends Component {
       validate.contactState === 'has-success'&&
       validate.messageState === 'has-success'){
 
-      this.setState({
-        selectedOption: e.target.value
-      })  
+      // this.setState({
+      //   selectedOption: e.target.value
+      // })  
 
 
       const newUser = {
@@ -190,6 +190,7 @@ class Contact extends Component {
         if (redirectToReferrer === true) {
             return <Redirect to="/login" />
     }
+    // console.log(this.state);
     return (
       <div>
         <Modal isOpen={this.state.modal}>
@@ -305,7 +306,7 @@ class Contact extends Component {
                   <Col>
                   <FormGroup>
                   <div><Label><span className="red-text">*</span> Your Message</Label></div>
-                    <textarea className="form-control"
+                    <textarea  className="form-control"
                       placeholder="Please let us know which asset you are interested in trying out" 
                       // className={classnames('form-control form-control-lg',{
                       //   'is-invalid':errors.inputMessage
