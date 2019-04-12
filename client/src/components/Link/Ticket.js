@@ -8,7 +8,8 @@ export default class Ticket extends Component{
         super(props);
         this.state={
             tickets: [],
-            comments: []
+            comments: [],
+            content: ''
         };
     }
 
@@ -21,13 +22,6 @@ export default class Ticket extends Component{
                 console.log(this.state.tickets)
                 return res.data
             })
-
-        axios.get('http://localhost:8080/api/comments', {headers: {Authorization: `${token}`}})
-        .then(res=> {
-            this.setState({ comments:res.data });
-            console.log(this.state.comments)
-            return res.data
-        })
     }
 
     //Delete function for deleting the ticket on the user side
@@ -46,7 +40,24 @@ export default class Ticket extends Component{
     handleDone(){
         const token = localStorage.getItem('jwt')
         axios.post('http://localhost:8080/api/tickets', {headers: {Authorization: `${token}`}}, {status: "done"})
+    }
 
+    handleDelete(){
+        const token = localStorage.getItem('jwt')
+        axios.delete('http://localhost:8080/api/tickets', {headers: {Authorization: `${token}`}})
+    }
+
+    handleContentChange(e){
+        this.setState({
+            content: e.target.value
+        })
+        const token = localStorage.getItem('jwt')
+        axios.get('http://localhost:8080/api/comments?content=' + e.target.value, {headers: {Authorization: `${token}`}})
+        .then(res=> {
+            this.setState({ comments:res.data });
+            console.log(this.state.comments)
+            return res.data
+        })
     }
 
     handleEdit(){
@@ -54,6 +65,7 @@ export default class Ticket extends Component{
         //redirect to an edit page form for submission
     }
     render(){
+        console.log(this.state.content)
         let button;
         if (this.state.status == "new"){
             button = <a class="ui green label">New</a>
@@ -83,14 +95,9 @@ export default class Ticket extends Component{
                                     </StatusDist>
                                     <div>
                                         <button class="ui yellow button" onClick={this.handleEdit}>Edit</button>
-                                        <button class="ui olive button" onClick={this.handleDone}>Done</button>
-                                        <select class="ui dropdown">
-                                            <option value="">Comment</option>
-                                            {this.state.comments.map((p,i) => {
-                                                return(<option value={i}>{}</option>)
-                                            })}
-                                        </select>
-                                        {/* <button class="ui blue button" onClick={this.handleComment}>Comment</button> */}
+                                        {/* <button class="ui olive button" onClick={this.handleDone}>Done</button> */}
+                                        <button class="ui red button" onClick={this.handleDelete}>Delete</button>
+                                        <button class="ui blue button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Comment</button>
                                     </div>
                                 </div>
                             )   

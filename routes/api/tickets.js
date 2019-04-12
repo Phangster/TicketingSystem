@@ -54,24 +54,28 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 // @desc    Delete a ticket
 // @access  private
 // Cannot allow them to submit duplicate tickets or it will delete all duplicate tickets
-// router.delete('/delete', passport.authenticate('jwt', {session: false}), (req, res) => {
+router.delete('/delete', passport.authenticate('jwt', {session: false}), (req, res) => {
 
-//     // Decode JWT token from headers
-//     const decoded = jwt_decode(req.headers.authorization)
-//     console.log(decoded)
-//     // if (decoded.isAdmin === false){
-//     //     // console.log("Decoding... isAdmin = " + decoded.isAdmin)
-//     //     // res.status(404).json({error: "Protected route"})    
-//     //     res.send(401);
-//     // }
-//     // else{
-//     User.updateOne({_id: decoded.id}, {$pull: {tickets:{content: req.body.content, label: req.body.label, status: "new"}}}, {multi: true})
-//         .then(posts => {
-//             res.send(posts)
-//             console.log(posts)
-//         })
-//         .catch(err => console.log(err))
-// })
+    // Decode JWT token from headers
+    const decoded = jwt_decode(req.headers.authorization)
+    console.log(decoded)
+    // if (decoded.isAdmin === false){
+    //     // console.log("Decoding... isAdmin = " + decoded.isAdmin)
+    //     // res.status(404).json({error: "Protected route"})    
+    //     res.send(401);
+    // }
+    // else{
+    const id = req.user
+    User.findbyId(id, function (err, user) {
+        console.log(user)
+    })
+    // User.updateOne({_id: decoded.id}, {$pull: {tickets:{content: req.body.content, label: req.body.label, status: "new"}}}, {multi: true})
+    //     .then(posts => {
+    //         res.send(posts)
+    //         console.log(posts)
+    //     })
+    //     .catch(err => console.log(err))
+})
 
 
 module.exports = router
