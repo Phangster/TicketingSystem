@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const generator = require('generate-password');
 const passport = require('passport');
-const sendgridWelcome = require('../../services/sendgrid');
+const {sendgridWelcome} = require('../../services/sendgrid');
 const jwt_decode = require('jwt-decode');
 const mongoose = require('mongoose');
 // Load Input Validation:

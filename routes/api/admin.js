@@ -109,4 +109,42 @@ router.put('/tickets', passport.authenticate('jwt', {session: false}), (req, res
     }
 })
 
+// @route   PUT api/admin/subscribe
+// @params  Add user ObjectId to subscribedBy under Tickets model.
+//          Add ticket ObjectId to subscribeTo under User model.
+// @desc    Get all tickets or by filtering via the query string
+// @access  protected
+router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, res) => {
+    const decoded = jwt_decode(req.headers.authorization)
+    console.log("Admin Status: " + decoded.isAdmin)
+
+    if (decoded.isAdmin === false){
+        res.sendStatus(403);
+        console.log(decoded.isAdmin)
+    }
+    else {
+        // decided to add in email to narrow down the search
+        // under the assumption that there is one ticket that has the same content
+
+        Ticket.findOneAndUpdate({
+            content: req.body.content,
+            email: req.body.email
+        }, 
+        {"$addToSet": {subscribedBy: decoded.id}}).then(data=>{
+            return data._id;
+
+        }).then(ticketId => {
+
+            User.findByIdAndUpdate(decoded.id, {
+                "$addToSet": {subscribeTo: ticketId}
+            }).then(res=>console.log(res)).catch(err=>console.log(err)) // if successful, returns the ticket before the update.
+        })
+        .catch(err=>console.log(err))
+
+        res.status(200).json({msg:"Subscribed"})
+    }
+})
+
+// UNSUBSCRIBE TO BE IMPLEMENTED
+
 module.exports = router
