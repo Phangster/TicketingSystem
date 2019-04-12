@@ -75,6 +75,7 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
 // @route   PUT api/admin/tickets?status=${status}&label=${label}
 // @params  Content, status and label in body for the selected ticket.
 //          Check for a query string. If it exists, edit the ticket based on it.
+//          Must put at least EITHER status or label as query string.
 // @desc    Get all tickets or by filtering via the query strings
 // @access  protected
 

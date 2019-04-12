@@ -63,16 +63,24 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
     ], function(err, result){
             // console.log("Ticket ID: " + result[0]._id)
             console.log(result)
-            const ticketId = result[0]._id
-            // console.log(ticketId);
 
-            Comment.aggregate([
-                {$match:{
-                    ticketId: ticketId
-                }}
-            ], function(err, comments){
-                res.send(comments)
-            })
+            try {
+                const ticketId = result[0]._id
+                // console.log(ticketId);
+
+                Comment.aggregate([
+                    {$match:{
+                        ticketId: ticketId
+                    }}
+                ], function(err, comments){
+                    res.send(comments)
+                })
+        }
+            catch(e){
+                console.log(e)
+                console.log("Cannot find ticket in database.")
+                return res.status(404).send(e);
+            }
     })
 })
 
