@@ -9,8 +9,9 @@ const router = express.Router();
 const Ticket = require('../../models/Ticket');
 
 
-// @route   GET api/tickets/
-// @desc    Read all tickets
+// @route   GET api/tickets
+// @desc    Read all tickets of the logged in user
+// @params  No params required
 // @access  private
 
 router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -24,8 +25,10 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
 
 })
 
-// @route   POST api/tickets/
+// @route   POST api/tickets
 // @desc    Post a tickets
+// @params  Require only content and label. 
+//          Does not require status because it will be set to new by default.
 // @access  private
 
 router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {

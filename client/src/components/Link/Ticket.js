@@ -22,12 +22,12 @@ export default class Ticket extends Component{
                 return res.data
             })
 
-        axios.get('http://localhost:8080/api/comments', {headers: {Authorization: `${token}`}})
-        .then(res=> {
-            this.setState({ comments:res.data });
-            console.log(this.state.comments)
-            return res.data
-        })
+        // axios.get('http://localhost:8080/api/comments', {headers: {Authorization: `${token}`}})
+        // .then(res=> {
+        //     this.setState({ comments:res.data });
+        //     console.log(this.state.comments)
+        //     return res.data
+        // })
     }
 
     //Delete function for deleting the ticket on the user side
