@@ -18,7 +18,7 @@ const User = require('../../models/User');
 const Ticket = require('../../models/Ticket');
 
 // @route   GET api/auth/test
-// @desc    Tests auth route
+// @desc    Tests auth route. Sanity check.
 // @access  Protected
 
 router.get('/test2', (req, res) => {
@@ -35,12 +35,9 @@ router.get('/test2', (req, res) => {
 })
 
 
-router.get('/test', passport.authenticate('jwt', {session: false}), (req, res) => {
-    res.json({msg: 'this works!'});
-})
-
 // @route   POST api/auth/register
-// @desc    Register auth
+// @desc    Register auth.
+// @params  Need these in body: name, email, contact, label, content
 // @access  Public
 router.post('/register', (req, res) => {
 
@@ -119,6 +116,7 @@ router.post('/register', (req, res) => {
 
 // @route   POST api/auth/login
 // @desc    Login User / Returning JWT Token
+// @params  Requires username and password in body
 // @access  Public
 router.post('/login', (req,res) => {
     const {errors, isValid} = validateLoginInput(req.body);
@@ -177,6 +175,7 @@ router.post('/login', (req,res) => {
 
 // @route   GET api/auth/current
 // @desc    Return current user
+// @params  No params required
 // @access  Private
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
     // console.log(req)

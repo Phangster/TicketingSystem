@@ -48,12 +48,13 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
     res.send(newComment);
 })
 
-// @route   GET api/comments
-// @desc    get comments from a ticket content
-// @access  Private
+// @route       GET api/comments/?content=${ticketContent}
+// @desc        Get comments from a ticket content. Ticket content MUST be already in the database, or it will run into errors.
+// @access      Private
+// @example     GET api/comments/?content=Hi%20I%20would%20like%20to%20try%20the%20sandbox%20chatbot%20API%20for%20PwC%20Singapore
+
 
 router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
-    let ticketId;
     const content = req.query.content;
     Ticket.aggregate([
         {$match:{
@@ -61,16 +62,25 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req, res) => {
         }}
     ], function(err, result){
             // console.log("Ticket ID: " + result[0]._id)
-            const ticketId = result[0]._id
-            // console.log(ticketId);
+            console.log(result)
 
-            Comment.aggregate([
-                {$match:{
-                    ticketId: ticketId
-                }}
-            ], function(err, comments){
-                res.send(comments)
-            })
+            try {
+                const ticketId = result[0]._id
+                // console.log(ticketId);
+
+                Comment.aggregate([
+                    {$match:{
+                        ticketId: ticketId
+                    }}
+                ], function(err, comments){
+                    res.send(comments)
+                })
+        }
+            catch(e){
+                console.log(e)
+                console.log("Cannot find ticket in database.")
+                return res.status(404).send(e);
+            }
     })
 })
 
