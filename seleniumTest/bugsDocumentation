@@ -1,0 +1,18 @@
+Ticketing System Bug Documentation 
+
+Bugs documentation for client-side validation 
+File name: fillInForm and explicitWaitLoginForm
+
+Summary: 
+Dashboard page not loaded correctly after logging in
+
+Steps to reproduce:
+Go to the dashboard page with navbar? and show created tickets
+
+Expected result:
+Signing in with correct and wrong password will result in dashboard page with the word "Dashboard"  on the user/dashboard page 
+
+Actual results:
+Only the word 'Dashboard' is shown after signing in, even though the password may be incorrect
+
+
