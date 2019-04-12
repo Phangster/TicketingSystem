@@ -145,4 +145,6 @@ router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, 
     }
 })
 
+// UNSUBSCRIBE TO BE IMPLEMENTED
+
 module.exports = router
