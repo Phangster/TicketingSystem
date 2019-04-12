@@ -26,6 +26,12 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId, 
     ref:  "tickets"
   },
+  subscribeTo: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "tickets"
+    }
+  ],
   date: {
     type: Date,
     default: Date.now
