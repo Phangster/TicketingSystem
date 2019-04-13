@@ -18,6 +18,7 @@ import Ticket from "./components/Link/Ticket";
 import NewTicket from "./components/Link/NewTicket";
 import setAuthToken from "./utils/setAuthToken"
 import isEmpty from "./validation/is-empty"
+import AddComment from './components/Link/AddComment';
 
 
 
@@ -81,6 +82,7 @@ class App extends Component {
                   <Route path="/user/profile" component={Profile} />
                   <Route path="/user/history" component={History} />
                   <Route path="/user/newticket" component={NewTicket} />
+                  <Route path="/user/addcomment" component={AddComment} />
                 </Switch>
               </div>
             </Router>

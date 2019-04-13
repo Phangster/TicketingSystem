@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import AddComment from './AddComment';
+
 import { LeftContainer, DashboardContainer, StatusDist } from "../containers";
 
 export default class Ticket extends Component{
@@ -9,8 +11,10 @@ export default class Ticket extends Component{
         this.state={
             tickets: [],
             comments: [],
-            content: ''
+            content: '',
+            isModalOpen: false  
         };
+        
     }
 
     componentDidMount(){
@@ -48,16 +52,22 @@ export default class Ticket extends Component{
     }
 
     handleContentChange(e){
+        const token = localStorage.getItem('jwt')
+
         this.setState({
             content: e.target.value
         })
-        const token = localStorage.getItem('jwt')
+
         axios.get('http://localhost:8080/api/comments?content=' + e.target.value, {headers: {Authorization: `${token}`}})
-        .then(res=> {
-            this.setState({ comments:res.data });
-            console.log(this.state.comments)
-            return res.data
-        })
+            .then(res=> {
+                this.setState({ comments:res.data });
+                console.log(this.state.comments)
+                return res.data
+            })
+    }
+
+    handleAdd= () =>{
+        this.setState({ isModalOpen: true });
     }
 
     handleEdit(){
@@ -65,7 +75,6 @@ export default class Ticket extends Component{
         //redirect to an edit page form for submission
     }
     render(){
-        console.log(this.state.content)
         let button;
         if (this.state.status == "new"){
             button = <a class="ui green label">New</a>
@@ -95,12 +104,20 @@ export default class Ticket extends Component{
                                     </StatusDist>
                                     <div>
                                         <button class="ui yellow button" onClick={this.handleEdit}>Edit</button>
-                                        {/* <button class="ui olive button" onClick={this.handleDone}>Done</button> */}
-                                        <button class="ui red button" onClick={this.handleDelete}>Delete</button>
-                                        <button class="ui blue button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Comment</button>
+                                        <button class="ui green button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Show Comment</button>
+                                        <button class="ui green button" onClick={this.handleAdd}>Add Comment</button>
+                                        <AddComment isOpen={this.state.isModalOpen} />
+                                        <div class="ui section divider"></div>
+                                        {this.state.comments.map((p,i) => {
+                                            return(
+                                                <div>
+                                                    <div class="description">{p.message}</div>
+                                                </div>
+                                            )
+                                        })}
                                     </div>
                                 </div>
-                            )   
+                            )
                         })}
                         </div>
                     </DashboardContainer>

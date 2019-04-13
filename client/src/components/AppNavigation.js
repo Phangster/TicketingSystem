@@ -124,17 +124,11 @@ export default class AppNavigation extends React.Component {
                   </Nav>
                   <Nav id="3">
                     <IconCnt>
-                      <Icon icon={ticket} />
-                    </IconCnt>
-                    <Text><a href="/user/newticket">Ticket</a></Text>
-                  </Nav>
-                  <Nav id="4">
-                    <IconCnt>
                       <Icon icon={users} />
                     </IconCnt>
                     <Text><a href="/user/profile">Users</a></Text>
                   </Nav>
-                  <Nav id="5">
+                  <Nav id="4">
                     <IconCnt>
                       <Icon icon={exit} />
                     </IconCnt>
