@@ -31,7 +31,7 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
     else{
         const email = req.query.email;
         const status = req.query.status;
-        console.log(req.query.status)
+        // console.log(req.query.status)
 
         // Checks the query.
         // E.g: /api/admin/tickets?email=seeyijie.74@gmail.com
@@ -112,6 +112,7 @@ router.put('/tickets', passport.authenticate('jwt', {session: false}), (req, res
 // @route   PUT api/admin/subscribe
 // @params  Add user ObjectId to subscribedBy under Tickets model.
 //          Add ticket ObjectId to subscribeTo under User model.
+//          Require ticket content (req.body.content) and the author email (req.body.email)
 // @desc    Get all tickets or by filtering via the query string
 // @access  protected
 router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, res) => {

@@ -86,7 +86,7 @@ describe('Admin Suite', function() {
         .end((err, res)=> {
             // console.log(res.body)
             expect(res.body[0].email).to.equal('seeyijie.74@gmail.com');
-            expect(res.body).to.have.lengthOf(1);
+            expect(res.body).to.have.lengthOf(2);
             if (err) return done(err);
             done();
         });
