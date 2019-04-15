@@ -75,6 +75,7 @@ export default class Ticket extends Component{
         //redirect to an edit page form for submission
     }
     render(){
+        console.log(this.state.isModalOpen)
         let button;
         if (this.state.status == "new"){
             button = <a class="ui green label">New</a>
