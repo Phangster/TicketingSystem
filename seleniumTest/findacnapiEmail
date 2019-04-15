@@ -13,7 +13,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class ExplicitWaitGmailLogin {
+public class findacnapiEmail {
 	
 	static String myUserName = "chloezxyy@gmail.com";
 	static String myPassword = "12345678chloe";
@@ -27,7 +27,7 @@ public class ExplicitWaitGmailLogin {
 				
 		// get all the links
 		java.util.List<WebElement> links = driver.findElements(By.tagName("a"));
-		System.out.println(links.size());
+		//System.out.println(links.size());
 		
 		// get the user name field of the account page
 		WebElement username = driver.findElement(By.name("identifier"));
@@ -61,7 +61,7 @@ public class ExplicitWaitGmailLogin {
 		Thread.sleep(4000);
 		List<WebElement> email = driver.findElements(By.xpath("//*[@class='zA yO']"));
 		
-		System.out.println(email.toString());
+		//System.out.println(email.toString());
 		System.out.println(email.get(0).getText()); //getting the first email after sending the ticket
 		
 	}
