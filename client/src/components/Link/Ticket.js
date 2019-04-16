@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Button, Modal, TextArea} from 'semantic-ui-react';
 
-import AddComment from './AddComment';
 
 import { LeftContainer, DashboardContainer, StatusDist } from "../containers";
 
@@ -12,7 +12,8 @@ export default class Ticket extends Component{
             tickets: [],
             comments: [],
             content: '',
-            isModalOpen: false  
+            isModalOpen: false,
+            open: false
         };
         
     }
@@ -27,6 +28,10 @@ export default class Ticket extends Component{
                 return res.data
             })
     }
+
+    handleRef = component => (this.ref = component);
+    open = () => this.setState({ open: true }, () => this.ref.focus());
+    close = () => this.setState({ open: false });
 
     //Delete function for deleting the ticket on the user side
     handleDelete(){
@@ -66,8 +71,21 @@ export default class Ticket extends Component{
             })
     }
 
-    handleAdd= () =>{
+    handleAdd= (e) =>{
         this.setState({ isModalOpen: true });
+        const token = localStorage.getItem('jwt')
+        const ticket_info = {
+            message: e.target.value
+        }
+        axios.get('http://localhost:8080/api/comments', ticket_info, {
+            headers: {
+                'Authorization': token
+            }
+        })
+        .then(res=> {
+            console.log(res);
+            console.log(res.data);
+        })
     }
 
     handleEdit(){
@@ -106,8 +124,14 @@ export default class Ticket extends Component{
                                     <div>
                                         <button class="ui yellow button" onClick={this.handleEdit}>Edit</button>
                                         <button class="ui green button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Show Comment</button>
-                                        <button class="ui green button" onClick={this.handleAdd}>Add Comment</button>
-                                        <AddComment isOpen={this.state.isModalOpen} />
+                                        <Button primary content='Add Comment' onClick={this.open} />
+                                        <Modal open={this.state.open} onClose={this.close}>
+                                        <Modal.Content>
+                                            <TextArea placeholder='Tell us more' ref={this.handleRef} />
+                                            <button class="ui green button" onClick={(e)=>this.handleAdd(e)} value={p._id}>Submit</button>
+                                        </Modal.Content>
+                                        </Modal>
+                                        
                                         <div class="ui section divider"></div>
                                         {this.state.comments.map((p,i) => {
                                             return(
