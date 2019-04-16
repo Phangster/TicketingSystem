@@ -127,6 +127,7 @@ describe.only('Conversation Suite', function() {
         });
     });
 
+    // Admin should receive email
     it('User reply (comment) to the ticket' , function(done){
         userReply = {
             content: "Hello,I would like to find out more about the API for chat bots and databases for a new project.Regards,Tom Lee",
