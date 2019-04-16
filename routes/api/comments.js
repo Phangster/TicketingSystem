@@ -44,56 +44,72 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
             .then(ticket=>{
                 // console.log(newComment)
                 console.log("Author user id: " + ticket.userId)
-                console.log(ticket) // Get ticket details
-                console.log(decoded) // Get JWT details
+                // console.log(ticket) // Get ticket details
+                // console.log(decoded) // Get JWT details
                 // Checks the user id  matches the author id
                 // if it matches, switch status to awaitAdmin, 
                 // else switch status to awaitUser.
-                if (decoded.id === ticket.userId){
-                    ticket.status = "awaitAdmin";
+
+                // Weird that ticket.id !=== decoded.id
+                // console.log(typeof(ticket.id))
+                // console.log(typeof(decoded.id))
+
+                if (JSON.stringify(decoded.id) === JSON.stringify(ticket.userId)){
+                    console.log("Find ticket and update status")
                     Ticket.findByIdAndUpdate(ticket.id, {status: "awaitAdmin"})
-                        .then(result => console.log("Status updatd to awaitAdmin"))
+                        .then(result => console.log("Status updated to awaitAdmin"))
+                        .then(data => {
+                            // ticket.subscribedBy correspond to "ticket" in Ticket.findOne
+                            const subscribedByArray = ticket.subscribedBy;
+
+                            subscribedByArray.forEach(element => {
+        
+                                // Find each user by userId in the array and send an email
+                                User.findOne(element)
+                                    .then(res=> {
+                                        console.log("Alert admins!")
+                                        sendgridAlertAdmin(res.email, ticket.name)
+                                    })
+                                    .catch(err=> console.log(err))
+                            });
+        
+                        })
                         .catch(err=>console.log(err))
-                    // Implemented the sendgrid helper functiond for email and name in the next if/else
                 }
                 // An admin replied. Send email to author email.
                 else {
-                    console.log(ticket.email)
-                    console.log(ticket.name)
+                    // console.log(ticket.email)
+                    // console.log(ticket.name)
                     ticket.status = "awaitUser";
                     Ticket.findOneAndUpdate({content:req.body.content}, {status:"awaitUser"}).then(posts=> {
                         console.log("Status updated to awaitUser")
+                        const subscribedByArray = ticket.subscribedBy;
+
+                        subscribedByArray.forEach(element => {
+    
+                            // Find each user ID in an array, send an email
+                            User.findOne(element)
+                                .then(res=> {
+                                    // console.log("Email sent to: " + res.email)
+                                    // console.log("Author of Ticket: " + ticket.name)
+                                    
+                                    // Sent to the email of the admins and alerting the admin that the author (ticket.name) has followed-up
+                                    sendgridAlertAdmin(res.email, ticket.name)
+                                })
+                                .catch(err=> console.log(err))
+    
+                        });
+    
                     }).catch(err => console.log(err))
             
-                    sendgridAlertAdmin(ticket.email, ticket.name);
+                    sendgridStatus(ticket.email, ticket.name);
                 }
-                console.log(decoded.id)
+                // console.log(decoded.id)
                 newComment.ticketId = ticket.id
                 newComment.message = req.body.message
                 newComment.save().then(comment=>comment).catch(err=>console.log(err))
 
-                if (ticket.status === "awaitAdmin"){
-                    console.log(ticket.subscribedBy) // Array of user ID
-                    
-                    const subscribedByArray = ticket.subscribedBy;
-
-                    subscribedByArray.forEach(element => {
-
-                        // Find each user ID in an array, send an email
-                        User.findOne(element)
-                            .then(res=> {
-                                console.log("Email sent to: " + res.email)
-                                console.log("Author of Ticket: " + ticket.name)
-
-                                // Sent to the email of the admins and alerting the admin that the author (ticket.name) has followed-up
-                                sendgridAlertAdmin(res.email, ticket.name)
-                            })
-                            .catch(err=> console.log(err))
-
-                    });
-                    // look at an array of objectId. Find the corresponding email and send out
-                }
-                console.log(ticket)
+                // console.log(ticket)
 
             }).catch(err => console.log(err))
     
