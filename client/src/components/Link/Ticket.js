@@ -12,6 +12,7 @@ export default class Ticket extends Component{
             tickets: [],
             comments: [],
             content: '',
+            message: '',
             isModalOpen: false,
             open: false
         };
@@ -30,7 +31,7 @@ export default class Ticket extends Component{
     }
 
     handleRef = component => (this.ref = component);
-    open = () => this.setState({ open: true }, () => this.ref.focus());
+    open = () => this.setState({ open: true}, () => this.ref.focus());
     close = () => this.setState({ open: false });
 
     //Delete function for deleting the ticket on the user side
@@ -46,10 +47,12 @@ export default class Ticket extends Component{
 
     }
 
-    handleDone(){
-        const token = localStorage.getItem('jwt')
-        axios.post('http://localhost:8080/api/tickets', {headers: {Authorization: `${token}`}}, {status: "done"})
-    }
+   handleUpdateMsg(e){
+       this.setState({
+           message: e.target.value
+       })
+       console.log(this.state.message)
+   }
 
     handleDelete(){
         const token = localStorage.getItem('jwt')
@@ -73,11 +76,13 @@ export default class Ticket extends Component{
 
     handleAdd= (e) =>{
         this.setState({ isModalOpen: true });
-        const token = localStorage.getItem('jwt')
+        const token = localStorage.getItem('jwt');
         const ticket_info = {
-            message: e.target.value
+            message: this.state.message,
+            content: this.state.content,
+            userId: token.userId
         }
-        axios.get('http://localhost:8080/api/comments', ticket_info, {
+        axios.post('http://localhost:8080/api/comments', ticket_info, {
             headers: {
                 'Authorization': token
             }
@@ -86,6 +91,8 @@ export default class Ticket extends Component{
             console.log(res);
             console.log(res.data);
         })
+        window.location = "/user/home";
+        console.log(e.target)
     }
 
     handleEdit(){
@@ -127,11 +134,10 @@ export default class Ticket extends Component{
                                         <Button primary content='Add Comment' onClick={this.open} />
                                         <Modal open={this.state.open} onClose={this.close}>
                                         <Modal.Content>
-                                            <TextArea placeholder='Tell us more' ref={this.handleRef} />
-                                            <button class="ui green button" onClick={(e)=>this.handleAdd(e)} value={p._id}>Submit</button>
+                                            <TextArea placeholder='Tell us more' ref={this.handleRef} onChange={this.handleUpdateMsg.bind(this)} />
+                                            <button class="ui green button" onClick={(e)=>this.handleAdd(e)}>Submit</button>
                                         </Modal.Content>
                                         </Modal>
-                                        
                                         <div class="ui section divider"></div>
                                         {this.state.comments.map((p,i) => {
                                             return(
