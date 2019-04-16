@@ -10,6 +10,7 @@ export default class Tickets extends Component{
             tickets:[]
         };
     }
+
     componentDidMount(){
         const token = localStorage.getItem('jwt')
         axios.get('http://localhost:8080/api/admin/tickets', {headers: {Authorization: `${token}`}})
@@ -19,6 +20,8 @@ export default class Tickets extends Component{
             return res.data
         })
     }
+
+    //admin route need to subscribe to the ticket
 
     render(){
         return(
