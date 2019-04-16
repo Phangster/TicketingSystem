@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Button, Modal, TextArea} from 'semantic-ui-react';
+
 
 import { LeftContainer, DashboardContainer, StatusDist } from "../containers";
 
@@ -9,8 +11,11 @@ export default class Ticket extends Component{
         this.state={
             tickets: [],
             comments: [],
-            content: ''
+            content: '',
+            isModalOpen: false,
+            open: false
         };
+        
     }
 
     componentDidMount(){
@@ -23,6 +28,10 @@ export default class Ticket extends Component{
                 return res.data
             })
     }
+
+    handleRef = component => (this.ref = component);
+    open = () => this.setState({ open: true }, () => this.ref.focus());
+    close = () => this.setState({ open: false });
 
     //Delete function for deleting the ticket on the user side
     handleDelete(){
@@ -48,15 +57,34 @@ export default class Ticket extends Component{
     }
 
     handleContentChange(e){
+        const token = localStorage.getItem('jwt')
+
         this.setState({
             content: e.target.value
         })
-        const token = localStorage.getItem('jwt')
+
         axios.get('http://localhost:8080/api/comments?content=' + e.target.value, {headers: {Authorization: `${token}`}})
+            .then(res=> {
+                this.setState({ comments:res.data });
+                console.log(this.state.comments)
+                return res.data
+            })
+    }
+
+    handleAdd= (e) =>{
+        this.setState({ isModalOpen: true });
+        const token = localStorage.getItem('jwt')
+        const ticket_info = {
+            message: e.target.value
+        }
+        axios.get('http://localhost:8080/api/comments', ticket_info, {
+            headers: {
+                'Authorization': token
+            }
+        })
         .then(res=> {
-            this.setState({ comments:res.data });
-            console.log(this.state.comments)
-            return res.data
+            console.log(res);
+            console.log(res.data);
         })
     }
 
@@ -65,7 +93,7 @@ export default class Ticket extends Component{
         //redirect to an edit page form for submission
     }
     render(){
-        console.log(this.state.content)
+        console.log(this.state.isModalOpen)
         let button;
         if (this.state.status == "new"){
             button = <a class="ui green label">New</a>
@@ -95,12 +123,26 @@ export default class Ticket extends Component{
                                     </StatusDist>
                                     <div>
                                         <button class="ui yellow button" onClick={this.handleEdit}>Edit</button>
-                                        {/* <button class="ui olive button" onClick={this.handleDone}>Done</button> */}
-                                        <button class="ui red button" onClick={this.handleDelete}>Delete</button>
-                                        <button class="ui blue button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Comment</button>
+                                        <button class="ui green button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Show Comment</button>
+                                        <Button primary content='Add Comment' onClick={this.open} />
+                                        <Modal open={this.state.open} onClose={this.close}>
+                                        <Modal.Content>
+                                            <TextArea placeholder='Tell us more' ref={this.handleRef} />
+                                            <button class="ui green button" onClick={(e)=>this.handleAdd(e)} value={p._id}>Submit</button>
+                                        </Modal.Content>
+                                        </Modal>
+                                        
+                                        <div class="ui section divider"></div>
+                                        {this.state.comments.map((p,i) => {
+                                            return(
+                                                <div>
+                                                    <div class="description">{p.message}</div>
+                                                </div>
+                                            )
+                                        })}
                                     </div>
                                 </div>
-                            )   
+                            )
                         })}
                         </div>
                     </DashboardContainer>
