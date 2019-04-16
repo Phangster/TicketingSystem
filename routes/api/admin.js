@@ -113,7 +113,6 @@ router.put('/tickets', passport.authenticate('jwt', {session: false}), (req, res
 // @params  Add user ObjectId to subscribedBy under Tickets model.
 //          Add ticket ObjectId to subscribeTo under User model.
 //          Require ticket content (req.body.content) and the author email (req.body.email)
-// @desc    Get all tickets or by filtering via the query string
 // @access  protected
 router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, res) => {
     const decoded = jwt_decode(req.headers.authorization)
@@ -146,6 +145,41 @@ router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, 
     }
 })
 
-// UNSUBSCRIBE TO BE IMPLEMENTED
+
+// @route   PUT api/admin/unsubscribe
+// @params  Remove user ObjectId from subscribedBy under Tickets model.
+//          Remove ticket ObjectId from subscribeTo under User model.
+//          Require ticket content (req.body.content) and the author email (req.body.email)
+// @access  protected
+router.post('/unsubscribe', passport.authenticate('jwt', {session: false}), (req, res) => {
+    const decoded = jwt_decode(req.headers.authorization)
+    console.log("Admin Status: " + decoded.isAdmin)
+
+    if (decoded.isAdmin === false){
+        res.sendStatus(403);
+        console.log(decoded.isAdmin)
+    }
+    else {
+        Ticket.findOneAndUpdate({
+            content: req.body.content,
+            email: req.body.email
+        },
+        {
+            "$pull": {
+                subscribedBy: decoded.id
+            }
+        })
+        .then(data=> data._id)
+        .then(ticketId => {
+            User.findByIdAndUpdate(decoded.id, {
+                "$pull": {
+                    subscribeTo: ticketId
+                }
+            }).then(res=>console.log(res)).catch(err=>console.log(err)) // if successful, returns the ticket before the update.
+        })
+        .catch(err=>console.log(err))
+        res.status(200).json({msg:"Unsubscribed"})
+    }
+})
 
 module.exports = router
