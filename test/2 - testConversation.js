@@ -6,7 +6,7 @@ const Ticket = require('../models/Ticket');
 
 const expect = chai.expect;
 
-describe.only('Conversation Suite', function() {
+describe('Conversation Suite', function() {
 
     // Only admin can subscribe to a ticket
     // User will be notified automatically when an admin message
@@ -146,5 +146,26 @@ describe.only('Conversation Suite', function() {
             done();
         });
     });
+
+    it('Unsubscribe to ticket, POST /api/admin/unsubscribe', function(done){
+        unsubscribing = {
+            content: "Hello,I would like to find out more about the API for chat bots and databases for a new project.Regards,Tom Lee",
+            email: "seeyijie.74@gmail.com"
+        }
+
+        request(app)
+        .post('/api/admin/unsubscribe')
+        .set('Accept', 'application/json')
+        .set('Authorization', adminToken)
+        .send(unsubscribing)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect(200)
+        .end((err, res)=> {
+            expect(res.body).to.be.an('object'); // return an object of the previous user state if it is successful.
+            if (err) return done(err);
+            done();
+        });
+
+    })
 
 });
