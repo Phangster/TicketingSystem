@@ -12,12 +12,22 @@ const User = require('../../models/User');
 const Ticket = require('../../models/Ticket');
 
 
-// @route   GET api/admin/tickets
-// @route   GET api/admin/tickets/?status=new
-// @route   GET api/admin/tickets/?email=email1@gmail.com
-// @route   GET api/admin/tickets/?email=email1@gmail.com&status=new
-// @desc    Get all tickets or by filtering via the query strings
-// @access  protected
+/* @route   GET api/admin/tickets
+            GET api/admin/tickets/?status=new
+            GET api/admin/tickets/?email=email1@gmail.com
+            GET api/admin/tickets/?email=email1@gmail.com&status=new
+            GET api/admin/tickets/?email=email1@gmail.com&status=new
+            GET api/admin/tickets/?status=new&sort=asc
+
+    For routes, you may use the following query strings:
+    1) status only
+    2) email only
+    3) email and status
+    4) status and sort (asc or desc for dates)
+
+    @desc    Get all tickets or by filtering via the query strings
+    @access  protected
+*/
 
 router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res) => {
     const decoded = jwt_decode(req.headers.authorization)
@@ -31,13 +41,14 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
     else{
         const email = req.query.email;
         const status = req.query.status;
-        // console.log(req.query.status)
+        const sort = req.query.sort;
+        // console.log(req.query.sort)
 
         // Checks the query.
         // E.g: /api/admin/tickets?email=seeyijie.74@gmail.com
 
         // If not set, show all tickets
-        if (!email && !status){
+        if (!email && !status && !sort){
             Ticket.find({})
                 .then(data => {
                     // console.log("Showing all tickets: ");
@@ -46,7 +57,7 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
                 })
                 .catch(err => console.log(err));
         }
-        else if (!!email && !status){
+        else if (!!email && !status && !sort){
             // If set, show the tickets from the email
             Ticket.find({email:email})
             .then(data => {
@@ -54,7 +65,7 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
             })
             .catch(err => console.log(err));
         }
-        else if (!!status && !email){
+        else if (!!status && !email && !sort){
             // find tickets by status
             Ticket.find({status:status})
             .then(data => {
@@ -62,12 +73,39 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
             })
             .catch(err => console.log(err));
         }
-        else{
+
+        else if (!!status && !!email && !sort){
             Ticket.find({status:status, email:email})
             .then(data => {
                 res.json(data);
             })
             .catch(err => console.log(err));
+        }
+        else if (!!status && !!sort && !email){
+            if (sort === "asc"){
+                console.log("Ascending")
+
+                Ticket.find({$query: {}, sort: {datefield: 1}})
+                .sort('date')
+                .then(data => {
+                    res.json(data);
+                })
+            }
+            else if (sort === "desc"){
+                console.log("Descending")
+
+                Ticket.find({})
+                .sort('-date')
+                .then(data=>{
+                    res.json(data);
+                })
+            }
+            else {
+                res.send("No such implementation");
+            }
+        }
+        else {
+            res.send("No such implementation");
         }
     }
 })
