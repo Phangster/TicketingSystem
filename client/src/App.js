@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AppContainer } from "./components/containers";
+import axios from 'axios';
 
 // import route Components here
 import {
@@ -19,6 +20,10 @@ import NewTicket from "./components/Link/NewTicket";
 import setAuthToken from "./utils/setAuthToken"
 import isEmpty from "./validation/is-empty"
 import AddComment from './components/Link/AddComment';
+import TicketAdmin from './components/Admin/Tickets';
+import UserAdmin from './components/Admin/Users';
+import HistoryAdmin from './components/Admin/History';
+
 
 
 
@@ -28,16 +33,34 @@ class App extends Component {
     super(props);
     this.state={
       loggedIn: false,
+      isAdmin: false
     }
   }
+  
 
   componentDidMount(){
     const token = localStorage.getItem('jwt')
+  
+    axios.get('http://localhost:8080/api/auth/current', {headers: {Authorization: `${token}`}})
+    .then(res=> {
+        console.log("This is the data " + res.data.isAdmin)
+        this.setState({ isAdmin: res.data.isAdmin})
+    })
 
     if (token){
       this.setState({
         loggedIn: true
       })
+
+      if(token.isAdmin == true){
+        this.setState({
+          isAdmin: true
+        })
+      }else{
+        this.setState({
+          isAdmin: false
+        })
+      }
       console.log("Login status: " + this.state.loggedIn)
       console.log("Hi Bryan")
       setAuthToken(token);
@@ -50,7 +73,7 @@ class App extends Component {
       console.log("Hi Chloe")
     }
 
-    console.log("JWT in localstorage(?): " + localStorage.getItem('jwt'))
+    // console.log("JWT in localstorage(?): " + localStorage.getItem('jwt'))
 
   }
 
@@ -69,6 +92,21 @@ class App extends Component {
             </Router>
         </AppContainer>
       )
+    }else if (this.state.loggedIn == true && this.state.isAdmin == true){
+      return (
+        <AppContainer>
+            <Router>
+              <div className="App">
+                <AppNavigation />
+                <Switch>
+                  <Route path="/admin/home" component={TicketAdmin} />
+                  <Route path="/admin/history" component={HistoryAdmin} />
+                  <Route path="/admin/profile" component={UserAdmin} />
+                </Switch>
+              </div>
+            </Router>
+        </AppContainer>
+      );
     }else{
       return (
         <AppContainer>

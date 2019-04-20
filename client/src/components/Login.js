@@ -26,7 +26,8 @@ class Login extends Component {
         invalidEmail: "Uh oh! Looks like there is an issue with your email. Please input a correct email"
       },
       isAuthenticated: false,
-      redirect: false
+      redirect: false,
+      isAdmin: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -79,19 +80,31 @@ class Login extends Component {
         // Decode token to get user data
         const decoded = jwt_decode(token);
 
-        console.log(decoded)
+        //Setting isAdmin
+        this.setState({
+          isAdmin: decoded.isAdmin
+        })
+
+        console.log(decoded.isAdmin)
         // this.props.history.push('/user/dashboard');
         // this.setState({
         //   redirect: true
         // })
-        window.location = "/user/home"
+
+        if(this.state.isAdmin == false ){
+          window.location = "/user/home"
+
+        }else if(this.state.isAdmin == true){
+          window.location = "/admin/home"
+        }
+        
 
     })
   }
 
   componentDidMount(){
     const token = localStorage.getItem('jwt')
-
+    console.log(token)
     if (!isEmpty(token)){
       // Bug? Doesn't seem to set it.
       this.setState({

@@ -38,9 +38,6 @@ export default class Tickets extends Component{
                                         <div class="meta">{i}</div>
                                         <div class="description">{p.content}</div>
                                     </div>
-                                    <StatusDist>
-                                    {button}
-                                    </StatusDist>
                                 </div>
                             )   
                         })}

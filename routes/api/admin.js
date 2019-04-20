@@ -11,6 +11,18 @@ const router = express.Router();
 const User = require('../../models/User');
 const Ticket = require('../../models/Ticket');
 
+router.get('/users',passport.authenticate('jwt', {session: false}), (req, res) => {
+    const decoded = jwt_decode(req.headers.authorization) 
+    if (decoded.isAdmin === false){
+        res.sendStatus(403);
+        console.log(decoded.isAdmin)
+    }else{
+        User.find({})
+        .then(users=> {
+            res.json(users)
+        })
+    }
+})
 
 // @route   GET api/admin/tickets
 // @route   GET api/admin/tickets/?status=new
