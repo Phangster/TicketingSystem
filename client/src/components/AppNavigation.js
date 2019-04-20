@@ -11,7 +11,9 @@ import { history } from 'react-icons-kit/icomoon/history';
 import { ticket } from 'react-icons-kit/icomoon/ticket';
 import { profile } from 'react-icons-kit/icomoon/profile';
 import { exit } from 'react-icons-kit/icomoon/exit';
-import { users } from 'react-icons-kit/icomoon/users'
+import { users } from 'react-icons-kit/icomoon/users';
+
+import axios from 'axios';
 
 const IconCnt = styled.div`
   color: #6a56a5;
@@ -36,10 +38,19 @@ export default class AppNavigation extends React.Component {
     this.state={
       active: null,
       redirect: false,
-      admin: false
+      isAdmin: false
     }
     this.onItemSelection = this.onItemSelection.bind(this);
     this.onLogout = this.onLogout.bind(this);
+  }
+  componentDidMount(){
+    const token = localStorage.getItem('jwt')
+  
+    axios.get('http://localhost:8080/api/auth/current', {headers: {Authorization: `${token}`}})
+    .then(res=> {
+        console.log("This is the data " + res.data.isAdmin)
+        this.setState({ isAdmin: res.data.isAdmin})
+    })
   }
 
   onItemSelection = arg => {
@@ -57,7 +68,7 @@ export default class AppNavigation extends React.Component {
       if (this.state.redirect === true) {
         return <Redirect to='/'/>;
       }else{
-        if ( this.state.admin === false ){
+        if ( this.state.isAdmin === false ){
           return (
             <div>
             <AppContainer>
@@ -114,19 +125,19 @@ export default class AppNavigation extends React.Component {
                     <IconCnt>
                       <Icon icon={home} />
                     </IconCnt>
-                    <Text><a href="/user/home">Home</a></Text>
+                    <Text><a href="/admin/home">Home</a></Text>
                   </Nav>
                   <Nav id="2">
                     <IconCnt>
                       <Icon icon={history} />
                     </IconCnt>
-                    <Text><a href="/user/history">History</a></Text>
+                    <Text><a href="/admin/history">History</a></Text>
                   </Nav>
                   <Nav id="3">
                     <IconCnt>
                       <Icon icon={users} />
                     </IconCnt>
-                    <Text><a href="/user/profile">Users</a></Text>
+                    <Text><a href="/admin/profile">Users</a></Text>
                   </Nav>
                   <Nav id="4">
                     <IconCnt>

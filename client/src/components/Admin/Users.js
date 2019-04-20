@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { LeftContainer, DashboardContainer } from "../containers";
 
 export default class Users extends Component{
     constructor(props){
         super(props);
         this.state={
-            users:[]
+            users:[],
+            tickets:[]
         };
     }
     componentDidMount(){
         const token = localStorage.getItem('jwt')
-        axios.get('http://localhost:8080/api/tickets/read', {headers: {Authorization: `${token}`}})
+        axios.get('http://localhost:8080/api/admin/users', {headers: {Authorization: `${token}`}})
         .then(res=> {
             this.setState({ users:res.data });
             console.log(this.state.users)
@@ -41,15 +43,17 @@ export default class Users extends Component{
                                             <td data-label="Email">{p.email}</td>
                                             <td data-label="Password">{p.password}</td>
                                             <td data-label="Contact">{p.contact}</td>
-                                            <td data-label="Ticket_Id">{p.ticketId}</td>
+                                            <td data-label="Ticket_Id">
+                                            {this.state.tickets.map((a,b)=>{
+                                                <p>{a.ticketId}</p>
+                                            })}
+                                            </td>
                                             <td data-label="Date">{p.date}</td>
-                                            <td data-label="Admin">{p.isAdmin}</td>
                                             </tr>
                                         )
                                     })}
                                     </tbody>
-                                </table>
-                            )   
+                                </table>  
                     </DashboardContainer>
                 </LeftContainer>
             </div>

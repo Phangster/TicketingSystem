@@ -153,11 +153,12 @@ router.post('/login', (req,res) => {
                             jwt.sign(
                                 payload, 
                                 keys.secretOrKey, 
-                                {expiresIn: 300},
+                                {expiresIn: 3600},
                                 (err, token) => {
                                     res.json({
                                         success: true,
-                                        token: 'Bearer ' + token
+                                        token: 'Bearer ' + token,
+                                        isAdmin: user.isAdmin
                                     });
 
                                     res.header('Authorization', 'Bearer ' + token).send(token);
@@ -184,7 +185,8 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
         id: req.user.id,
         name: req.user.name,
         email: req.user.email,
-        contact: req.user.contact
+        contact: req.user.contact,
+        isAdmin: req.user.isAdmin
     });
 });
 

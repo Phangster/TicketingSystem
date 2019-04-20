@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { LeftContainer, DashboardContainer } from "../containers";
 
 
 export default class History extends Component{
@@ -24,7 +25,7 @@ export default class History extends Component{
                 <LeftContainer>
                     <DashboardContainer>
                         <h1>Admin view All History</h1>
-                        <div class="ui cards">
+                        {/* <div class="ui cards">
                         {this.state.tickets.map((p,i) => {
                             if(this.state.ticket.status == "done"){
                                 return(
@@ -43,7 +44,7 @@ export default class History extends Component{
                                 )   
                             }
                         })}
-                        </div>
+                        </div> */}
                     </DashboardContainer>
                 </LeftContainer>
             </div>
