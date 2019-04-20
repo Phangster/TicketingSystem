@@ -1,17 +1,13 @@
-package Selanium;
-
+package FrontEndTesting;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class FillMessageText {
+public class FillLoginForm {
+	
+	//this code shows that we're able to fill in the form correctly and able to sign in 
+	//otherwise it wouldn't 
 	
 	static String myUserName = "seeyijie.74@gmail.com";
 	static String myPassword = "MEWMEWMEW";
@@ -31,7 +27,7 @@ public class FillMessageText {
 		// get the user name field of the account page
 		WebElement username = driver.findElement(By.id("exampleEmail"));
 		
-		Thread.sleep(3000);
+		Thread.sleep(300);
 		
 		// send my user name to fill up the box
 		username.sendKeys(myUserName);
@@ -43,7 +39,7 @@ public class FillMessageText {
 		nextButton.click();
 		
 		// sleep until the page loads
-		Thread.sleep(10000);
+		Thread.sleep(1000);
 
 		// now locate the password field in the current page
 		WebElement password = driver.findElement(By.name("password"));		
@@ -51,10 +47,41 @@ public class FillMessageText {
 		// send password 
 		password.sendKeys(myPassword);
 		
-		Thread.sleep(3000);
+		Thread.sleep(300);
 				
 		// login and :)
 		nextButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/form/button"));		
 		nextButton.click();
+		
+		//assert that the website is true 
+		//Assert.assertEquals(URL, "http://localhost:3000/user/home");
+		
+		String expectedUrl = "http://localhost:3000/user/home";
+//		WebDriver chromedriver = new ChromeDriver();
+//		driver.get(expectedUrl);
+		System.out.println("Url Match: " + assertEquals("LOL1","2"));
+
+		try{	
+		String currentURL = driver.getCurrentUrl();
+		System.out.println(currentURL);
+		assertEquals(currentURL, "http://localhost:3000/");
+		System.out.println("Navigate to correct webpage");
+		
+		}
+		catch(Throwable pageNavigationError){
+		  System.out.println("Didn't navigate to correct webpage");
+		}	
+	}
+
+	private static boolean assertEquals(String expectedUrl, String string2) {
+		// TODO Auto-generated method stub
+		if (expectedUrl == string2) {
+			return true;
+		}
+		else {
+			System.out.println("ERROR!");
+			return false;
+		}
+		
 	}
 }
