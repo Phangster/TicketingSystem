@@ -3,4 +3,13 @@ In order to run test cases:
 2) localhost:3000 will be launched 
 3) proceed to Eclipse, go to Selenium to write/run test cases
 
-Bug fixed: FillLoginForm
+FillLoginForm
+Correct input password and username from Selenium test will result in page redirected to the dashboard, 
+
+Incorrect password and/or username, but will remaind on the same page 
+output:
+ERROR!
+Url Match: false
+http://localhost:3000/login
+ERROR!
+Navigate to correct webpage
