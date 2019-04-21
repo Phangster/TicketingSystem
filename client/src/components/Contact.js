@@ -60,6 +60,8 @@ class Contact extends Component {
         invalidEmail: "Uh oh! Looks like there is an issue with your email. Please input a correct email",
         duplicateEmail: "You have submitted a ticket and have an account with us. Check your email for the password and sign in to submit another ticket"
       },
+      isTextAreaValid: null,
+      duplicateEmail: null,
       modal: true,
       redirectToReferrer: false
     }
@@ -101,13 +103,13 @@ class Contact extends Component {
   validateName(e) {
     const nameRegex = /^[a-zA-Z ]{2,30}$/;
     const { validate } = this.state;
-      if (nameRegex.test(e.target.value)) {
-        validate.nameState = 'has-success'
-      } else {
-        validate.nameState = 'has-danger'
-      }
-      this.setState({ validate });
+    if (nameRegex.test(e.target.value)) {
+      validate.nameState = 'has-success'
+    } else {
+      validate.nameState = 'has-danger'
     }
+    this.setState({ validate });
+  }
 
   validateContact(e){
     const contactRegex = /^[689]\d{7}$/;
@@ -124,35 +126,40 @@ class Contact extends Component {
     const messageRegex = /^.{15,300}$/
     const { validate } = this.state; 
     if (messageRegex.test(e.target.value)) {
-      validate.messageState = 'has-success'
+      validate.messageState = 'has-success';
+      this.setState({isTextAreaValid: true});
+
     } else {
-      validate.messageState = 'has-danger'
+      validate.messageState = 'has-danger';
+      this.setState({isTextAreaValid: false});
+
     }
+    console.log(validate.messageState)
     this.setState({ validate });
 
   }
   
 
   handleClick(e){
-    const { validate, formFeedback, errors } = this.state;
-    this.setState({ redirectToReferrer: true });
-    
+    const { validate, formFeedback, errors, isTextAreaValid, duplicateEmail } = this.state;
     // const displayDuplicate = () =>{
     //   errors = "duplicate"
     //   validate.emailState = 'has-danger'
     //   formFeedback.message = formFeedback.duplicateEmail  
     // }
 
-    console.log(validate.emailState)
-
+    // console.log(validate.emailState)
+    console.log(validate.messageState)
+    if (this.state.inputMessage === ''){
+      console.log("Empty")
+    }
+    
     if (validate.emailState === 'has-success' && 
       validate.nameState === 'has-success' && 
       validate.contactState === 'has-success'&&
       validate.messageState === 'has-success'){
 
-      // this.setState({
-      //   selectedOption: e.target.value
-      // })  
+      this.setState({ isTextAreaValid: true });
 
 
       const newUser = {
@@ -170,14 +177,29 @@ class Contact extends Component {
         .post('/api/auth/register', newUser)
         .then(res => {
           console.log(res.data)
+          this.setState({ redirectToReferrer: true });
+
         })
         .catch(err => {
           // displayDuplicate()
+          if (err.status == undefined){
+            this.setState({duplicateEmail: true})
+          }
+          console.log(err.status)
           console.log(err.response.data)
         });
-    };
-  };
+    }
+    else if (validate.messageState === 'has-danger'){
+      this.setState({ isTextAreaValid: false });
+      console.log("Please describe your problem with minimum 15 characters to 300 characters.")}
+    
+    else if (validate.messageState === 'has-success'){
+      this.setState({ isTextAreaValid: true });
+      // console.log("Please describe your problem with minimum 15 characters to 300 characters.")}
+    }
 
+  };
+ 
   toggle(){
     this.setState(prevState => ({
       modal: !prevState.modal
@@ -185,11 +207,33 @@ class Contact extends Component {
   }
 
   render() {
-    const {errors, formFeedback} = this.state; // equivalent to const errors = this.state.errors;
+    const {errors, formFeedback, isTextAreaValid, duplicateEmail} = this.state; // equivalent to const errors = this.state.errors;
     const redirectToReferrer = this.state.redirectToReferrer;
         if (redirectToReferrer === true) {
             return <Redirect to="/login" />
     }
+    const customCss = `
+    .alert-danger{
+      position: relative;
+      padding: .75rem 1.25rem;
+      border: 1px solid transparent;
+      border-radius: .25rem;
+      color: #813838;
+      background-color: #fee2e1;
+      border-color: #fdd6d6;
+    }
+    `
+    const validatedCss = `
+    .validated-text{
+      position: relative;
+      padding: .75rem 1.25rem;
+      border: 1px solid transparent;
+      border-radius: .25rem;
+      color: #28a745;
+      background-color: #ffffff;
+      border-color: #28a745;
+    }
+    `
     // console.log(this.state);
     return (
       <div>
@@ -202,6 +246,13 @@ class Contact extends Component {
               <form name="contactForm">
                   <Col>
                   <FormGroup>
+                  <div class>
+                      <style>{customCss}</style>
+                      {
+                        duplicateEmail
+                        ? <p class="alert-danger">You have an account with us! Login and submit your ticket.</p>
+                        : <p></p>
+                      }</div>
                   <Label className="active"><span className="red-text">*</span> Your Name </Label>
                     <Input 
                       placeholder="e.g. Antony Pym" 
@@ -328,11 +379,19 @@ class Contact extends Component {
                   <Col>
                   <FormGroup>
                   <div><Label><span className="red-text">*</span> Your Message</Label></div>
+                    <div class>
+                      <style>{customCss}</style>
+                      <style>{validatedCss}</style>
+                      {
+                        isTextAreaValid
+                        ? <p class="validated-text">We will get back to you as soon as possible</p>
+                        : <p class="alert-danger">Please describe your problem with minimum 15 characters to 300 characters.</p>
+                      }</div>
                     <textarea  className="form-control"
                       placeholder="Please let us know which asset you are interested in trying out" 
-                      // className={classnames('form-control form-control-lg',{
-                      //   'is-invalid':errors.inputMessage
-                      // })}
+                      className={classnames('form-control form-control-lg',{
+                        'is-invalid':errors.inputMessage
+                      })}
                       valid={ this.state.validate.messageState === 'has-success' }
                       invalid={ this.state.validate.messageState === 'has-danger' }
                       name="inputMessage" 
@@ -346,7 +405,7 @@ class Contact extends Component {
                       We will get back to you as soon as possible, {this.state.name}.
                     </FormFeedback>
                     <FormFeedback>
-                      Please describe your problem with minimum 10 characters to 300 characters.
+                      Please describe your problem with minimum 15 characters to 300 characters.
                     </FormFeedback>
                     <FormText>Please elaborate so we could better serve you quickly</FormText>
 
