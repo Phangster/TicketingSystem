@@ -96,11 +96,14 @@ export default class Tickets extends Component{
 			return {isToggleOn: !prevState.isToggleOn};
 		});
         const token = localStorage.getItem('jwt');
+        console.log("this.state.current: " + this.state.current)
+        console.log("e.target.value: " + e.target.value)
+        console.log("this.state.content: " + this.state.content)
         const subscriber = {
             subscribedBy: this.state.current,
             subscribedTo: e.target.value
         }
-        axios.post('http://localhost:8080/api/comments', subscriber, {
+        axios.post('http://localhost:8080/api/admin/subscribe', subscriber, {
             headers: {
                 'Authorization': token
             }
@@ -132,16 +135,16 @@ export default class Tickets extends Component{
                         <div class="ui cards">
                         {this.state.tickets.map((p,i) => {
                             return(
-                                <div class="card">
+                                <div className="card">
                                     <button onClick={(e)=>this.handleSubscribe(e)} value={p.name}>
                                         {this.state.isToggleOn ? 'Subscribe' : 'UnSubscribe'}
                                     </button>
-                                    <div class="content">
-                                        <div class="header">{p.label}</div>
-                                        <div class="meta">Name: {p.name}</div>
-                                        <div class="meta">Email: {p.email}</div>
-                                        <div class="description">{p.content}</div>
-                                        <div class="meta">Subscribers: {p.subscribedBy
+                                    <div className="content">
+                                        <div className="header">{p.label}</div>
+                                        <div className="meta">Name: {p.name}</div>
+                                        <div className="meta">Email: {p.email}</div>
+                                        <div className="description">{p.content}</div>
+                                        <div className="meta">Subscribers: {p.subscribedBy
                                         .map((subscribed,i) => {
                                             return(
                                                 <div>
@@ -151,7 +154,7 @@ export default class Tickets extends Component{
                                         </div>
                                     </div>
                                     <StatusDist>
-                                    <a class="ui red label">{p.status}</a>
+                                    <a className="ui red label">{p.status}</a>
                                     </StatusDist>
                                     {/* <button class="ui green button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Show Comment</button> */}
                                     <Button color='olive' content='Add Comment' onClick={this.handleOpen} value={p.content} />

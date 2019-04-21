@@ -229,11 +229,14 @@ router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, 
 
             User.findByIdAndUpdate(decoded.id, {
                 "$addToSet": {subscribeTo: ticketId}
-            }).then(res=>console.log(res)).catch(err=>console.log(err)) // if successful, returns the ticket before the update.
+            }).then(res=>{
+                console.log(res)
+                res.status(200).json({msg:"Subscribed"})
+
+            }).catch(err=>console.log(err)) // if successful, returns the ticket before the update.
         })
         .catch(err=>console.log(err))
 
-        res.status(200).json({msg:"Subscribed"})
     }
 })
 
