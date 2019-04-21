@@ -12,6 +12,13 @@ export const NavContainer = styled.div`
   position: absolute;
 `;
 
+export const HomeContainer = styled.div`
+  height: 100vh;
+  width: 100%
+  position: absolute;
+  text-align: center;
+  margin-top: 3rem;
+`;
 
 export const DashboardContainer = styled.div`
   width: 100%;

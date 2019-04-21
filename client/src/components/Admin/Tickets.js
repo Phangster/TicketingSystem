@@ -14,7 +14,8 @@ export default class Tickets extends Component{
             content:[],
             message:'',
             current:'',
-            open: false
+            open: false,
+            isToggleOn: true
         };
     }
 
@@ -91,6 +92,9 @@ export default class Tickets extends Component{
 
     handleSubscribe = (e) => {
         console.log(e.target.value)
+        this.setState(function(prevState) {
+			return {isToggleOn: !prevState.isToggleOn};
+		});
         const token = localStorage.getItem('jwt');
         const subscriber = {
             subscribedBy: this.state.current,
@@ -112,16 +116,16 @@ export default class Tickets extends Component{
         const { open } = this.state
         return(
             <div>
-                 <style>{`
-                .ui.dimmer {
-                transition: background-color 0.5s ease;
-                background-color: transparent;
-                }
+                <style>{`
+                    .ui.dimmer {
+                    transition: background-color 0.5s ease;
+                    background-color: transparent;
+                    }
 
-                .modal-fade-in .ui.dimmer {
-                background-color: teal;
-                }
-            `}</style>
+                    .modal-fade-in .ui.dimmer {
+                    background-color: teal;
+                    }
+                `}</style>
                 <LeftContainer>
                     <DashboardContainer>
                         <h1>Admin view All Tickets</h1>
@@ -129,7 +133,9 @@ export default class Tickets extends Component{
                         {this.state.tickets.map((p,i) => {
                             return(
                                 <div class="card">
-                                <button class="ui left floated button" onClick={(e)=>this.handleSubscribe(e)} value={p.name}>Subscribe</button>
+                                    <button onClick={(e)=>this.handleSubscribe(e)} value={p.name}>
+                                        {this.state.isToggleOn ? 'Subscribe' : 'UnSubscribe'}
+                                    </button>
                                     <div class="content">
                                         <div class="header">{p.label}</div>
                                         <div class="meta">Name: {p.name}</div>

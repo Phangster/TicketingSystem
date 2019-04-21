@@ -30,8 +30,6 @@ export default class Ticket extends Component{
     }
 
     handleRef = component => (this.ref = component);
-    open = () => this.setState({ open: true}, () => this.ref.focus());
-    close = () => this.setState({ open: false });
 
     //Delete function for deleting the ticket on the user side
     handleDelete(){
@@ -153,7 +151,7 @@ export default class Ticket extends Component{
                                         <Form>
                                             <Form.Field>
                                             <label>Comment</label>
-                                            <TextArea placeholder='Write your comment here ....' />
+                                            <TextArea placeholder='Write your comment here ....' ref={this.handleRef} onChange={this.handleUpdateMsg.bind(this)} />
                                             </Form.Field>
                                             <Button type='submit' onClick={(e)=>this.handleAdd(e)}>Submit</Button>
                                         </Form>
