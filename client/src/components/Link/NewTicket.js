@@ -9,7 +9,7 @@ export default class NewTicket extends Component{
         super(props);
         this.state={
             content:"",
-            label:""
+            label:"API DevOps"
         };
         this.handleContent = this.handleContent.bind(this);
         this.handleLabel = this.handleLabel.bind(this);
@@ -36,7 +36,7 @@ export default class NewTicket extends Component{
         .then(res => {
           console.log(res.data)
           window.location = "/user/home"
-        }).then 
+        })
         .catch(err => {
           console.log(err.response.data)
         });
@@ -50,14 +50,14 @@ export default class NewTicket extends Component{
             <LeftContainer>
                 <DashboardContainer>
                 <h1>Create a New Ticket</h1>
-                <form class="ui form" onSubmit={this.handleSubmit}>
-                <div class="field">
+                <form className="ui form" onSubmit={this.handleSubmit}>
+                <div className="field">
                     <label>Content:</label>
                     <textarea type="text" name="content" onChange={this.handleContent} />
                 </div>
-                <div class="field">
+                <div className="field">
                     <label>Label:</label>
-                    <select name="label" onChange={this.handleLabel} class="ui fluid dropdown">
+                    <select name="label" onChange={this.handleLabel} className="ui fluid dropdown">
                         <option value="API DevOps">API DevOps</option>
                         <option value="Chart as a Service">Chart as a Service</option>
                         <option value="Aesop">Aesop</option>
@@ -85,7 +85,7 @@ export default class NewTicket extends Component{
                         <option value="Other">Other</option>
                     </select>
                 </div>
-                <button class="ui teal button">Submit</button>
+                <button className="ui teal button">Submit</button>
                 </form>
                 </DashboardContainer>
             </LeftContainer>
