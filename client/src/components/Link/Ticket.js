@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Modal, TextArea} from 'semantic-ui-react';
+import { Button, Modal, TextArea, TransitionablePortal, Form} from 'semantic-ui-react';
 
 
 import { LeftContainer, DashboardContainer, StatusDist } from "../containers";
@@ -13,7 +13,6 @@ export default class Ticket extends Component{
             comments: [],
             content: '',
             message: '',
-            isModalOpen: false,
             open: false
         };
         
@@ -47,12 +46,20 @@ export default class Ticket extends Component{
 
     }
 
-   handleUpdateMsg(e){
-       this.setState({
-           message: e.target.value
-       })
-       console.log(this.state.message)
-   }
+    handleOpen = () => {
+        this.setState({ open: true })
+    }
+
+    handleClose = () => {
+        this.setState({ open: false })
+    }
+
+    handleUpdateMsg(e){
+        this.setState({
+            message: e.target.value
+        })
+        console.log(this.state.message)
+    }
 
     handleDelete(){
         const token = localStorage.getItem('jwt')
@@ -94,11 +101,6 @@ export default class Ticket extends Component{
         window.location = "/user/home";
         console.log(e.target)
     }
-
-    handleEdit(){
-        console.log("editing")
-        //redirect to an edit page form for submission
-    }
     render(){
         console.log(this.state.isModalOpen)
         let button;
@@ -117,39 +119,81 @@ export default class Ticket extends Component{
                             return(
                                 <div class="card">
                                     <div class="content">
-                                    <div>
+                                    {/* <div>
                                         <i class="x icon" onClick={this.handleDelete}></i>
-                                    </div>
+                                    </div> */}
                                     <p></p>
                                         <div class="header">{p.label}</div>
                                         <div class="meta">{i}</div>
                                         <div class="description">{p.content}</div>
                                     </div>
-                                    <StatusDist>
+                                    {/* <StatusDist>
                                     {button}
-                                    </StatusDist>
-                                    <div>
-                                        <button class="ui yellow button" onClick={this.handleEdit}>Edit</button>
+                                    </StatusDist> */}
+                                    <div style={{textAlign: "center"}}>
                                         <button class="ui green button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Show Comment</button>
-                                        <Button primary content='Add Comment' onClick={this.open} />
+                                        <Button color='olive' content='Add Comment' onClick={this.handleOpen} value={p.content} />
+
+                                    <TransitionablePortal
+                                        open={this.state.open}
+                                        onOpen={() => setTimeout(() => document.body.classList.add('modal-fade-in'), 0)}
+                                        transition={{ animation: 'scale', duration: 500 }}>
+                                        <Modal
+                                        open={true}
+                                        onClose={(event) => {
+                                            document.body.classList.remove('modal-fade-in')
+                                            this.handleClose()
+                                        }}
+                                        closeIcon
+                                        >
+                                        <Modal.Header>
+                                            Comments
+                                        </Modal.Header>
+                                        <Modal.Content>
+                                        <Form>
+                                            <Form.Field>
+                                            <label>Comment</label>
+                                            <TextArea placeholder='Write your comment here ....' />
+                                            </Form.Field>
+                                            <Button type='submit' onClick={(e)=>this.handleAdd(e)}>Submit</Button>
+                                        </Form>
+                                        </Modal.Content>
+                                        </Modal>
+                                    </TransitionablePortal>
+
+                                        {/* <Button primary content='Add Comment' onClick={this.open} />
                                         <Modal open={this.state.open} onClose={this.close}>
                                         <Modal.Content>
                                             <TextArea placeholder='Tell us more' ref={this.handleRef} onChange={this.handleUpdateMsg.bind(this)} />
                                             <button class="ui green button" onClick={(e)=>this.handleAdd(e)}>Submit</button>
                                         </Modal.Content>
-                                        </Modal>
-                                        <div class="ui section divider"></div>
-                                        {this.state.comments.map((p,i) => {
-                                            return(
-                                                <div>
-                                                    <div class="description">{p.message}</div>
-                                                </div>
-                                            )
-                                        })}
+                                        </Modal> */}
                                     </div>
                                 </div>
                             )
                         })}
+                        <table class="ui padded table">
+                                    <thead>
+                                        <tr>
+                                            <th>Ticket</th>
+                                            <th>Comments</th>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {this.state.comments.map((p,i) => {
+                                        return(
+                                            <tr>
+                                            <td data-label="Ticket">{i}</td>
+                                            <td data-label="Comments">{p.message}</td>
+                                            <td data-label="Name">{p.name}</td>
+                                            <td data-label="Date">{p.date}</td>
+                                            </tr>
+                                        )
+                                    })}
+                                    </tbody>
+                                </table>  
                         </div>
                     </DashboardContainer>
                 </LeftContainer>

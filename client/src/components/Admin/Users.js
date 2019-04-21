@@ -44,9 +44,9 @@ export default class Users extends Component{
                                             <td data-label="Password">{p.password}</td>
                                             <td data-label="Contact">{p.contact}</td>
                                             <td data-label="Ticket_Id">
-                                            {this.state.tickets.map((a,b)=>{
+                                            {/* {this.state.tickets.map((a,b)=>{
                                                 <p>{a.ticketId}</p>
-                                            })}
+                                            })} */}
                                             </td>
                                             <td data-label="Date">{p.date}</td>
                                             </tr>
