@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { LeftContainer, DashboardContainer, StatusDist} from "../containers";
-import { Button, Modal, TextArea, Header, Image, Grid, Divider, Form,
-    TransitionablePortal } from 'semantic-ui-react';
+import { Button, Modal, TextArea, Form, TransitionablePortal, Dropdown, Input, Search } from 'semantic-ui-react';
 
 //TODO - change ticket status and update database from processing to done, automatically it will be push to history
 export default class Tickets extends Component{
@@ -15,15 +14,22 @@ export default class Tickets extends Component{
             message:'',
             current:'',
             open: false,
-            isToggleOn: true
+            isToggleOn: true,
+            currentText: ''
         };
+        this.handleFilterNew = this.handleFilterNew.bind(this);
+        this.handleFilterEmail = this.handleFilterEmail.bind(this);
+        this.handleShowAll = this.handleShowAll.bind(this);
+        this.changeText = this.changeText.bind(this);
+
+
     }
 
-    handleRef = component => (this.ref = component);
-    open = () => this.setState({ open: true}, () => this.ref.focus());
-    close = () => this.setState({ open: false });
+    // handleRef = component => (this.ref = component);
+    // open = () => this.setState({ open: true}, () => this.ref.focus());
+    // close = () => this.setState({ open: false });
 
-    handleOpen = () => {
+    handleOpen = (e) => {
         this.setState({ open: true })
     }
 
@@ -53,20 +59,20 @@ export default class Tickets extends Component{
         console.log(this.state.message)
     }
 
-    handleContentChange(e){
-        const token = localStorage.getItem('jwt')
+    // handleContentChange(e){
+    //     const token = localStorage.getItem('jwt')
 
-        this.setState({
-            content: e.target.value
-        })
+    //     this.setState({
+    //         content: e.target.value
+    //     })
 
-        axios.get('http://localhost:8080/api/comments?content=' + e.target.value, {headers: {Authorization: `${token}`}})
-            .then(res=> {
-                this.setState({ comments:res.data });
-                console.log(this.state.comments)
-                return res.data
-            })
-    }
+    //     axios.get('http://localhost:8080/api/comments?content=' + e.target.value, {headers: {Authorization: `${token}`}})
+    //         .then(res=> {
+    //             this.setState({ comments:res.data });
+    //             console.log(this.state.comments)
+    //             return res.data
+    //         })
+    // }
 
     handleAdd = (e) =>{
         this.setState({ isModalOpen: true });
@@ -113,9 +119,58 @@ export default class Tickets extends Component{
             console.log(res.data);
         })
     }
-    //admin route need to subscribe to the ticket
 
+    handleFilterNew = (e) => {
+        console.log(e.target.getAttribute('name'))
+        const token = localStorage.getItem('jwt');
+        const filterNew = e.target.getAttribute('name');
+        axios.get('http://localhost:8080/api/admin/tickets/?status=' + filterNew, {headers: {Authorization: `${token}`}})
+        .then(res=> {
+            this.setState({tickets:res.data});
+            console.log(res.data);
+        })
+    }
+
+    handleFilterSort= (e) => {
+        console.log(e.target.getAttribute('name') )
+        const token = localStorage.getItem('jwt');
+        const sortBy = e.target.getAttribute('name');
+        this.setState({filter: e.target.name});
+        axios.get('http://localhost:8080/api/admin/tickets/?status=new&sort=' + sortBy, {headers: {Authorization: `${token}`}})
+        .then(res=> {
+            this.setState({tickets:res.data});
+            console.log(res.data);
+        })
+    }
+
+    handleShowAll = () => {
+        const token = localStorage.getItem('jwt')
+        axios.get('http://localhost:8080/api/admin/tickets', {headers: {Authorization: `${token}`}})
+        .then(res=> {
+            this.setState({tickets:res.data});
+            console.log(this.state.tickets)
+            return res.data
+        })
+    }
+
+    changeText = (e) => {
+        this.setState({currentText: e.target.value});
+        console.log(e.target.value);
+    }
+
+    handleFilterEmail = (e) => {
+        console.log("running handle filter mail")
+        const token = localStorage.getItem('jwt')
+        axios.get('http://localhost:8080/api/admin/tickets/?email=' + this.state.currentText, {headers: {Authorization: `${token}`}})
+        .then(res=> {
+            this.setState({tickets:res.data});
+            console.log(res.data);
+        })
+    }
+
+    //admin route need to subscribe to the ticket
     render(){
+        console.log(this.state.currentText)
         const { open } = this.state
         return(
             <div>
@@ -132,6 +187,43 @@ export default class Tickets extends Component{
                 <LeftContainer>
                     <DashboardContainer>
                         <h1>Admin view All Tickets</h1>
+                        <div>
+                        <div class="search-box">
+                            <form class="ui form">
+                            <input type="text" placeholder="search by email..." onChange={this.changeText} />
+                            <button class="ui purple button" type="submit" onClick={this.handleFilterEmail}>Search</button>
+                            </form>
+                        </div>
+                        <Dropdown text='Filter' floating labeled button className='icon'>
+                            <Dropdown.Menu>
+                                <Dropdown.Item 
+                                    onClick={this.handleShowAll} 
+                                    name='all'> Show all
+                                </Dropdown.Item>
+                                <Dropdown.Item 
+                                    onClick={this.handleFilterNew} 
+                                    name='new'> New
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    onClick={this.handleFilterNew} 
+                                    name='AwaitUser'>AwaitUser
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    onClick={this.handleFilterNew} 
+                                    name='AwaitAdmin'>AwaitAdmin
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    onClick={this.handleFilterSort} 
+                                    name='asc'>Accending
+                                </Dropdown.Item>
+                                <Dropdown.Item 
+                                    onClick={this.handleFilterSort} 
+                                    name='desc'>Descending
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        </div>
+                        <p></p>
                         <div class="ui cards">
                         {this.state.tickets.map((p,i) => {
                             return(
@@ -148,7 +240,7 @@ export default class Tickets extends Component{
                                         .map((subscribed,i) => {
                                             return(
                                                 <div>
-                                                    <p>{subscribed}</p>
+                                                    {subscribed}
                                                 </div>
                                             )})}
                                         </div>
@@ -174,12 +266,18 @@ export default class Tickets extends Component{
                                             Comments
                                         </Modal.Header>
                                         <Modal.Content>
+                                        {/* {this.state.comments.map((p,i) => {
+                                        return(
+                                            <div>
+                                                {p.message}
+                                            </div>
+                                        )})} */}
                                         <Form>
                                             <Form.Field>
                                             <label>Comment</label>
-                                            <TextArea placeholder='Write your comment here ....' />
+                                            <TextArea placeholder='Write your comment here ....' onChange={this.handleUpdateMsg.bind(this)} />
                                             </Form.Field>
-                                            <Button type='submit'>Submit</Button>
+                                            <Button type='submit' onClick={(e)=>this.handleAdd(e)}>Submit</Button>
                                         </Form>
                                         </Modal.Content>
                                         </Modal>
