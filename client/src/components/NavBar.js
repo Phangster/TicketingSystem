@@ -14,7 +14,10 @@ export default class Home extends Component {
       <div>
         <Menu pointing secondary>
           <Menu.Item 
-            header as={NavLink} exact to="/" name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
+            header as={NavLink} exact to="/home" 
+            name='home' 
+            active={activeItem === 'home'} 
+            onClick={this.handleItemClick} />
           <Menu.Item 
             header as={NavLink} exact to="/contact"
             name='contact us'
