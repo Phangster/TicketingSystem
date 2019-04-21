@@ -27,7 +27,8 @@ class Login extends Component {
       },
       isAuthenticated: false,
       redirect: false,
-      isAdmin: false
+      isAdmin: false,
+      isInvalidLogin: null
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -57,7 +58,7 @@ class Login extends Component {
 
   submitForm(e) {
     e.preventDefault();
-    const { validate, formFeedback, isAuthenticated } = this.state
+    const { validate, formFeedback, isAuthenticated, isInvalidLogin } = this.state
 
     const userData = {
       email: this.state.email,
@@ -100,6 +101,15 @@ class Login extends Component {
         
 
     })
+    .catch(err => {
+      if (err.status == undefined){
+        console.log(err);
+        this.setState({
+          isInvalidLogin: true
+        });
+        // alert('These credentials do not match our records.');
+      }
+    })
   }
 
   componentDidMount(){
@@ -131,11 +141,30 @@ class Login extends Component {
 
   render() {
     const {errors} = this.state;
-    const { email, password, formFeedback } = this.state;
+    const { email, password, formFeedback, isInvalidLogin } = this.state;
+    const customCss = `
+      .alert-danger{
+        position: relative;
+        padding: .75rem 1.25rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+        color: #813838;
+        background-color: #fee2e1;
+        border-color: #fdd6d6;
+      }
+    `
     return (
       <Container className="App">
         <h2>Login</h2>
         <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+          <div class>
+          <style>{customCss}</style>
+          {
+            isInvalidLogin 
+            ? <p class="alert-danger">These credentials do not match our records.</p>
+            : null
+          }</div>
+
           <Col>
             <FormGroup>
               <Label>Username</Label>
