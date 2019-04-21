@@ -24,6 +24,7 @@ const TicketSchema = new Schema({
         required: true
     },
     subscribedBy: [{type: mongoose.Schema.Types.ObjectId, ref: "users"}], 
+    subscribedByName:[{type: String}],
     status: {
         type: String,
         required: true,

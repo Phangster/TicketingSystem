@@ -96,6 +96,9 @@ export default class Tickets extends Component{
 			return {isToggleOn: !prevState.isToggleOn};
 		});
         const token = localStorage.getItem('jwt');
+        console.log("this.state.current: " + this.state.current)
+        console.log("e.target.value: " + e.target.value)
+        console.log("this.state.content: " + this.state.content)
         const subscriber = {
             content: this.state.content,
             email: e.target.value
@@ -141,7 +144,7 @@ export default class Tickets extends Component{
                                         <div class="meta">Name: {p.name}</div>
                                         <div class="meta">Email: {p.email}</div>
                                         <div class="description">{p.content}</div>
-                                        <div class="meta">Subscribers: {p.subscribedBy
+                                        <div class="meta">Subscribers: {p.subscribedByName
                                         .map((subscribed,i) => {
                                             return(
                                                 <div>
@@ -151,7 +154,7 @@ export default class Tickets extends Component{
                                         </div>
                                     </div>
                                     <StatusDist>
-                                    <a class="ui red label">{p.status}</a>
+                                    <a className="ui red label">{p.status}</a>
                                     </StatusDist>
                                     {/* <button class="ui green button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Show Comment</button> */}
                                     <Button color='olive' content='Add Comment' onClick={this.handleOpen} value={p.content} />

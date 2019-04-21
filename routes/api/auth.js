@@ -190,5 +190,42 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
     });
 });
 
+// For password reset but adapted from admin
+// @route   POST api/admin/reset
+// @params  email of the user, new password
+// @access  protected
+// router.post('/reset', passport.authenticate('jwt', {session: false}), (req, res) => {
+//     const decoded = jwt_decode(req.headers.authorization)
+//     console.log("Admin Status: " + decoded.isAdmin)
+//     if (decoded.isAdmin === false){
+//         res.sendStatus(403);
+//         console.log(decoded.isAdmin)
+//     }
+//     else {
+//         const email = req.body.email.toLowerCase();
+//         let password = req.body.password;
+
+//         bcrypt.genSalt(10, (err, salt) => {
+//             bcrypt.hash(password, salt, (err, hash)=>{
+//                 if (err) throw err;
+//                 password = hash;
+
+//                 User.findOneAndUpdate({
+//                     email: email
+//                 }, { $set:
+//                     {
+//                         password: password
+//                     }
+//                 })
+//                 .then(data => {
+//                     res.json({msg: "Password changed!"})
+//                     console.log(data);
+//                 })
+//                 .catch(err => console.log(err))        
+//             });
+//         });
+//     }
+// })
+
 
 module.exports = router;

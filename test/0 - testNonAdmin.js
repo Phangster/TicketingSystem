@@ -36,7 +36,7 @@ describe('Non-Admin Suite', function() {
 
         nonAdmin = {
             _id: userId,
-            name: "Yi Jie",
+            name: "See Yi Jie",
             email: "seeyijie.94@gmail.com",
             contact: "91312374",
             isAdmin: false,
@@ -44,7 +44,7 @@ describe('Non-Admin Suite', function() {
 
         ticket = {
             userId:userId,
-            name: "Yi Jie",
+            name: "See Yi Jie",
             email: "seeyijie.94@gmail.com",
             label: "API Demo Services",
             content: "Hi I would like to request a demo for this API",
@@ -201,7 +201,7 @@ describe('Non-Admin Suite', function() {
         .end((err, res)=>{
             console.log(res.body)
             // assert ticketId if possible
-            expect(res.body.name).to.eql("Tom Lee");
+            expect(res.body.name).to.eql("Yi Jie");
             expect(res.body.message).to.eql("I would also be interested in enterprise solution and follow up support");
             if (err) return done(err);
             done();

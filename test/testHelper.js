@@ -9,7 +9,7 @@ const createUserAccount = ()=>{
 
     userB = {
       _id: userId,
-      name: "Tom Lee",
+      name: "Yi Jie",
       email: "seeyijie.74@gmail.com",
       contact: "91234567",
       isAdmin: false,
@@ -18,7 +18,7 @@ const createUserAccount = ()=>{
 
     ticket = {
       userId: userId,
-      name: "Tom Lee",
+      name: "Yi Jie",
       email: "seeyijie.74@gmail.com",
       content: "Hello,I would like to find out more about the API for chat bots and databases for a new project.Regards,Tom Lee",
       label: "API Demo Service",
@@ -54,7 +54,7 @@ const createAdminAccount = ()=>{
 
     userC = {
       _id: userId,
-      name: "Yi Jie",
+      name: "Tom Lee",
       email: "cyberform.jys@gmail.com",
       contact: "91234567",
       isAdmin: true,
@@ -63,7 +63,7 @@ const createAdminAccount = ()=>{
 
     ticket = {
       userId: userId,
-      name: "Yi Jie",
+      name: "Tom Lee",
       email: "cyberform.jys@gmail.com",
       content: "Chatbot API is down since 7am GMT+8.",
       label: "Report Bug",
