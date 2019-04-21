@@ -1,9 +1,9 @@
-// const jwt = require('jsonwebtoken');
-// const keys = require('../../config/keys');
 const passport = require('passport');
 const express = require('express');
 const jwt_decode = require('jwt-decode');
-
+const bcrypt = require('bcryptjs');
+const generator = require('generate-password');
+const keys = require('../../config/keys'); // secret key
 
 const router = express.Router();
 
@@ -159,7 +159,49 @@ router.put('/tickets', passport.authenticate('jwt', {session: false}), (req, res
     }
 })
 
-// @route   PUT api/admin/subscribe
+// @route   POST api/admin/reset
+// @params  email of the user
+//          new password will be randomly generated and send via sendgrid
+// @access  protected
+router.post('/reset', passport.authenticate('jwt', {session: false}), (req, res) => {
+    const decoded = jwt_decode(req.headers.authorization)
+    console.log("Admin Status: " + decoded.isAdmin)
+    if (decoded.isAdmin === false){
+        res.sendStatus(403);
+        console.log(decoded.isAdmin)
+    }
+    else {
+        const email = req.body.email.toLowerCase();
+        let password = generator.generate({
+            length: 10,
+            numbers: true
+        });
+
+        console.log(password) // to be deleted. this password will be send via email
+
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(password, salt, (err, hash)=>{
+                if (err) throw err;
+                password = hash;
+
+                User.findOneAndUpdate({
+                    email: email
+                }, { $set:
+                    {
+                        password: password
+                    }
+                })
+                .then(data => {
+                    res.json({msg: "Password changed!"})
+                    console.log(data);
+                })
+                .catch(err => console.log(err))        
+            });
+        });
+    }
+})
+
+// @route   POST api/admin/subscribe
 // @params  Add user ObjectId to subscribedBy under Tickets model.
 //          Add ticket ObjectId to subscribeTo under User model.
 //          Require ticket content (req.body.content) and the author email (req.body.email)
@@ -196,7 +238,7 @@ router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, 
 })
 
 
-// @route   PUT api/admin/unsubscribe
+// @route   POST api/admin/unsubscribe
 // @params  Remove user ObjectId from subscribedBy under Tickets model.
 //          Remove ticket ObjectId from subscribeTo under User model.
 //          Require ticket content (req.body.content) and the author email (req.body.email)
