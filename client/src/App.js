@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppContainer } from "./components/containers";
+import { AppContainer, NavContainer } from "./components/containers";
 import axios from 'axios';
 
 // import route Components here
@@ -80,7 +80,7 @@ class App extends Component {
   render() {
     if(this.state.loggedIn == false){
       return (
-        <AppContainer>
+        <NavContainer>
             <Router>
               <div className="App">
                 <NavBar />
@@ -90,7 +90,7 @@ class App extends Component {
                 </Switch>
               </div>
             </Router>
-        </AppContainer>
+        </NavContainer>
       )
     }else if (this.state.loggedIn == true && this.state.isAdmin == true){
       return (
@@ -117,7 +117,6 @@ class App extends Component {
                   <Route path="/login" component={Login} />
                   <Route path="/contact" component={Contact} />
                   <Route path="/user/home" component={Ticket} />
-                  <Route path="/user/profile" component={Profile} />
                   <Route path="/user/history" component={History} />
                   <Route path="/user/newticket" component={NewTicket} />
                   <Route path="/user/addcomment" component={AddComment} />

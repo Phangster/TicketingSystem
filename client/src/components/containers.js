@@ -2,15 +2,23 @@ import styled from "styled-components";
 
 export const AppContainer = styled.div`
   height: 100vh;
+  width: 80%
+  position: absolute;
+`;
+
+export const NavContainer = styled.div`
+  height: 100vh;
   width: 100%
   position: absolute;
 `;
+
 
 export const DashboardContainer = styled.div`
   width: 100%;
   margin: 2em;
   padding: 2em;
   margin-top: 2em;
+  position: absolute;
 `;
 
 export const Container = styled.div`

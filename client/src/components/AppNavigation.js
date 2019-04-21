@@ -97,15 +97,9 @@ export default class AppNavigation extends React.Component {
                   </Nav>
                   <Nav id="4">
                     <IconCnt>
-                      <Icon icon={profile} />
-                    </IconCnt>
-                    <Text><a href="/user/profile">Profile</a></Text>
-                  </Nav>
-                  <Nav id="5">
-                    <IconCnt>
                       <Icon icon={exit} />
                     </IconCnt>
-                    <Text><a onClick = {this.onLogout} >Logout</a></Text>
+                    <Text><a onClick = {this.onLogout}>Logout</a></Text>
                   </Nav>
                 </SideNav>
               </Navigation>
