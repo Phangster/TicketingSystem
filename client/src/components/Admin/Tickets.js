@@ -97,10 +97,10 @@ export default class Tickets extends Component{
 		});
         const token = localStorage.getItem('jwt');
         const subscriber = {
-            subscribedBy: this.state.current,
-            subscribedTo: e.target.value
+            content: this.state.content,
+            email: e.target.value
         }
-        axios.post('http://localhost:8080/api/comments', subscriber, {
+        axios.post('http://localhost:8080/api/admin/subscribe', subscriber, {
             headers: {
                 'Authorization': token
             }
@@ -133,9 +133,9 @@ export default class Tickets extends Component{
                         {this.state.tickets.map((p,i) => {
                             return(
                                 <div class="card">
-                                    <button onClick={(e)=>this.handleSubscribe(e)} value={p.name}>
+                                    <Button onClick={(e)=>this.handleSubscribe(e)} value={p.email}>
                                         {this.state.isToggleOn ? 'Subscribe' : 'UnSubscribe'}
-                                    </button>
+                                    </Button>
                                     <div class="content">
                                         <div class="header">{p.label}</div>
                                         <div class="meta">Name: {p.name}</div>
@@ -166,7 +166,7 @@ export default class Tickets extends Component{
                                             this.handleClose()
                                         }}
                                         closeIcon
-                                        >
+                                        > 
                                         <Modal.Header>
                                             Comments
                                         </Modal.Header>
