@@ -182,6 +182,7 @@ class Contact extends Component {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+    window.location = "/home";
   }
 
   render() {
@@ -291,7 +292,6 @@ class Contact extends Component {
                   <Col>
                   <FormGroup>
                   <Label><span className="red-text">*</span> Select the assets or topic you are interested in</Label>
-                  {/* <Dropdown placeholder='eg Smart Home' fluid selection options={options} onChange={ (e) => this.handleChange(e)}/> */}
                   <select value={this.state.value} 
                     onChange={ (e) => this.handleChange(e)} 
                     name="options" 

@@ -23,6 +23,7 @@ import AddComment from './components/Link/AddComment';
 import TicketAdmin from './components/Admin/Tickets';
 import UserAdmin from './components/Admin/Users';
 import HistoryAdmin from './components/Admin/History';
+import Home from './components/Home';
 
 
 
@@ -85,6 +86,7 @@ class App extends Component {
               <div className="App">
                 <NavBar />
                 <Switch>
+                  <Route path="/home" component={Home} />
                   <Route path="/login" component={Login} />
                   <Route path="/contact" component={Contact} />
                 </Switch>
@@ -114,8 +116,6 @@ class App extends Component {
               <div className="App">
                 <AppNavigation />
                 <Switch>
-                  <Route path="/login" component={Login} />
-                  <Route path="/contact" component={Contact} />
                   <Route path="/user/home" component={Ticket} />
                   <Route path="/user/history" component={History} />
                   <Route path="/user/newticket" component={NewTicket} />
