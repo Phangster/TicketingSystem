@@ -24,13 +24,13 @@ router.get('/users',passport.authenticate('jwt', {session: false}), (req, res) =
     }
 })
 
-/* @route   GET api/admin/tickets
+/* @route   GET api/admin/tickets - all ticket
             GET api/admin/tickets/?status=new
             GET api/admin/tickets/?email=email1@gmail.com
-            GET api/admin/tickets/?email=email1@gmail.com&status=new
-            GET api/admin/tickets/?email=email1@gmail.com&status=new
             GET api/admin/tickets/?status=new&sort=asc
+            GET api/admin/tickets/?email=email1@gmail.com&status=new
 
+            
     For routes, you may use the following query strings:
     1) status only
     2) email only
@@ -64,8 +64,9 @@ router.get('/tickets', passport.authenticate('jwt', {session: false}), (req, res
             Ticket.find({})
                 .then(data => {
                     // console.log("Showing all tickets: ");
-                    // console.log(data);
+                    // console.log(data[2]);
                     res.send(data);
+                    // User.findById({_id: data.id})
                 })
                 .catch(err => console.log(err));
         }
@@ -209,6 +210,7 @@ router.post('/reset', passport.authenticate('jwt', {session: false}), (req, res)
 router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, res) => {
     const decoded = jwt_decode(req.headers.authorization)
     console.log("Admin Status: " + decoded.isAdmin)
+    console.log(decoded)
 
     if (decoded.isAdmin === false){
         res.sendStatus(403);
@@ -222,16 +224,19 @@ router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, 
             content: req.body.content,
             email: req.body.email
         }, 
-        {"$addToSet": {subscribedBy: decoded.id}}).then(data=>{
+        {"$addToSet": {
+            subscribedBy: decoded.id,
+            subscribedByName: decoded.name
+        }}).then(data=>{
             return data._id;
 
         }).then(ticketId => {
 
             User.findByIdAndUpdate(decoded.id, {
                 "$addToSet": {subscribeTo: ticketId}
-            }).then(res=>{
-                console.log(res)
-                res.status(200).json({msg:"Subscribed"})
+            }).then(userData=>{
+                console.log(userData)
+                res.status(200).send({msg:"Subscribed"})
 
             }).catch(err=>console.log(err)) // if successful, returns the ticket before the update.
         })
@@ -261,7 +266,8 @@ router.post('/unsubscribe', passport.authenticate('jwt', {session: false}), (req
         },
         {
             "$pull": {
-                subscribedBy: decoded.id
+                subscribedBy: decoded.id,
+                subscribedByName: decoded.name
             }
         })
         .then(data=> data._id)

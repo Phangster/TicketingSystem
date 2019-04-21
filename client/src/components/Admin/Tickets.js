@@ -100,8 +100,8 @@ export default class Tickets extends Component{
         console.log("e.target.value: " + e.target.value)
         console.log("this.state.content: " + this.state.content)
         const subscriber = {
-            subscribedBy: this.state.current,
-            subscribedTo: e.target.value
+            content: this.state.content,
+            email: e.target.value
         }
         axios.post('http://localhost:8080/api/admin/subscribe', subscriber, {
             headers: {
@@ -135,16 +135,16 @@ export default class Tickets extends Component{
                         <div class="ui cards">
                         {this.state.tickets.map((p,i) => {
                             return(
-                                <div className="card">
-                                    <button onClick={(e)=>this.handleSubscribe(e)} value={p.name}>
+                                <div class="card">
+                                    <Button onClick={(e)=>this.handleSubscribe(e)} value={p.email}>
                                         {this.state.isToggleOn ? 'Subscribe' : 'UnSubscribe'}
-                                    </button>
-                                    <div className="content">
-                                        <div className="header">{p.label}</div>
-                                        <div className="meta">Name: {p.name}</div>
-                                        <div className="meta">Email: {p.email}</div>
-                                        <div className="description">{p.content}</div>
-                                        <div className="meta">Subscribers: {p.subscribedBy
+                                    </Button>
+                                    <div class="content">
+                                        <div class="header">{p.label}</div>
+                                        <div class="meta">Name: {p.name}</div>
+                                        <div class="meta">Email: {p.email}</div>
+                                        <div class="description">{p.content}</div>
+                                        <div class="meta">Subscribers: {p.subscribedByName
                                         .map((subscribed,i) => {
                                             return(
                                                 <div>
@@ -169,7 +169,7 @@ export default class Tickets extends Component{
                                             this.handleClose()
                                         }}
                                         closeIcon
-                                        >
+                                        > 
                                         <Modal.Header>
                                             Comments
                                         </Modal.Header>

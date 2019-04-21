@@ -170,7 +170,7 @@ export default class Ticket extends Component{
                                 </div>
                             )
                         })}
-                        <table class="ui padded table">
+                        {/* <table class="ui padded table">
                                     <thead>
                                         <tr>
                                             <th>Ticket</th>
@@ -191,7 +191,7 @@ export default class Ticket extends Component{
                                         )
                                     })}
                                     </tbody>
-                                </table>  
+                                </table>   */}
                         </div>
                     </DashboardContainer>
                 </LeftContainer>
