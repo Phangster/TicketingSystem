@@ -16,12 +16,6 @@ export default class Home extends Component {
           <Menu.Item 
             header as={NavLink} exact to="/" name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
           <Menu.Item 
-            header as={NavLink} exact to="/about"
-            name='about'
-            active={activeItem === 'about'}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item 
             header as={NavLink} exact to="/contact"
             name='contact us'
             active={activeItem === 'contact us'}
@@ -34,12 +28,6 @@ export default class Home extends Component {
                 active={activeItem === 'login'}
                 onClick={this.handleItemClick}
                 Redirect='/login'
-            />
-            <Menu.Item
-                header as={NavLink} exact to="/register"
-                name='register'
-                active={activeItem === 'register'}
-                onClick={this.handleItemClick}
             />
           </Menu.Menu>
 
