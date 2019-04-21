@@ -48,7 +48,7 @@ router.post('/register', (req, res) => {
         return res.status(400).json(errors);
     }
 
-    User.findOne({email:req.body.email}).then(user => {
+    User.findOne({email:req.body.email.toLowerCase()}).then(user => {
         // console.log("Register!")
         if (user) {
             return res.status(601).send({ success: false, msg: "Email already exist" });
@@ -68,7 +68,7 @@ router.post('/register', (req, res) => {
                 const newUser = new User({
                     _id: userId,
                     name: req.body.name,
-                    email: req.body.email,
+                    email: req.body.email.toLowerCase(),
                     password: password,
                     contact: req.body.contact,
                     isEmailSent: false
@@ -77,7 +77,7 @@ router.post('/register', (req, res) => {
                 const newTicket = new Ticket({
                     userId: userId,
                     name: req.body.name,
-                    email: req.body.email,
+                    email: req.body.email.toLowerCase(),
                     content: req.body.content,
                     label: req.body.label,
                 })
@@ -126,9 +126,9 @@ router.post('/login', (req,res) => {
         return res.status(400).json(errors);
     }
 
-    const email = req.body.email;
+    const email = req.body.email.toLowerCase();
     const password = req.body.password;
-
+    console.log(email)
     // Find user
     User.findOne({email})
         .then(user => {
