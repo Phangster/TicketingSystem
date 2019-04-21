@@ -4,6 +4,7 @@ const jwt_decode = require('jwt-decode');
 const bcrypt = require('bcryptjs');
 const generator = require('generate-password');
 const keys = require('../../config/keys'); // secret key
+const {sendgridManualReset} = require('../../services/sendgrid');
 
 const router = express.Router();
 
@@ -173,12 +174,14 @@ router.post('/reset', passport.authenticate('jwt', {session: false}), (req, res)
     }
     else {
         const email = req.body.email.toLowerCase();
+        // let password = req.body.password;
         let password = generator.generate({
             length: 10,
             numbers: true
         });
 
         console.log(password) // to be deleted. this password will be send via email
+        sendgridManualReset(email, password)
 
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, (err, hash)=>{

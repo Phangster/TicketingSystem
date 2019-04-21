@@ -67,7 +67,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                                 // Find each user by userId in the array and send an email
                                 User.findOne(element)
                                     .then(res=> {
-                                        console.log("Alert admins!")
+                                        console.log("Send email to all admins subscribed to this ticket!")
                                         sendgridAlertAdmin(res.email, ticket.name)
                                     })
                                     .catch(err=> console.log(err))
@@ -86,17 +86,21 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res) => {
                         const subscribedByArray = ticket.subscribedBy;
 
                         subscribedByArray.forEach(element => {
-    
-                            // Find each user ID in an array, send an email
-                            User.findOne(element)
-                                .then(res=> {
-                                    // console.log("Email sent to: " + res.email)
-                                    // console.log("Author of Ticket: " + ticket.name)
-                                    
-                                    // Sent to the email of the admins and alerting the admin that the author (ticket.name) has followed-up
-                                    sendgridAlertAdmin(res.email, ticket.name)
-                                })
-                                .catch(err=> console.log(err))
+                            console.log(element)
+                            console.log(decoded.id)
+                            // Only send an alert to other admins subscribed to the ticket
+                            if (element != decoded.id){
+                                // Find each user ID in an array, send an email
+                                User.findOne(element)
+                                    .then(res=> {
+                                        // console.log("Email sent to: " + res.email)
+                                        // console.log("Author of Ticket: " + ticket.name)
+                                        console.log("awaitUser + send email to other admins")
+                                        // Sent to the email of the admins and alerting the admin that the author (ticket.name) has followed-up
+                                        sendgridAlertAdmin(res.email, ticket.name)
+                                    })
+                                    .catch(err=> console.log(err))
+                            }
     
                         });
     
