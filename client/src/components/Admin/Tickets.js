@@ -53,12 +53,6 @@ export default class Tickets extends Component{
           this.setState({current: res.data.name})
           return(res.data)
         })
-        axios.get('http://localhost:8080/api/comments?content=' + this.state.content, {headers: {Authorization: `${token}`}})
-            .then(res=> {
-                this.setState({ comments:res.data });
-                console.log(this.state.comments)
-                return res.data
-            })
     }
 
     handleUpdateMsg(e){
@@ -166,7 +160,7 @@ export default class Tickets extends Component{
     handleFilterEmail = (e) => {
         console.log("running handle filter mail" + e.target.value)
         const token = localStorage.getItem('jwt')
-        axios.get('http://localhost:8080/api/admin/tickets/?email=' + e.target.value, {headers: {Authorization: `${token}`}})
+        axios.get('http://localhost:8080/api/admin/tickets?email=' + e.target.value, {headers: {Authorization: `${token}`}})
         .then(res=> {
             this.setState({tickets:res.data});
             console.log(res.data);
@@ -193,10 +187,10 @@ export default class Tickets extends Component{
                     <DashboardContainer>
                         <h1>Admin view All Tickets</h1>
                         <div>
-                        <div class="search-box">
-                            <form class="ui form">
+                        <div className="search-box">
+                            <form className="ui form">
                             <input type="text" placeholder="search by email..." onChange={this.changeText} />
-                            <button class="ui purple button" onClick={(e)=>this.handleAddComment(e)} value={this.state.changeText}>Search</button>
+                            <button className="ui purple button" onClick={(e)=>this.handleAddComment(e)} value={this.state.changeText}>Search</button>
                             </form>
                         </div>
                         <Dropdown text='Filter' floating labeled button className='icon'>
@@ -229,19 +223,19 @@ export default class Tickets extends Component{
                         </Dropdown>
                         </div>
                         <p></p>
-                        <div class="ui cards">
+                        <div className="ui cards">
                         {this.state.tickets.map((p,i) => {
                             return(
-                                <div class="card">
+                                <div className="card">
                                     <Button onClick={(e)=>this.handleSubscribe(e)} value={p.email}>
                                         {this.state.isToggleOn ? 'Subscribe' : 'UnSubscribe'}
                                     </Button>
-                                    <div class="content">
-                                        <div class="header">{p.label}</div>
-                                        <div class="meta">Name: {p.name}</div>
-                                        <div class="meta">Email: {p.email}</div>
-                                        <div class="description">{p.content}</div>
-                                        <div class="meta">Subscribers: {p.subscribedByName
+                                    <div className="content">
+                                        <div className="header">{p.label}</div>
+                                        <div className="meta">Name: {p.name}</div>
+                                        <div className="meta">Email: {p.email}</div>
+                                        <div className="description">{p.content}</div>
+                                        <div className="meta">Subscribers: {p.subscribedByName
                                         .map((subscribed,i) => {
                                             return(
                                                 <div>
@@ -253,7 +247,7 @@ export default class Tickets extends Component{
                                     <StatusDist>
                                     <a className="ui red label">{p.status}</a>
                                     </StatusDist>
-                                    <div class="meta">Date created: {p.date}</div>
+                                    <div className="meta">Date created: {p.date}</div>
                                     {/* <button class="ui green button" onClick={(e)=>this.handleGetComment(e)} value={p.content}>Show Comment</button> */}
                                     <Button color='olive' content='Add Comment' onClick={this.handleOpen} value={p.content} />
                                     <TransitionablePortal
