@@ -175,6 +175,7 @@ export default class Tickets extends Component{
     render(){
         console.log(this.state.comment)
         const { open } = this.state
+        let
         return(
             <div>
                 <style>{`
@@ -230,9 +231,7 @@ export default class Tickets extends Component{
                         {this.state.tickets.map((p,i) => {
                             return(
                                 <div className="card">
-                                    <Button onClick={(e)=>this.handleSubscribe(e)} value={p.email}>
-                                        {this.state.isToggleOn ? 'Subscribe' : 'UnSubscribe'}
-                                    </Button>
+                                   {ButtonSubcribe}
                                     <div className="content">
                                         <div className="header">{p.label}</div>
                                         <div className="meta">Name: {p.name}</div>
