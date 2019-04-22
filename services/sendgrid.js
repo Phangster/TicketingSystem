@@ -1592,14 +1592,14 @@ const sendgridManualReset = (email, password)=> {
             <td align="center" style="padding:0;Margin:0;"> 
              <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;" width="600" cellspacing="0" cellpadding="0" align="center"> 
                <tr style="border-collapse:collapse;"> 
-                <td align="left" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:15px;padding-bottom:15px;"> 
+                 
                  <!--[if mso]><table width="580" cellpadding="0" cellspacing="0"><tr><td width="282" valign="top"><![endif]--> 
                  <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;"> 
                    <tr style="border-collapse:collapse;"> 
                     <td width="282" align="left" style="padding:0;Margin:0;"> 
                      <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;"> 
                        <tr style="border-collapse:collapse;"> 
-                        <td class="es-infoblock es-m-txt-c" align="left" style="padding:0;Margin:0;line-height:14px;font-size:12px;color:#CCCCCC;"> <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:12px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:14px;color:#CCCCCC;">Put your preheader text here<br></p> </td> 
+                        <td class="es-infoblock es-m-txt-c" align="left" style="padding:0;Margin:0;line-height:14px;font-size:12px;color:#CCCCCC;">  </td> 
                        </tr> 
                      </table> </td> 
                    </tr> 
@@ -1610,7 +1610,7 @@ const sendgridManualReset = (email, password)=> {
                     <td width="278" align="left" style="padding:0;Margin:0;"> 
                      <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;"> 
                        <tr style="border-collapse:collapse;"> 
-                        <td class="es-infoblock es-m-txt-c" align="right" style="padding:0;Margin:0;line-height:14px;font-size:12px;color:#CCCCCC;"> <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:12px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:14px;color:#CCCCCC;"><a href="http://#" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:12px;text-decoration:underline;color:#CCCCCC;">View in browser</a><br></p> </td> 
+                        <td class="es-infoblock es-m-txt-c" align="right" style="padding:0;Margin:0;line-height:14px;font-size:12px;color:#CCCCCC;"> <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:12px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:14px;color:#CCCCCC;"><br></p> </td> 
                        </tr> 
                      </table> </td> 
                    </tr> 
@@ -1680,8 +1680,8 @@ const sendgridManualReset = (email, password)=> {
                      <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#FFFFFF;" width="100%" cellspacing="0" cellpadding="0" bgcolor="#ffffff"> 
                        <tr style="border-collapse:collapse;"> 
                         <td class="es-m-txt-l" bgcolor="#ffffff" align="left" style="Margin:0;padding-bottom:15px;padding-top:20px;padding-left:30px;padding-right:30px;"> <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:18px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;">
-                          Resetting your password is easy. We've generated a temporary password for you to sign in with. If you did not request for this password, <a target="_blank" href="https://viewstripo.email/" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;text-decoration:underline;color:#7C72DC;">let us know</a>.
-                          <br><br>Here your temporary password: ${password}</p></td> 
+                          Resetting your password is easy. We've generated a temporary password for you to sign in with. If you did not request for this password, <a target="_blank" href="https://beta.acnapi.io/" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;text-decoration:underline;color:#7C72DC;">let us know</a>.
+                          <br><br>Here your temporary password: ${password} </p></td> 
                        </tr> 
                      </table> </td> 
                    </tr> 
@@ -1762,7 +1762,7 @@ const sendgridManualReset = (email, password)=> {
                     <td width="600" valign="top" align="center" style="padding:0;Margin:0;"> 
                      <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:4px;" width="100%" cellspacing="0" cellpadding="0"> 
                        <tr style="border-collapse:collapse;"> 
-                        <td align="center" style="padding:0;Margin:0;padding-top:30px;padding-left:30px;padding-right:30px;"> <p style="font-size: 14px; line-height: 19px; margin: 0;"><span style="color: #000000; font-size: 16px;">Copyright� � Accenture Email</span>
+                        <td align="center" style="padding:0;Margin:0;padding-top:30px;padding-left:30px;padding-right:30px;"> <p style="font-size: 14px; line-height: 19px; margin: 0;"><span style="color: #000000; font-size: 16px;">Copyright  © Accenture Email</span>
                         <br>
                         Find us on social media!</p> </td> 
                        </tr> 
@@ -1772,16 +1772,16 @@ const sendgridManualReset = (email, password)=> {
                         <tr align="center" style="vertical-align: top; display: inline-block; text-align: center;" valign="top">
                           
                           <tr style="vertical-align: top;" valign="top">
-  <td style="word-break: break-word; vertical-align: top; padding-top: 10px; padding-right: 10%; padding-bottom: 10%; padding-left: 10%; border-collapse: collapse;" valign="top">
+  <td style="word-break: break-word; vertical-align: top; padding-top: 5%; padding-right: 10% padding-bottom: 10%; padding-right: 10%; border-collapse: collapse;" valign="top">
   <table activate="activate" align="center" alignment="alignment" cellpadding="0" cellspacing="0" class="social_table" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: undefined; mso-table-tspace: 0; mso-table-rspace: 0; mso-table-bspace: 0; mso-table-lspace: 0;" to="to" valign="top">
   <tbody>
-  <tr align="center" style="vertical-align: top; display: inline-block; text-align: center;" valign="top">
+   <td align="center" style="padding:0;Margin:0;padding-top:30px;padding-left:30px;padding-right:30px;"> <p style="font-size: 14px; line-height: 19px; margin: 0;">
                       
      <td style="word-break: break-word; vertical-align: top; padding-bottom: 10px; padding-right: 10px; padding-left: 10px; border-collapse: collapse;" valign="top"><a href="https://www.facebook.com/" target="_blank" title="Facebook">
        <img alt="Facebook" height="32" src="https://marketing-image-production.s3.amazonaws.com/uploads/7b17bf7b9c1ce362d81881c6f08c13828386e6f921d2cd419785593cff73932a692cb8f4179a9056929e803bc72980fcfb9332cd62e33548d9570ddaefe2a074.png" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; height: auto; float: none; border: none; display: block;" title="Facebook" width="32"/></a></td>
   <td style="word-break: break-word; vertical-align: top; padding-bottom: 5px; padding-right: 10px; padding-left: 10px; border-collapse: collapse;" valign="top"><a href="https://twitter.com/" target="_blank" title="Twitter"><img alt="Twitter" height="32" src="https://marketing-image-production.s3.amazonaws.com/uploads/64618ba151895788111866604dbd3e824e58755486b5c094abc14c271b7a2720892fb30c7c45f2089b8db05734ee60aa600e799e09e771cbde45461e276fcb59.png" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; height: auto; float: none; border: none; display: block;" title="Twitter" width="32"/></a></td>
   <td style="word-break: break-word; vertical-align: top; padding-bottom: 5px; padding-right: 10px; padding-left: 10px; border-collapse: collapse;" valign="top"><a href="https://instagram.com/" target="_blank" title="Instagram"><img alt="Instagram" height="32" src="https://marketing-image-production.s3.amazonaws.com/uploads/44b6c1782d3a3ec9b81a4ecfedfa7602105a55326048283a64b84b9416393722acb3e0e6551a389e74b993e1b4bd1b082bf674e4878767bacd6af8be32572b58.png" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; height: auto; float: none; border: none; display: block;" title="Instagram" width="32"/></a></td>
-  <td style="word-break: break-word; vertical-align: top; padding-bottom: 5px; padding-right: 10px; padding-left: 10px; border-collapse: collapse;" valign="top"><a href="https://www.youtube.com/" target="_blank" title="YouTube"><img alt="YouTube" height="32" src="https://marketing-image-production.s3.amazonaws.com/uploads/fcc46e7786eb8e7823f0ef8c35b8ff5cac0d78c164921d3f62ba52345230f337d8d70f5795133768fe8c0be4e99b2cc5efca6f664947ab382e4ab4f69aec98e7.png" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; height: auto; float: none; border: none; display: block;" title="YouTube" width="32"/></a></td>
+  <td style="word-break: break-word; vertical-align: top; padding-bottom: 10px; padding-right: 10px; padding-left: 10px; border-collapse: collapse;" valign="top"><a href="https://www.youtube.com/" target="_blank" title="YouTube"><img alt="YouTube" height="32" src="https://marketing-image-production.s3.amazonaws.com/uploads/fcc46e7786eb8e7823f0ef8c35b8ff5cac0d78c164921d3f62ba52345230f337d8d70f5795133768fe8c0be4e99b2cc5efca6f664947ab382e4ab4f69aec98e7.png" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; height: auto; float: none; border: none; display: block;" title="YouTube" width="32"/></a></td>
   
   
                        </tr> 
