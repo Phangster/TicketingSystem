@@ -168,7 +168,7 @@ export default class Tickets extends Component{
     handleFilterEmail = (e) => {
         console.log("running handle filter mail" + e.target.value)
         const token = localStorage.getItem('jwt')
-        axios.get('http://localhost:8080/api/admin/tickets/?email=' + e.target.value, {headers: {Authorization: `${token}`}})
+        axios.get('http://localhost:8080/api/admin/tickets?email=' + e.target.value, {headers: {Authorization: `${token}`}})
         .then(res=> {
             this.setState({tickets:res.data});
             console.log(res.data);
@@ -195,8 +195,8 @@ export default class Tickets extends Component{
                     <DashboardContainer>
                         <h1>Admin view All Tickets</h1>
                         <div>
-                        <div class="search-box">
-                            <form class="ui form">
+                        <div className="search-box">
+                            <form className="ui form">
                             <input type="text" placeholder="search by email..." onChange={this.changeText} />
                             <Button class="ui purple button" type="submit" content='Submit' 
                             onClick={this.handleFilterEmail} value={this.state.changeText} />
@@ -232,19 +232,19 @@ export default class Tickets extends Component{
                         </Dropdown>
                         </div>
                         <p></p>
-                        <div class="ui cards">
+                        <div className="ui cards">
                         {this.state.tickets.map((p,i) => {
                             return(
-                                <div class="card">
+                                <div className="card">
                                     <Button onClick={(e)=>this.handleSubscribe(e)} value={p.email}>
                                         {this.state.isToggleOn ? 'Subscribe' : 'UnSubscribe'}
                                     </Button>
-                                    <div class="content">
-                                        <div class="header">{p.label}</div>
-                                        <div class="meta">Name: {p.name}</div>
-                                        <div class="meta">Email: {p.email}</div>
-                                        <div class="description">{p.content}</div>
-                                        <div class="meta">Subscribers: {p.subscribedByName
+                                    <div className="content">
+                                        <div className="header">{p.label}</div>
+                                        <div className="meta">Name: {p.name}</div>
+                                        <div className="meta">Email: {p.email}</div>
+                                        <div className="description">{p.content}</div>
+                                        <div className="meta">Subscribers: {p.subscribedByName
                                         .map((subscribed,i) => {
                                             return(
                                                 <div>
