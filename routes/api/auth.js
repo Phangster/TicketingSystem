@@ -181,13 +181,19 @@ router.post('/login', (req,res) => {
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
     // console.log(req)
     // res.json(req.user);
-    res.json({
-        id: req.user.id,
-        name: req.user.name,
-        email: req.user.email,
-        contact: req.user.contact,
-        isAdmin: req.user.isAdmin
-    });
+    User.findById({_id: req.user.id})
+        .then(data => {
+            res.send(data)
+        })
+        .catch(err => console.log(err));
+
+    // res.json({
+    //     id: req.user.id,
+    //     name: req.user.name,
+    //     email: req.user.email,
+    //     contact: req.user.contact,
+    //     isAdmin: req.user.isAdmin
+    // });
 });
 
 // For password reset but adapted from admin
