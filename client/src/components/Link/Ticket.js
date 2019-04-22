@@ -120,10 +120,11 @@ export default class Ticket extends Component{
                                         <div class="header">{p.label}</div>
                                         <div class="meta">{i}</div>
                                         <div class="description">{p.content}</div>
+                                        <div class="meta">Date created: {p.date}</div>
                                     </div>
-                                    {/* <StatusDist>
-                                    {button}
-                                    </StatusDist> */}
+                                    <StatusDist>
+                                    <a className="ui red label">{p.status}</a>
+                                    </StatusDist>
                                     <div style={{textAlign: "center"}}>
                                         <Button 
                                             color='olive' 

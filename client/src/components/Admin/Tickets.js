@@ -171,11 +171,17 @@ export default class Tickets extends Component{
 
     }
 
+    handleSubscribe = () => {
+        console.log("subcribe")
+    }
+
+    handleUnsubscribe = () => {
+        console.log("unsubcribe")
+    }
+
     //admin route need to subscribe to the ticket
     render(){
         console.log(this.state.comment)
-        const { open } = this.state
-        let
         return(
             <div>
                 <style>{`
@@ -231,7 +237,16 @@ export default class Tickets extends Component{
                         {this.state.tickets.map((p,i) => {
                             return(
                                 <div className="card">
-                                   {ButtonSubcribe}
+                                    <Button 
+                                        color='olive' 
+                                        content='Watch' 
+                                        onClick={(e)=>this.handleSubscribe(e)} 
+                                    />
+                                    <Button 
+                                        color='red' 
+                                        content='Unwatch' 
+                                        onClick={(e)=>this.handleUnsubscribe(e)} 
+                                    />
                                     <div className="content">
                                         <div className="header">{p.label}</div>
                                         <div className="meta">Name: {p.name}</div>
