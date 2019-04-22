@@ -21,9 +21,8 @@ export default class Tickets extends Component{
             comments:[]
         };
         this.handleFilterNew = this.handleFilterNew.bind(this);
-        this.handleFilterEmail = this.handleFilterEmail.bind(this);
         this.handleShowAll = this.handleShowAll.bind(this);
-        this.changeText = this.changeText.bind(this);
+        this.handleFilterEmail = this.handleFilterEmail.bind(this);
 
 
     }
@@ -160,19 +159,16 @@ export default class Tickets extends Component{
         })
     }
 
-    changeText = (e) => {
+    handleFilterEmail = (e) => {
         this.setState({currentText: e.target.value});
         console.log(e.target.value);
-    }
-
-    handleFilterEmail = (e) => {
-        console.log("running handle filter mail" + e.target.value)
         const token = localStorage.getItem('jwt')
         axios.get('http://localhost:8080/api/admin/tickets?email=' + e.target.value, {headers: {Authorization: `${token}`}})
         .then(res=> {
             this.setState({tickets:res.data});
             console.log(res.data);
         })
+
     }
 
     //admin route need to subscribe to the ticket
@@ -197,9 +193,7 @@ export default class Tickets extends Component{
                         <div>
                         <div className="search-box">
                             <form className="ui form">
-                            <input type="text" placeholder="search by email..." onChange={this.changeText} />
-                            <Button class="ui purple button" type="submit" content='Submit' 
-                            onClick={this.handleFilterEmail} value={this.state.changeText} />
+                            <input type="text" placeholder="search by email..." onChange={this.handleFilterEmail} />
                             </form>
                         </div>
                         <Dropdown text='Filter' floating labeled button className='icon'>
