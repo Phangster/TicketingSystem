@@ -15,6 +15,7 @@ export default class Tickets extends Component{
             content:[],
             message:'',
             current:'',
+            subscribed: [],
             open: false,
             isToggleOn: true,
             currentText: '',
@@ -35,11 +36,14 @@ export default class Tickets extends Component{
             console.log(this.state.tickets)
             return res.data
         })
-        // axios.get('/api/auth/current', {headers: {Authorization: `${token}`}})
-        // .then((res) => {
-        //   this.setState({current: res.data.name})
-        //   return(res.data)
-        // })
+        axios.get('/api/auth/current', {headers: {Authorization: `${token}`}})
+        .then((res) => {
+          this.setState({
+              current: res.data.name,
+              subscribed: res.data.subscribeTo
+            })
+          return(res.data)
+        })
     }
 
     handleUpdateMsg(e){
@@ -161,7 +165,6 @@ export default class Tickets extends Component{
 
     handleFilterEmail = (e) => {
         this.setState({currentText: e.target.value});
-        console.log(e.target.value);
         const token = localStorage.getItem('jwt')
         axios.get('http://localhost:8080/api/admin/tickets?email=' + e.target.value, {headers: {Authorization: `${token}`}})
         .then(res=> {
@@ -171,17 +174,37 @@ export default class Tickets extends Component{
 
     }
 
-    handleSubscribe = () => {
-        console.log("subcribe")
+    handleSubscribe = (e) => {
+        const token = localStorage.getItem('jwt');
+        const message = {
+            ticketId: e.target.value,
+        }
+        axios.post('http://localhost:8080/api/admin/subscribe', message, {headers: {Authorization: `${token}`}})
+        .then(res=> {
+            console.log(res);
+            console.log(res.data);
+        })
+        console.log(e.target.value)
+        window.location = "/admin/home";
     }
 
-    handleUnsubscribe = () => {
-        console.log("unsubcribe")
+    handleUnsubscribe = (e) => {
+        const token = localStorage.getItem('jwt');
+        const message = {
+            ticketId: e.target.value,
+        }
+        axios.post('http://localhost:8080/api/admin/unsubscribe', message, {headers: {Authorization: `${token}`}})
+        .then(res=> {
+            console.log(res);
+            console.log(res.data);
+        })
+        console.log(e.target.value)
+        window.location = "/admin/home";
     }
 
     //admin route need to subscribe to the ticket
     render(){
-        console.log(this.state.comment)
+        console.log(this.state.subscribeTo)
         return(
             <div>
                 <style>{`
@@ -241,11 +264,13 @@ export default class Tickets extends Component{
                                         color='olive' 
                                         content='Watch' 
                                         onClick={(e)=>this.handleSubscribe(e)} 
+                                        value={p._id}
                                     />
                                     <Button 
                                         color='red' 
                                         content='Unwatch' 
-                                        onClick={(e)=>this.handleUnsubscribe(e)} 
+                                        onClick={(e)=>this.handleUnsubscribe(e)}
+                                        value={p._id} 
                                     />
                                     <div className="content">
                                         <div className="header">{p.label}</div>

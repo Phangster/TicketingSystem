@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { LeftContainer, DashboardContainer } from "../containers";
+import { LeftContainer, DashboardContainer,AppContainer } from "../containers";
 
 export default class Users extends Component{
     constructor(props){
@@ -31,9 +31,7 @@ export default class Users extends Component{
                                         <th>Email</th>
                                         <th>Password</th>
                                         <th>Contact</th>
-                                        <th>Ticket_Id</th>
                                         <th>Date</th>
-                                        <th>Admin</th>
                                     </tr></thead>
                                     <tbody>
                                     {this.state.users.map((p,i) => {
@@ -43,11 +41,6 @@ export default class Users extends Component{
                                             <td data-label="Email">{p.email}</td>
                                             <td data-label="Password">{p.password}</td>
                                             <td data-label="Contact">{p.contact}</td>
-                                            <td data-label="Ticket_Id">
-                                            {/* {this.state.tickets.map((a,b)=>{
-                                                <p>{a.ticketId}</p>
-                                            })} */}
-                                            </td>
                                             <td data-label="Date">{p.date}</td>
                                             </tr>
                                         )
