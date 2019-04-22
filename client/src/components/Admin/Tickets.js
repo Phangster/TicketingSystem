@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { LeftContainer, DashboardContainer, StatusDist} from "../containers";
 import { Button, Modal, TextArea, Form, TransitionablePortal, Dropdown, Input, Search } from 'semantic-ui-react';
+import { exit } from 'react-icons-kit/icomoon/exit';
+// import {timeSolver} from 'timeSolver';
 
 //TODO - change ticket status and update database from processing to done, automatically it will be push to history
 export default class Tickets extends Component{
@@ -15,7 +17,8 @@ export default class Tickets extends Component{
             current:'',
             open: false,
             isToggleOn: true,
-            currentText: ''
+            currentText: '',
+            comments:[]
         };
         this.handleFilterNew = this.handleFilterNew.bind(this);
         this.handleFilterEmail = this.handleFilterEmail.bind(this);
@@ -23,21 +26,6 @@ export default class Tickets extends Component{
         this.changeText = this.changeText.bind(this);
 
 
-    }
-
-    // handleRef = component => (this.ref = component);
-    // open = () => this.setState({ open: true}, () => this.ref.focus());
-    // close = () => this.setState({ open: false });
-
-    handleOpen = (e) => {
-        this.setState({ open: true })
-        this.setState({
-            content: e.target.value
-        })
-    }
-
-    handleClose = () => {
-        this.setState({ open: false })
     }
 
     componentDidMount(){
@@ -48,11 +36,11 @@ export default class Tickets extends Component{
             console.log(this.state.tickets)
             return res.data
         })
-        axios.get('/api/auth/current', {headers: {Authorization: `${token}`}})
-        .then((res) => {
-          this.setState({current: res.data.name})
-          return(res.data)
-        })
+        // axios.get('/api/auth/current', {headers: {Authorization: `${token}`}})
+        // .then((res) => {
+        //   this.setState({current: res.data.name})
+        //   return(res.data)
+        // })
     }
 
     handleUpdateMsg(e){
@@ -62,9 +50,30 @@ export default class Tickets extends Component{
         console.log(this.state.message)
     }
 
-    handleGetComment = (e) =>{
+    handleRef = component => (this.ref = component);
+
+    handleClose = () => {
+        this.setState({ open: false })
+    }
+
+    handleOpen = (e) => {
+        this.setState({ 
+            open: true, 
+            content: e.target.value 
+        })
+
         const token = localStorage.getItem('jwt')
         
+        axios.get('http://localhost:8080/api/comments?content=' + e.target.value, {headers: {Authorization: `${token}`}})
+            .then(res=> {
+                this.setState({ comments:res.data });
+                console.log(this.state.comments)
+                return res.data
+            })
+    }
+
+    handleGetComment = (e) => {
+        const token = localStorage.getItem('jwt')
         axios.get('http://localhost:8080/api/comments?content=' + this.state.content, {headers: {Authorization: `${token}`}})
             .then(res=> {
                 this.setState({ comments:res.data });
@@ -92,7 +101,6 @@ export default class Tickets extends Component{
         })
         window.location = "/admin/home";
         console.log(e.target)
-        console.log(this.state.message)
     }
 
     handleSubscribe = (e) => {
@@ -169,7 +177,7 @@ export default class Tickets extends Component{
 
     //admin route need to subscribe to the ticket
     render(){
-        console.log(this.state.currentText)
+        console.log(this.state.comment)
         const { open } = this.state
         return(
             <div>
@@ -190,7 +198,8 @@ export default class Tickets extends Component{
                         <div className="search-box">
                             <form className="ui form">
                             <input type="text" placeholder="search by email..." onChange={this.changeText} />
-                            <button className="ui purple button" onClick={(e)=>this.handleAddComment(e)} value={this.state.changeText}>Search</button>
+                            <Button class="ui purple button" type="submit" content='Submit' 
+                            onClick={this.handleFilterEmail} value={this.state.changeText} />
                             </form>
                         </div>
                         <Dropdown text='Filter' floating labeled button className='icon'>
@@ -247,9 +256,13 @@ export default class Tickets extends Component{
                                     <StatusDist>
                                     <a className="ui red label">{p.status}</a>
                                     </StatusDist>
-                                    <div className="meta">Date created: {p.date}</div>
-                                    {/* <button class="ui green button" onClick={(e)=>this.handleGetComment(e)} value={p.content}>Show Comment</button> */}
-                                    <Button color='olive' content='Add Comment' onClick={this.handleOpen} value={p.content} />
+                                    <div class="meta">Date created: {p.date}</div>
+                                    <Button 
+                                        color='olive' 
+                                        content='Add Comment' 
+                                        onClick={(e)=>this.handleOpen(e)} 
+                                        value={p.content} 
+                                    />
                                     <TransitionablePortal
                                         open={this.state.open}
                                         onOpen={() => setTimeout(() => document.body.classList.add('modal-fade-in'), 0)}
@@ -266,30 +279,36 @@ export default class Tickets extends Component{
                                             Comments
                                         </Modal.Header>
                                         <Modal.Content>
-                                        {/* {this.state.comments.map((p,i) => {
-                                        return(
-                                            <div>
-                                                {p.message}
-                                            </div>
-                                        )})} */}
+                                        <table class="ui padded table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Comments</th>
+                                                    <th>Name</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {this.state.comments.map((p,i) => {
+                                                return(
+                                                    <tr>
+                                                    <td data-label="Comments">{p.message}</td>
+                                                    <td data-label="Name">{p.name}</td>
+                                                    <td data-label="Date">{p.date}</td>
+                                                    </tr>
+                                                )
+                                            })}
+                                            </tbody>
+                                        </table>  
                                         <Form>
                                             <Form.Field>
                                             <label>Comment</label>
-                                            <TextArea placeholder='Write your comment here ....' onChange={this.handleUpdateMsg.bind(this)} />
+                                            <TextArea placeholder='Write your comment here ....' ref={this.handleRef} onChange={this.handleUpdateMsg.bind(this)} />
                                             </Form.Field>
                                             <Button type='submit' onClick={(e)=>this.handleAddComment(e)}>Submit</Button>
                                         </Form>
                                         </Modal.Content>
                                         </Modal>
                                     </TransitionablePortal>
-
-                                    {/* <Button primary content='Add Comment' onClick={this.open} />
-                                        <Modal open={this.state.open} onClose={this.close}>
-                                        <Modal.Content>
-                                            <TextArea placeholder='Tell us more' ref={this.handleRef} onChange={this.handleUpdateMsg.bind(this)} />
-                                            <button class="ui green button" onClick={(ehandleAddComment(e)}>Submit</button>
-                                        </Modal.Content>
-                                        </Modal> */}
                                 </div>
                             )
                             })}
