@@ -1,0 +1,160 @@
+Elements of Software Construction
+Accenture Ticketing System
+Bryan Wong 1003112
+Chloe Zheng 1002934
+See Yi Jie
+At least five use cases of your product (informal, such as via a sketch board, is
+OK)
+Name User Signup/Login
+ID 1
+Description New users have to sign up an account, existing users can login
+and proceed with using the application.
+Actors Developers in the company
+Organization Benefits Able to track and log history of users contribution and actions
+within the application. To avoid internal complications and conflicts
+within the developing team and the company
+Frequency of use 100% due to the fact that everyone has to login to the account
+before starting
+Tiggers The user keys in its details and press submit
+Preconditions User must be in the homepage and not signed in yet
+Postconditions Upon signin/signup, users will be able to enjoy the features and
+data that the company created this application for.
+Main course 1. For an existing user, under login, key in details and press
+submit
+2. If succeed, continue to user homepage. Else prompt for
+re-typing of details.
+3. If it is a non-existing user, under signup, fill up credentials
+and press submit. Once success, bring the user to user
+homepage
+Alternative course 1. If login in fail too many attempts, prompt for ‘forget’
+password or block account until authorized IT personnel
+unlocks the account for him
+Exceptions
+Name Submit Ticket
+ID 2
+Description QA finds a bug, record the logs and identify the bug, and send
+it to the development team to review
+Actors QA and Development Team
+Organizational Benefits Effective communication, clear documentation, and log history
+of previous bugs.
+Frequency of Use Frequently
+Triggers The user submits a ticket
+Preconditions A bug in a software occurs and detected
+Postconditions The bug reported is logged and visible to the relevant team
+involved.
+Main Course 1. QA team finds a bug
+2. Describe how to replicate the bug
+3. Submit to the development team to rectify
+4. The development team will be able to see the report
+5. Members of the development team can assign the ticket
+internally
+6. System redirects to view a list of existing bugs and
+tasks
+Alternate Courses If there are zero bugs, display “no tasks”
+Exceptions 1. User decides to subscribe to the report
+Name Subscribe Tickets
+ID 3
+Description Be notified on any updates/progress/blockages
+Actors QA, Development Team, Clients
+Organizational Benefits Know the status
+Frequency of Use Frequently
+Triggers A user edit the ticket
+Preconditions A ticket is already created
+Postconditions An email and an SMS is sent to notify the stakeholders.
+Main Course 1. Client or QA team created a card
+2. Development Team or Client or QA team changed
+certain requirements/objectives/progress, the users who
+track the ticket will be notified
+3. Email or SMS will be sent to notify those tracking it
+4. History or changelog of the ticket is updated.
+Alternate Courses 1. User tries to track the ticket when it is closed. Returns
+error notification.
+Exceptions 1. User wants to stop subscription or pause it due to spam
+Name Unsubscribe Tickets
+ID 4
+Description Be unnotified from the subscription
+Actors QA, Development Team, Clients
+Organizational Benefits Do not want or need to know at the current time.
+Frequency of Use Frequently
+Triggers A user can change the setting by pressing the subscribe toggle
+button.
+Preconditions A ticket is already created
+Postconditions No email and an SMS will be sent to notify the stakeholders.
+Main Course 1. User toggle the subscribe button to unsubscribe status
+Alternate Courses 1. User tries to unsubscribe to the ticket when it is closed.
+Returns error notification.
+Exceptions 1. When toggling the button, the user may be clicking
+faster than the user interface may react.
+Name Submit support Requests from the user
+ID 5
+Description Details of requests
+Actors Primary: Administrator, QA, Development Team, Secondary:
+User/Client
+Organizational Benefits User’s choice to choose what form the ticket will be in, eg. as
+Images, details, or contacts
+Frequency of Use When the user sends support requests; frequently
+Triggers The user wishes to submit a support request
+Preconditions The user must have already been logged into the page,
+selected the option to submit a support request
+Postconditions App function can already detect what form the ticket is in - if the
+ticket is in the form of an image, there is a camera function to
+sift out the information needed on the image
+Main Course The user can select whether if he/she wants to submit the
+ticket in the form of image or form filling
+1. The user would have already registered and have
+logged in to the submit of support request
+2. The page will then display options to select what form
+the request would be in
+3. Either select “image” or “form”
+a. If “image” is selected, camera function would
+appear for the user to capture the image and
+then press the submit button to submit the
+request
+b. If “form” selected, user would then have to fill up
+the respective questions, and once done, press
+the submit button
+4. “End of submission” page will appear upon submission
+of the ticket
+Alternate Courses The user selects the wrong option
+Exceptions 1. Image is unclear
+2. Details in the form are filled in incorrectly
+Project timeline and distribution of workloads 1%
+Milestones to achieve:
+1. Talk to Accenture and clarify our doubts, discuss what stacks, frameworks, the database
+we are going to use ( W1-W2 )
+2. Do cases and write up on the features we want to implement ( W2 )
+3. Build the basic startup stack such as user sign in and CRUD operations syncing with
+database ( W3-W6 )
+4. Check with Accenture if the function is what they need (W7)
+5. Edit Front-end and beautify the outlooks of the product ( W8 - W9 )
+6. Launch it to AWS as a web-app ( W10 )
+7. Launching it to the app store ( W11-W12 )
+Chloe - Frontend
+Yi Jie - Backend
+Bryan - Backend/Cloud server
+Clarification of doubts or gaps in the requirement 1%
+1) What APIs will be available for ACNAPI for sandboxed testing?
+2) Who are considered as administrators? Who are the users? What is the difference in
+their permissions?
+3) What are some of the 5 most common uses of the platform and what purpose do
+ACNAPI and the existing platform serve?
+4) How many users must the system support concurrently?
+5) What is their existing solution and how are they managing the current load?
+Development Process, Constraints and risks 1%
+We will be using a variety of platforms like JavaScript, HTML, CSS and Node Express to
+achieve our deliverables.
+Identification of risk:
+Risk Description:
+- Too many bugs coming through, insufficient QA time to validate on the web browser
+and OS types
+- Unable to create sufficient test cases that will affect the database accuracies
+- Miscommunication and lack of update of log book
+- Lost of data in the process of updating the log book
+- Learning a new programming language/API
+- Camera function unable to capture the details correctly and accurately
+- Form filling function is inaccurately filled up by the user
+-
+Constraints:
+- The database, the SQL, network, process time of database, manpower, program
+design, program code
+- In individuals and our interactions: on how we respond when the inevitable occurs
