@@ -83,12 +83,12 @@ export default class AppNavigation extends React.Component {
                     </IconCnt>
                     <Text><a href="/user/home">Home</a></Text>
                   </Nav>
-                  <Nav id="2">
+                  {/* <Nav id="2">
                     <IconCnt>
                       <Icon icon={history} />
                     </IconCnt>
                     <Text><a href="/user/history">History</a></Text>
-                  </Nav>
+                  </Nav> */}
                   <Nav id="3">
                     <IconCnt>
                       <Icon icon={ticket} />
@@ -121,12 +121,12 @@ export default class AppNavigation extends React.Component {
                     </IconCnt>
                     <Text><a href="/admin/home">Home</a></Text>
                   </Nav>
-                  <Nav id="2">
+                  {/* <Nav id="2">
                     <IconCnt>
                       <Icon icon={history} />
                     </IconCnt>
                     <Text><a href="/admin/history">History</a></Text>
-                  </Nav>
+                  </Nav> */}
                   <Nav id="3">
                     <IconCnt>
                       <Icon icon={users} />
