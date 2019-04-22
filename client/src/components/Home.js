@@ -23,7 +23,7 @@ export default class Home extends Component{
                     <p></p>
                     <div>
                         <Button onClick={(e)=>this.handleContact(e)}>Having a problem?</Button>
-                        <Button Click={(e)=>this.handleUser(e)}>Already a user?</Button>
+                        <Button onClick={(e)=>this.handleUser(e)}>Already a user?</Button>
                     </div> 
                 </HomeContainer>
             </div>
