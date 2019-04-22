@@ -44,8 +44,19 @@ export default class Ticket extends Component{
 
     }
 
-    handleOpen = () => {
-        this.setState({ open: true })
+    handleOpen = (e) => {
+        this.setState({ 
+            open: true,
+            content: e.target.value
+        })
+        const token = localStorage.getItem('jwt')
+
+        axios.get('http://localhost:8080/api/comments?content=' + e.target.value, {headers: {Authorization: `${token}`}})
+            .then(res=> {
+                this.setState({ comments:res.data });
+                console.log(this.state.comments)
+                return res.data
+            })
     }
 
     handleClose = () => {
@@ -62,21 +73,6 @@ export default class Ticket extends Component{
     handleDelete(){
         const token = localStorage.getItem('jwt')
         axios.delete('http://localhost:8080/api/tickets', {headers: {Authorization: `${token}`}})
-    }
-
-    handleContentChange(e){
-        const token = localStorage.getItem('jwt')
-
-        this.setState({
-            content: e.target.value
-        })
-
-        axios.get('http://localhost:8080/api/comments?content=' + e.target.value, {headers: {Authorization: `${token}`}})
-            .then(res=> {
-                this.setState({ comments:res.data });
-                console.log(this.state.comments)
-                return res.data
-            })
     }
 
     handleAdd= (e) =>{
@@ -129,9 +125,12 @@ export default class Ticket extends Component{
                                     {button}
                                     </StatusDist> */}
                                     <div style={{textAlign: "center"}}>
-                                        <button class="ui green button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Show Comment</button>
-                                        <Button color='olive' content='Add Comment' onClick={this.handleOpen} value={p.content} />
-
+                                        <Button 
+                                            color='olive' 
+                                            content='Add Comment' 
+                                            onClick={(e)=>this.handleOpen(e)} 
+                                            value={p.content} 
+                                        />
                                     <TransitionablePortal
                                         open={this.state.open}
                                         onOpen={() => setTimeout(() => document.body.classList.add('modal-fade-in'), 0)}
@@ -148,6 +147,26 @@ export default class Ticket extends Component{
                                             Comments
                                         </Modal.Header>
                                         <Modal.Content>
+                                        <table class="ui padded table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Comments</th>
+                                                    <th>Name</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {this.state.comments.map((p,i) => {
+                                                return(
+                                                    <tr>
+                                                    <td data-label="Comments">{p.message}</td>
+                                                    <td data-label="Name">{p.name}</td>
+                                                    <td data-label="Date">{p.date}</td>
+                                                    </tr>
+                                                )
+                                            })}
+                                            </tbody>
+                                        </table>  
                                         <Form>
                                             <Form.Field>
                                             <label>Comment</label>
@@ -158,40 +177,10 @@ export default class Ticket extends Component{
                                         </Modal.Content>
                                         </Modal>
                                     </TransitionablePortal>
-
-                                        {/* <Button primary content='Add Comment' onClick={this.open} />
-                                        <Modal open={this.state.open} onClose={this.close}>
-                                        <Modal.Content>
-                                            <TextArea placeholder='Tell us more' ref={this.handleRef} onChange={this.handleUpdateMsg.bind(this)} />
-                                            <button class="ui green button" onClick={(e)=>this.handleAdd(e)}>Submit</button>
-                                        </Modal.Content>
-                                        </Modal> */}
                                     </div>
                                 </div>
                             )
                         })}
-                        {/* <table class="ui padded table">
-                                    <thead>
-                                        <tr>
-                                            <th>Ticket</th>
-                                            <th>Comments</th>
-                                            <th>Name</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {this.state.comments.map((p,i) => {
-                                        return(
-                                            <tr>
-                                            <td data-label="Ticket">{i}</td>
-                                            <td data-label="Comments">{p.message}</td>
-                                            <td data-label="Name">{p.name}</td>
-                                            <td data-label="Date">{p.date}</td>
-                                            </tr>
-                                        )
-                                    })}
-                                    </tbody>
-                                </table>   */}
                         </div>
                     </DashboardContainer>
                 </LeftContainer>
