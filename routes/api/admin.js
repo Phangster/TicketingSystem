@@ -208,7 +208,7 @@ router.post('/reset', passport.authenticate('jwt', {session: false}), (req, res)
 // @route   POST api/admin/subscribe
 // @params  Add user ObjectId to subscribedBy under Tickets model.
 //          Add ticket ObjectId to subscribeTo under User model.
-//          Require ticket content (req.body.content) and the author email (req.body.email)
+//          Require userId of the admin who has logged in (decoded.id) and ticketId of the ticket the admin wants to subscribed.
 // @access  protected
 router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, res) => {
     const decoded = jwt_decode(req.headers.authorization)
@@ -222,21 +222,22 @@ router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, 
     else {
         // decided to add in email to narrow down the search
         // under the assumption that there is one ticket that has the same content
-
+        let ticketId = req.body.ticketId;
+        
         Ticket.findOneAndUpdate({
-            content: req.body.content,
-            email: req.body.email
+            _id: ticketId,
         }, 
         {"$addToSet": {
             subscribedBy: decoded.id,
             subscribedByName: decoded.name
         }}).then(data=>{
+            console.log(data)
             return data._id;
 
-        }).then(ticketId => {
+        }).then(ticket_id => {
 
             User.findByIdAndUpdate(decoded.id, {
-                "$addToSet": {subscribeTo: ticketId}
+                "$addToSet": {subscribeTo: ticket_id}
             }).then(userData=>{
                 console.log(userData)
                 res.status(200).send({msg:"Subscribed"})
@@ -252,11 +253,13 @@ router.post('/subscribe', passport.authenticate('jwt', {session: false}), (req, 
 // @route   POST api/admin/unsubscribe
 // @params  Remove user ObjectId from subscribedBy under Tickets model.
 //          Remove ticket ObjectId from subscribeTo under User model.
-//          Require ticket content (req.body.content) and the author email (req.body.email)
+//          Require ticketId (req.body.ticketId) and userId (in jwt token decoded.id)
 // @access  protected
 router.post('/unsubscribe', passport.authenticate('jwt', {session: false}), (req, res) => {
     const decoded = jwt_decode(req.headers.authorization)
     console.log("Admin Status: " + decoded.isAdmin)
+
+    let ticketId = req.body.ticketId;
 
     if (decoded.isAdmin === false){
         res.sendStatus(403);
@@ -264,8 +267,7 @@ router.post('/unsubscribe', passport.authenticate('jwt', {session: false}), (req
     }
     else {
         Ticket.findOneAndUpdate({
-            content: req.body.content,
-            email: req.body.email
+            _id: ticketId
         },
         {
             "$pull": {
@@ -274,10 +276,10 @@ router.post('/unsubscribe', passport.authenticate('jwt', {session: false}), (req
             }
         })
         .then(data=> data._id)
-        .then(ticketId => {
+        .then(ticket_id => {
             User.findByIdAndUpdate(decoded.id, {
                 "$pull": {
-                    subscribeTo: ticketId
+                    subscribeTo: ticket_id
                 }
             }).then(res=>console.log(res)).catch(err=>console.log(err)) // if successful, returns the ticket before the update.
         })
