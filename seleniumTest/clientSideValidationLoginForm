@@ -1,0 +1,96 @@
+package FrontEndTesting;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import junit.framework.Assert;
+
+public class clientSideValidationLoginForm {
+	
+	//when you submit the wrong username/password, prevenTS
+	
+	static String myUserNamePart1 = "seeyijie";
+	static String myUserNamePart2 = "seeyijie@";
+	static String myUserNamePart3 = "seeyijie@gmail";
+	static String myUserNamePart4 = "seeyijie@gmail.c";
+	static String myUserNamePart5 = "seeyijie@gmail.co";
+	static String myUserNamePart6 = "seeyijie@gmail.com"; //the correct input for the green bar to light up 
+	
+	static String myPassword = "MEWMEWMEW";
+	
+	public static void main(String[] args) throws InterruptedException {		
+
+		System.setProperty("webdriver.chrome.driver","/Users/chloe/Downloads/chromedriver_win32/chromedriver.exe");
+		//WebDriver driver = new FirefoxDriver();
+		WebDriver driver = new ChromeDriver();
+		
+		driver.get("localhost:3000/login");
+				
+		// get all the links
+		//java.util.List<WebElement> links = driver.findElements(By.tagName("a"));
+		//System.out.println(links.size());
+		
+		// get the user name field of the account page
+		WebElement username = driver.findElement(By.id("exampleEmail"));
+		
+		Thread.sleep(30000);
+		
+		// send my user name to fill up the box
+		username.sendKeys(myUserNamePart5);
+		
+		Thread.sleep(30000);
+
+		// locate the "Next" button in the account page
+		WebElement nextButton = driver.findElement(By.id("examplePassword"));		
+		nextButton.click();
+		
+		// sleep until the page loads
+		Thread.sleep(10000);
+
+		// now locate the password field in the current page
+		WebElement password = driver.findElement(By.name("password"));		
+
+		// send password 
+		password.sendKeys(myPassword);
+		
+		Thread.sleep(30000);
+				
+		// login and :)
+		nextButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/form/button"));		
+		nextButton.click();
+		
+		//assert that the website is true 
+		//Assert.assertEquals(URL, "http://localhost:3000/user/home");
+		
+		String expectedUrl = "http://localhost:3000/user/home";
+//		WebDriver chromedriver = new ChromeDriver();
+//		driver.get(expectedUrl);
+		
+		try{	
+		String currentURL = driver.getCurrentUrl();
+		System.out.println(currentURL);
+		assertEquals(currentURL, "http://localhost:3000/home");
+		System.out.println("Navigate to correct webpage");
+		
+		}
+		catch(Throwable pageNavigationError){
+		  System.out.println("Didn't navigate to correct webpage");
+		}	
+	}
+
+	private static void assertEquals(String expectedUrl, String string) {
+		// TODO Auto-generated method stub
+		
+	}
+	//if username/email is not correct, assert that it cannot proceed to the next page 
+	
+
+}
