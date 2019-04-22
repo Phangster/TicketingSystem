@@ -100,6 +100,7 @@ export default class Tickets extends Component{
 			return {isToggleOn: !prevState.isToggleOn};
 		});
         const token = localStorage.getItem('jwt');
+        console.log("e.target: " + e.target)
         console.log("this.state.current: " + this.state.current)
         console.log("e.target.value: " + e.target.value)
         console.log("this.state.content: " + this.state.content)
