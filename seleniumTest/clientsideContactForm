@@ -1,0 +1,99 @@
+package FrontEndTesting;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import junit.framework.Assert;
+
+public class clientSideValidationContactForm {
+	
+//	static String myUserNamePart1 = "seeyijie";
+//	static String myUserNamePart2 = "seeyijie@";
+//	static String myUserNamePart3 = "seeyijie@gmail";
+//	static String myUserNamePart4 = "seeyijie@gmail.c";
+//	static String myUserNamePart5 = "seeyijie@gmail.co";
+//	static String myUserNamePart6 = "seeyijie@gmail.com"; 
+//	static String myPassword = "MEWMEWMEW";
+	
+	static String myName = "Chloe,";
+	static String myEmail = "chloezxyy@gmail.com";
+	static String myContact = "92837495"; //is it int or string?
+	static String myMessage = "Hi I need help";
+	
+	public static void main(String[] args) throws InterruptedException {		
+
+		System.setProperty("webdriver.chrome.driver","/Users/chloe/Downloads/chromedriver_win32/chromedriver.exe");
+		//WebDriver driver = new FirefoxDriver();
+		WebDriver driver = new ChromeDriver();
+		
+		driver.get("localhost:3000/contact");
+				
+		// get all the links
+		//java.util.List<WebElement> links = driver.findElements(By.tagName("a"));
+		//System.out.println(links.size());
+		
+		// get the user name field of the account page
+		WebElement yourName = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+		//send yourName to fill up the form 
+		yourName.sendKeys(myName);
+		
+		Thread.sleep(300);
+
+		// locate the email text in the current page 
+		WebElement yourEmail = driver.findElement(By.xpath("//*[@id=\"email\"]"));		
+		yourEmail.sendKeys(myEmail);
+		
+		// sleep until the page loads
+		Thread.sleep(100);
+		
+		// now locate the contact field in the current page
+		WebElement yourContact = driver.findElement(By.xpath("//*[@id=\"contact\"]"));
+		yourContact.sendKeys(myContact);
+		
+		Thread.sleep(300);
+		
+		//DROP DOWN BAR
+		Select dropDown = new Select(driver.findElement(By.xpath("//*[@id=\"options\"]")));
+		//dropDown.selectByVisibleText("Aseop");
+		dropDown.selectByIndex(2);
+				
+		//locate "message" box in the current page 
+		WebElement yourMessage = driver.findElement(By.name("inputMessage"));
+		yourMessage.sendKeys(myMessage);
+		
+		
+		// login and :)
+		WebElement submitButton = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/div/div[3]/button"));		
+		submitButton.click();
+	
+	
+	String expectedUrl = "http://localhost:3000";
+//	WebDriver chromedriver = new ChromeDriver();
+//	driver.get(expectedUrl);
+	
+	try{	
+	String currentURL = driver.getCurrentUrl();
+	System.out.println(currentURL);
+	assertEquals(currentURL, "http://localhost:3000/home");
+	System.out.println("Navigate to correct webpage");
+	
+	}
+	catch(Throwable pageNavigationError){
+	  System.out.println("Didn't navigate to correct webpage");
+	}	
+}
+
+private static void assertEquals(String expectedUrl, String string) {
+	// TODO Auto-generated method stub
+	
+}
+}
