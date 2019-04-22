@@ -158,10 +158,11 @@ export default class Tickets extends Component{
         console.log(e.target.value);
     }
 
-    handleFilterEmail = (e) => {
+    handleFilterEmail = () => {
         console.log("running handle filter mail")
         const token = localStorage.getItem('jwt')
-        axios.get('http://localhost:8080/api/admin/tickets/?email=' + this.state.currentText, {headers: {Authorization: `${token}`}})
+        console.log(this.state.currentText)
+        axios.get('http://localhost:8080/api/admin/tickets?email=' + this.state.currentText, {headers: {Authorization: `${token}`}})
         .then(res=> {
             this.setState({tickets:res.data});
             console.log(res.data);
@@ -188,10 +189,10 @@ export default class Tickets extends Component{
                     <DashboardContainer>
                         <h1>Admin view All Tickets</h1>
                         <div>
-                        <div class="search-box">
-                            <form class="ui form">
+                        <div className="search-box">
+                            <form className="ui form">
                             <input type="text" placeholder="search by email..." onChange={this.changeText} />
-                            <button class="ui purple button" type="submit" onClick={this.handleFilterEmail}>Search</button>
+                            <button className="ui purple button" type="submit" onClick={this.handleFilterEmail}>Search</button>
                             </form>
                         </div>
                         <Dropdown text='Filter' floating labeled button className='icon'>
@@ -206,11 +207,11 @@ export default class Tickets extends Component{
                                 </Dropdown.Item>
                                 <Dropdown.Item
                                     onClick={this.handleFilterNew} 
-                                    name='AwaitUser'>AwaitUser
+                                    name='awaitUser'>AwaitUser
                                 </Dropdown.Item>
                                 <Dropdown.Item
                                     onClick={this.handleFilterNew} 
-                                    name='AwaitAdmin'>AwaitAdmin
+                                    name='awaitAdmin'>AwaitAdmin
                                 </Dropdown.Item>
                                 <Dropdown.Item
                                     onClick={this.handleFilterSort} 
@@ -224,19 +225,19 @@ export default class Tickets extends Component{
                         </Dropdown>
                         </div>
                         <p></p>
-                        <div class="ui cards">
+                        <div className="ui cards">
                         {this.state.tickets.map((p,i) => {
                             return(
-                                <div class="card">
+                                <div className="card">
                                     <Button onClick={(e)=>this.handleSubscribe(e)} value={p.email}>
                                         {this.state.isToggleOn ? 'Subscribe' : 'UnSubscribe'}
                                     </Button>
-                                    <div class="content">
-                                        <div class="header">{p.label}</div>
-                                        <div class="meta">Name: {p.name}</div>
-                                        <div class="meta">Email: {p.email}</div>
-                                        <div class="description">{p.content}</div>
-                                        <div class="meta">Subscribers: {p.subscribedByName
+                                    <div className="content">
+                                        <div className="header">{p.label}</div>
+                                        <div className="meta">Name: {p.name}</div>
+                                        <div className="meta">Email: {p.email}</div>
+                                        <div className="description">{p.content}</div>
+                                        <div className="meta">Subscribers: {p.subscribedByName
                                         .map((subscribed,i) => {
                                             return(
                                                 <div>
