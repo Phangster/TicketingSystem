@@ -31,6 +31,9 @@ export default class Tickets extends Component{
 
     handleOpen = (e) => {
         this.setState({ open: true })
+        this.setState({
+            content: e.target.value
+        })
     }
 
     handleClose = () => {
@@ -50,6 +53,12 @@ export default class Tickets extends Component{
           this.setState({current: res.data.name})
           return(res.data)
         })
+        axios.get('http://localhost:8080/api/comments?content=' + this.state.content, {headers: {Authorization: `${token}`}})
+            .then(res=> {
+                this.setState({ comments:res.data });
+                console.log(this.state.comments)
+                return res.data
+            })
     }
 
     handleUpdateMsg(e){
@@ -59,22 +68,18 @@ export default class Tickets extends Component{
         console.log(this.state.message)
     }
 
-    // handleContentChange(e){
-    //     const token = localStorage.getItem('jwt')
+    handleGetComment = (e) =>{
+        const token = localStorage.getItem('jwt')
+        
+        axios.get('http://localhost:8080/api/comments?content=' + this.state.content, {headers: {Authorization: `${token}`}})
+            .then(res=> {
+                this.setState({ comments:res.data });
+                console.log(this.state.comments)
+                return res.data
+            })
+    }
 
-    //     this.setState({
-    //         content: e.target.value
-    //     })
-
-    //     axios.get('http://localhost:8080/api/comments?content=' + e.target.value, {headers: {Authorization: `${token}`}})
-    //         .then(res=> {
-    //             this.setState({ comments:res.data });
-    //             console.log(this.state.comments)
-    //             return res.data
-    //         })
-    // }
-
-    handleAdd = (e) =>{
+    handleAddComment = (e) =>{
         this.setState({ isModalOpen: true });
         const token = localStorage.getItem('jwt');
         const ticket_info = {
@@ -159,9 +164,9 @@ export default class Tickets extends Component{
     }
 
     handleFilterEmail = (e) => {
-        console.log("running handle filter mail")
+        console.log("running handle filter mail" + e.target.value)
         const token = localStorage.getItem('jwt')
-        axios.get('http://localhost:8080/api/admin/tickets/?email=' + this.state.currentText, {headers: {Authorization: `${token}`}})
+        axios.get('http://localhost:8080/api/admin/tickets/?email=' + e.target.value, {headers: {Authorization: `${token}`}})
         .then(res=> {
             this.setState({tickets:res.data});
             console.log(res.data);
@@ -191,7 +196,7 @@ export default class Tickets extends Component{
                         <div class="search-box">
                             <form class="ui form">
                             <input type="text" placeholder="search by email..." onChange={this.changeText} />
-                            <button class="ui purple button" type="submit" onClick={this.handleFilterEmail}>Search</button>
+                            <button class="ui purple button" onClick={(e)=>this.handleAddComment(e)} value={this.state.changeText}>Search</button>
                             </form>
                         </div>
                         <Dropdown text='Filter' floating labeled button className='icon'>
@@ -206,11 +211,11 @@ export default class Tickets extends Component{
                                 </Dropdown.Item>
                                 <Dropdown.Item
                                     onClick={this.handleFilterNew} 
-                                    name='AwaitUser'>AwaitUser
+                                    name='awaitUser'>AwaitUser
                                 </Dropdown.Item>
                                 <Dropdown.Item
                                     onClick={this.handleFilterNew} 
-                                    name='AwaitAdmin'>AwaitAdmin
+                                    name='awaitAdmin'>AwaitAdmin
                                 </Dropdown.Item>
                                 <Dropdown.Item
                                     onClick={this.handleFilterSort} 
@@ -248,7 +253,8 @@ export default class Tickets extends Component{
                                     <StatusDist>
                                     <a className="ui red label">{p.status}</a>
                                     </StatusDist>
-                                    {/* <button class="ui green button" onClick={(e)=>this.handleContentChange(e)} value={p.content}>Show Comment</button> */}
+                                    <div class="meta">Date created: {p.date}</div>
+                                    {/* <button class="ui green button" onClick={(e)=>this.handleGetComment(e)} value={p.content}>Show Comment</button> */}
                                     <Button color='olive' content='Add Comment' onClick={this.handleOpen} value={p.content} />
                                     <TransitionablePortal
                                         open={this.state.open}
@@ -277,7 +283,7 @@ export default class Tickets extends Component{
                                             <label>Comment</label>
                                             <TextArea placeholder='Write your comment here ....' onChange={this.handleUpdateMsg.bind(this)} />
                                             </Form.Field>
-                                            <Button type='submit' onClick={(e)=>this.handleAdd(e)}>Submit</Button>
+                                            <Button type='submit' onClick={(e)=>this.handleAddComment(e)}>Submit</Button>
                                         </Form>
                                         </Modal.Content>
                                         </Modal>
@@ -287,7 +293,7 @@ export default class Tickets extends Component{
                                         <Modal open={this.state.open} onClose={this.close}>
                                         <Modal.Content>
                                             <TextArea placeholder='Tell us more' ref={this.handleRef} onChange={this.handleUpdateMsg.bind(this)} />
-                                            <button class="ui green button" onClick={(e)=>this.handleAdd(e)}>Submit</button>
+                                            <button class="ui green button" onClick={(ehandleAddComment(e)}>Submit</button>
                                         </Modal.Content>
                                         </Modal> */}
                                 </div>
